@@ -12,7 +12,6 @@
   } from "@lucide/svelte";
   import { filesize } from "filesize";
   import { onMount } from "svelte";
-  import Lazy from "svelte-lazy";
 
   import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
