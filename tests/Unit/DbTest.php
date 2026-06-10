@@ -9,7 +9,7 @@ class DbTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testDB()
+    public function dbTest()
     {
         $this->assertTrue(true);
     }
