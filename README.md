@@ -26,7 +26,7 @@ php artisan key:generate
 cp .env.example .env
 php artisan key:generate
 ```
-### Important configuration
+#### Important configuration
 Make sure to update your .env file to avoid issues
 ```bash
 SESSION_DRIVER=file
