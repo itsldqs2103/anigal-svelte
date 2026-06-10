@@ -6,13 +6,11 @@ cd anigal-svelte
 ```
 
 ### 2. Install PHP dependencies
-
 ```bash
 composer install
 ```
 
 ### 3. Install Node dependencies
-
 ```bash
 npm install
 ```
@@ -29,7 +27,12 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-### 5. Start development server
+### 5. Run migrations
+```bash
+php artisan migrate
+```
+
+### 6. Start development server
 ```bash
 php artisan serve
 npm run dev
