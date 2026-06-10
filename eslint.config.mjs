@@ -14,31 +14,31 @@ import svelteConfig from "./svelte.config.js";
 const gitignorePath = path.resolve(import.meta.dirname, ".gitignore");
 
 export default defineConfig([
-    includeIgnoreFile(gitignorePath),
+  includeIgnoreFile(gitignorePath),
 
-    js.configs.recommended,
-    svelte.configs.recommended,
-    eslintPluginPrettierRecommended,
-    {
-        files: ["**/*.{js,mjs,ts,svelte}"],
-        languageOptions: {
-            globals: { ...globals.browser, ...globals.node },
-            parserOptions: { svelteConfig },
-        },
+  js.configs.recommended,
+  svelte.configs.recommended,
+  eslintPluginPrettierRecommended,
+  {
+    files: ["**/*.{js,mjs,ts,svelte}"],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+      parserOptions: { svelteConfig },
     },
+  },
 
-    {
-        plugins: {
-            "simple-import-sort": simpleImportSort,
-            "unused-imports": unusedImports,
-        },
-        rules: {
-            "prettier/prettier": "warn",
-            "svelte/no-at-html-tags": "warn",
-            "simple-import-sort/imports": "warn",
-            "simple-import-sort/exports": "warn",
-            "unused-imports/no-unused-imports": "warn",
-            "unused-imports/no-unused-vars": "warn",
-        },
+  {
+    plugins: {
+      "simple-import-sort": simpleImportSort,
+      "unused-imports": unusedImports,
     },
+    rules: {
+      "prettier/prettier": "warn",
+      "svelte/no-at-html-tags": "warn",
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": "warn",
+    },
+  },
 ]);

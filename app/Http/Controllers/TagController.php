@@ -101,24 +101,6 @@ class TagController extends Controller
         return to_route('tag.home', ['per_page' => 30, 'sort' => 'oldest', 'starts_with' => null]);
     }
 
-    public function apiAddTag(Request $request)
-    {
-        $request->validate([
-            'tag_name' => ['required', 'string', 'max:255', 'unique:tags,tag_name'],
-            'tag_desc' => ['nullable', 'string', 'max:255'],
-        ], [], [
-            'tag_name' => Str::lower(__('translate.tagname')),
-            'tag_desc' => Str::lower(__('translate.tagdesc')),
-        ]);
-
-        $tag = Tag::create([
-            'tag_name' => $request->tag_name,
-            'tag_desc' => $request->tag_desc,
-        ]);
-
-        return response()->json($tag, 201);
-    }
-
     public function getEditTag(Request $request)
     {
         $tag_id = $request->query('tag_id');

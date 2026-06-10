@@ -12,7 +12,6 @@ Route::get('/', [MainController::class, 'index'])->name('home');
 Route::get('/tag', [TagController::class, 'index'])->name('tag.home');
 Route::get('/image', [ImageController::class, 'index'])->name('image.home');
 Route::get('/image/search', [ImageController::class, 'getSearch'])->name('image.search');
-Route::get('/api/tags/suggest', [ImageController::class, 'suggestTags'])->name('api.tags.suggest');
 Route::get('/setting', [MainController::class, 'setting'])->name('setting');
 Route::post('/locale', [MainController::class, 'locale']);
 Route::get('/api/locale/{locale}.json', [MainController::class, 'getLocaleFile']);
@@ -23,6 +22,7 @@ Route::get('/stats', [MainController::class, 'stats'])->name('stats');
 
 Route::middleware(ApiMiddleware::class)->group(function () {
     Route::get('/api/tag/fetch/{tag_id}', [ApiController::class, 'fetchTag'])->name('api.tag.fetch');
+    Route::get('/api/tags/suggest', [ApiController::class, 'suggestTags'])->name('api.tags.suggest');
     Route::get('/api/image/fetch/{image_id}', [ApiController::class, 'fetchImage'])->name('api.image.fetch');
     Route::get('/api/tags/latest', [ApiController::class, 'latestTags'])->name('api.tags.latest');
     Route::get('/api/images/latest', [ApiController::class, 'latestImages'])->name('api.images.latest');
@@ -31,6 +31,7 @@ Route::middleware(ApiMiddleware::class)->group(function () {
     Route::get('/api/stats', [ApiController::class, 'stats'])->name('api.stats');
     Route::get('/api/tags/all', [ApiController::class, 'allTags'])->name('api.tags.all');
     Route::get('/api/tags/selected/{image_id}', [ApiController::class, 'imageSelectedTags'])->name('api.tags.selected');
+    Route::post('/api/tag/add', [ApiController::class, 'addTag'])->name('api.tag.add');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -42,7 +43,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [UserController::class, 'postLogout']);
     Route::get('/tag/add', [TagController::class, 'getAddTag'])->name('tag.add');
     Route::post('/tag/add', [TagController::class, 'postAddTag']);
-    Route::post('/api/tag/add', [TagController::class, 'apiAddTag']);
     Route::get('/tag/edit', [TagController::class, 'getEditTag'])->name('tag.edit');
     Route::post('/tag/edit', [TagController::class, 'postEditTag']);
     Route::delete('/tag/delete', [TagController::class, 'postDeleteTag']);
