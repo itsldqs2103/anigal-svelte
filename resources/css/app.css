@@ -1,0 +1,168 @@
+@import "tailwindcss";
+@import "@fancyapps/ui/dist/fancybox/fancybox.css";
+@import "nprogress/nprogress.css";
+
+@plugin "daisyui" {
+    themes:
+        dark --default,
+        light,
+        dracula;
+    exclude: properties;
+}
+
+@font-face {
+    font-family: "Roboto Flex Variable";
+    font-style: normal;
+    font-display: block;
+    font-weight: 100 1000;
+    src: url(@fontsource-variable/roboto-flex/files/roboto-flex-latin-wght-normal.woff2)
+        format("woff2-variations");
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+        U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: "Roboto Flex Variable";
+    font-style: normal;
+    font-display: block;
+    font-weight: 100 1000;
+    src: url(@fontsource-variable/roboto-flex/files/roboto-flex-vietnamese-wght-normal.woff2)
+        format("woff2-variations");
+    unicode-range:
+        U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+        U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+        U+1EA0-1EF9, U+20AB;
+}
+
+.toastify {
+    @apply bg-info text-info-content fixed z-50 inline-block max-w-max cursor-pointer px-3 py-2 text-sm font-semibold opacity-0 transition-[opacity,transform,left,top,bottom,right];
+}
+
+.toastify-success {
+    @apply bg-success text-success-content;
+}
+
+.toastify-error {
+    @apply bg-error text-error-content;
+}
+
+.toastify-warning {
+    @apply bg-warning text-warning-content;
+}
+
+.toastify.on {
+    @apply opacity-100;
+}
+
+.toastify-right {
+    @apply right-4;
+}
+
+.toastify-left {
+    @apply left-4;
+}
+
+.toastify-top {
+    @apply -top-40;
+}
+
+.toastify-bottom {
+    @apply -bottom-40;
+}
+
+.toastify-center {
+    @apply right-0 left-0 mr-auto ml-auto max-w-fit;
+}
+
+@media only screen and (max-width: 360px) {
+    .toastify-right,
+    .toastify-left {
+        @apply right-0 left-0 mr-auto ml-auto max-w-fit;
+    }
+}
+
+html {
+    font-family: "Roboto Flex Variable", sans-serif;
+    text-rendering: optimizeLegibility;
+}
+
+.btn,
+.alert {
+    gap: calc(var(--spacing) * 1);
+}
+
+.btn:not(.btn-square) {
+    @apply h-8 p-2;
+}
+
+.btn-square {
+    @apply h-8 w-8;
+}
+
+.rounded-base {
+    border-radius: var(--radius-field);
+}
+
+.breadcrumbs {
+    @apply text-sm;
+}
+
+::selection {
+    @apply text-primary-content bg-primary;
+}
+
+.fancybox__container {
+    --f-spinner-color-2: var(--color-primary);
+    --fancybox-backdrop-bg: color-mix(
+        in oklab,
+        var(--color-base-300) 50%,
+        transparent
+    );
+    --f-button-bg: color-mix(in oklab, var(--color-base-300) 50%, transparent);
+    --f-button-color: var(--color-base-content);
+}
+
+.f-carousel__toolbar {
+    padding: calc(var(--spacing) * 4);
+}
+
+.blur-xs,
+.blur-sm,
+.blur-md,
+.blur-lg,
+.blur-xl,
+.blur-2xl,
+.blur-3xl,
+.backdrop-blur-xs,
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+.backdrop-blur-3xl {
+    @apply translate-z-0 backface-hidden perspective-[1000px];
+}
+
+#nprogress {
+    .bar {
+        background: var(--color-primary);
+        height: calc(var(--spacing) * 1);
+    }
+
+    .peg {
+        box-shadow:
+            0 0 calc(var(--spacing) * 2.5) var(--color-primary),
+            0 0 calc(var(--spacing) * 1.25) var(--color-primary);
+    }
+}
+
+.modal-box {
+    @apply bg-base-200;
+}
+
+.fancybox__backdrop,
+.modal-backdrop {
+    @apply backdrop-blur-sm;
+}
