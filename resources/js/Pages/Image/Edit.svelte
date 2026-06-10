@@ -12,7 +12,6 @@
   } from "@lucide/svelte";
   import { filesize } from "filesize";
   import { onMount } from "svelte";
-  import Lazy from "svelte-lazy";
 
   import Modal from "@/js/Components/Modal.svelte";
   import { api } from "@/js/lib/axios";
@@ -346,13 +345,11 @@
 
     {#if preview}
       <div class="mt-4">
-        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
-          <img
-            src={preview}
-            alt={$i18n.t("translate.selectedimagepreview")}
-            class="rounded-base max-w-64"
-          />
-        </Lazy>
+        <img
+          src={preview}
+          alt={$i18n.t("translate.selectedimagepreview")}
+          class="rounded-base max-w-64"
+        />
       </div>
     {/if}
   </div>

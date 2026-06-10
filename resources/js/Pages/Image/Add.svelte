@@ -270,13 +270,11 @@
 
     {#if preview}
       <div class="mt-4">
-        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
-          <img
-            src={preview}
-            alt={$i18n.t("translate.imagepreview")}
-            class="rounded-base max-w-64"
-          />
-        </Lazy>
+        <img
+          src={preview}
+          alt={$i18n.t("translate.imagepreview")}
+          class="rounded-base max-w-64"
+        />
       </div>
     {/if}
   </div>
