@@ -289,6 +289,11 @@
     {#each images.data as image (image.image_id)}
       <div class="relative">
         <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0, offset: 0 }}>
+          <div
+            slot="placeholder"
+            class="rounded-base bg-base-300 animate-pulse w-full h-full"
+          ></div>
+
           <img
             src={image.thumbnail_image_path_url}
             alt={image.image_id}
