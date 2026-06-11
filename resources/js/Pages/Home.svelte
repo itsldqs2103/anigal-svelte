@@ -175,7 +175,7 @@
 {#if randomTagsLoading}
   <div class="inline-flex items-center gap-1">
     <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
+    <span>{$i18n.t("translate.loading")}</span>
   </div>
 {:else if countRandomTags > 0}
   <div
@@ -256,7 +256,7 @@
 {#if randomImagesLoading}
   <div class="inline-flex items-center gap-1">
     <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
+    <span>{$i18n.t("translate.loading")}</span>
   </div>
 {:else if countRandomImages > 0}
   <div
@@ -427,7 +427,7 @@
 {#if latestTagsLoading}
   <div class="inline-flex items-center gap-1">
     <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
+    <span>{$i18n.t("translate.loading")}</span>
   </div>
 {:else if countLatestTags > 0}
   <div
@@ -505,7 +505,7 @@
 {#if latestImagesLoading}
   <div class="inline-flex items-center gap-1">
     <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
+    <span>{$i18n.t("translate.loading")}</span>
   </div>
 {:else if countLatestImages > 0}
   <div
