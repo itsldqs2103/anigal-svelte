@@ -106,10 +106,10 @@
 
     <div class="space-y-2">
       <div>
-        <label class="label select-none">
+        <label class="label text-sm select-none">
           <input
             type="checkbox"
-            class="checkbox"
+            class="checkbox checkbox-sm"
             id="showPasswordInput"
             onchange={togglePassword}
             disabled={form.processing}
