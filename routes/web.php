@@ -24,23 +24,16 @@ Route::middleware(ApiMiddleware::class)
     ->prefix('api')
     ->controller(ApiController::class)
     ->group(function () {
-
         Route::get('/tag/{tag}', 'fetchTag')->name('api.tag.fetch');
         Route::get('/tags/suggest', 'suggestTags')->name('api.tags.suggest');
-
         Route::get('/image/{image}', 'fetchImage')->name('api.image.fetch');
-
         Route::get('/tags/latest', 'latestTags')->name('api.tags.latest');
         Route::get('/images/latest', 'latestImages')->name('api.images.latest');
-
         Route::get('/tags/random', 'randomTags')->name('api.tags.random');
         Route::get('/images/random', 'randomImages')->name('api.images.random');
-
         Route::get('/stats', 'stats')->name('api.stats');
-
         Route::get('/tags/all', 'allTags')->name('api.tags.all');
         Route::get('/images/{image}/tags', 'imageSelectedTags')->name('api.images.tags');
-
         Route::post('/tag/add', 'addTag')->name('api.tag.add');
     });
 
