@@ -8,6 +8,7 @@
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
+  import { stats } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import { index } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
 
   let totalTags = $state(0);
@@ -20,7 +21,7 @@
     statsLoading = true;
 
     try {
-      const { data } = await api.get("/api/stats");
+      const { data } = await api.get(stats().url);
 
       totalTags = data.totalTags;
       totalImages = data.totalImages;

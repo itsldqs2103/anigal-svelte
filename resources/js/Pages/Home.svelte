@@ -19,6 +19,12 @@
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
   import {
+    latestImages as apiLatestImages,
+    latestTags as apiLatestTags,
+    randomImages as apiRandomImages,
+    randomTags as apiRandomTags,
+  } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
+  import {
     getSearch,
     index as imageIndex,
   } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
@@ -55,7 +61,7 @@
     latestTagsLoading = true;
 
     try {
-      const { data } = await api.get("/api/tags/latest");
+      const { data } = await api.get(apiLatestTags().url);
       latestTags = data;
     } finally {
       latestTagsLoading = false;
@@ -66,7 +72,7 @@
     latestImagesLoading = true;
 
     try {
-      const { data } = await api.get("/api/images/latest");
+      const { data } = await api.get(apiLatestImages().url);
       latestImages = data;
     } finally {
       latestImagesLoading = false;
@@ -77,7 +83,7 @@
     randomTagsLoading = true;
 
     try {
-      const { data } = await api.get("/api/tags/random");
+      const { data } = await api.get(apiRandomTags().url);
       randomTags = data;
     } finally {
       randomTagsLoading = false;
@@ -88,7 +94,7 @@
     randomImagesLoading = true;
 
     try {
-      const { data } = await api.get("/api/images/random");
+      const { data } = await api.get(apiRandomImages().url);
       randomImages = data;
     } finally {
       randomImagesLoading = false;

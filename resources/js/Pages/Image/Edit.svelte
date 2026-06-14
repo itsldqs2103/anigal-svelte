@@ -20,6 +20,11 @@
   import { tooltip } from "@/js/lib/tooltip";
   import { addTag as apiAddTag } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import {
+    allTags,
+    fetchImage,
+    imageSelectedTags,
+  } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
+  import {
     index as imageIndex,
     postEditImage,
   } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
@@ -43,7 +48,7 @@
     tagsLoading = true;
 
     try {
-      const { data } = await api.get("/api/tags/all");
+      const { data } = await api.get(allTags().url);
       tags = data;
     } finally {
       tagsLoading = false;
@@ -51,7 +56,7 @@
   }
 
   async function loadSelectedTags() {
-    const { data } = await api.get(`/api/tags/selected/${image_id}`);
+    const { data } = await api.get(imageSelectedTags({ image: image_id }).url);
 
     form.tag = data.selectedTags;
   }
@@ -59,7 +64,7 @@
   let image = $state(null);
 
   async function loadImage() {
-    const { data } = await api.get(`/api/image/fetch/${image_id}`);
+    const { data } = await api.get(fetchImage({ image: image_id }).url);
 
     image = data;
 

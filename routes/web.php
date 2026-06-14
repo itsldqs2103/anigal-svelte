@@ -20,19 +20,29 @@ Route::get('/term', [MainController::class, 'term'])->name('term');
 Route::get('/dmca', [MainController::class, 'dmca'])->name('dmca');
 Route::get('/stats', [MainController::class, 'stats'])->name('stats');
 
-Route::middleware(ApiMiddleware::class)->group(function () {
-    Route::get('/api/tag/fetch/{tag_id}', [ApiController::class, 'fetchTag'])->name('api.tag.fetch');
-    Route::get('/api/tags/suggest', [ApiController::class, 'suggestTags'])->name('api.tags.suggest');
-    Route::get('/api/image/fetch/{image_id}', [ApiController::class, 'fetchImage'])->name('api.image.fetch');
-    Route::get('/api/tags/latest', [ApiController::class, 'latestTags'])->name('api.tags.latest');
-    Route::get('/api/images/latest', [ApiController::class, 'latestImages'])->name('api.images.latest');
-    Route::get('/api/tags/random', [ApiController::class, 'randomTags'])->name('api.tags.random');
-    Route::get('/api/images/random', [ApiController::class, 'randomImages'])->name('api.images.random');
-    Route::get('/api/stats', [ApiController::class, 'stats'])->name('api.stats');
-    Route::get('/api/tags/all', [ApiController::class, 'allTags'])->name('api.tags.all');
-    Route::get('/api/tags/selected/{image_id}', [ApiController::class, 'imageSelectedTags'])->name('api.tags.selected');
-    Route::post('/api/tag/add', [ApiController::class, 'addTag'])->name('api.tag.add');
-});
+Route::middleware(ApiMiddleware::class)
+    ->prefix('api')
+    ->controller(ApiController::class)
+    ->group(function () {
+
+        Route::get('/tag/{tag}', 'fetchTag')->name('api.tag.fetch');
+        Route::get('/tags/suggest', 'suggestTags')->name('api.tags.suggest');
+
+        Route::get('/image/{image}', 'fetchImage')->name('api.image.fetch');
+
+        Route::get('/tags/latest', 'latestTags')->name('api.tags.latest');
+        Route::get('/images/latest', 'latestImages')->name('api.images.latest');
+
+        Route::get('/tags/random', 'randomTags')->name('api.tags.random');
+        Route::get('/images/random', 'randomImages')->name('api.images.random');
+
+        Route::get('/stats', 'stats')->name('api.stats');
+
+        Route::get('/tags/all', 'allTags')->name('api.tags.all');
+        Route::get('/images/{image}/tags', 'imageSelectedTags')->name('api.images.tags');
+
+        Route::post('/tag/add', 'addTag')->name('api.tag.add');
+    });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');

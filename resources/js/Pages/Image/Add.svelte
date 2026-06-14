@@ -18,6 +18,7 @@
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
   import { addTag as apiAddTag } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
+  import { allTags } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import {
     index as imageIndex,
     postAddImage,
@@ -36,7 +37,7 @@
     tagsLoading = true;
 
     try {
-      const { data } = await api.get("/api/tags/all");
+      const { data } = await api.get(allTags().url);
       tags = data;
     } finally {
       tagsLoading = false;

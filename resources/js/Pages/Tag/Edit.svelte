@@ -7,6 +7,7 @@
   import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
+  import { fetchTag } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import { index } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
   import {
     index as tagIndex,
@@ -23,7 +24,7 @@
   }));
 
   async function loadTag() {
-    const { data } = await api.get(`/api/tag/fetch/${tag_id}`);
+    const { data } = await api.get(fetchTag({ tag: tag_id }).url);
 
     form.tag_name = data.tag_name;
     form.tag_desc = data.tag_desc;
