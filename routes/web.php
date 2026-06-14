@@ -14,8 +14,6 @@ Route::get('/image', [ImageController::class, 'index'])->name('image.home');
 Route::get('/image/search', [ImageController::class, 'getSearch'])->name('image.search');
 Route::get('/setting', [MainController::class, 'setting'])->name('setting');
 Route::post('/locale', [MainController::class, 'locale']);
-Route::get('/api/locale/{locale}.json', [MainController::class, 'getLocaleFile']);
-Route::get('/optimize/clear', [MainController::class, 'clearOptimize'])->name('optimize.clear');
 Route::get('/term', [MainController::class, 'term'])->name('term');
 Route::get('/dmca', [MainController::class, 'dmca'])->name('dmca');
 Route::get('/stats', [MainController::class, 'stats'])->name('stats');
@@ -35,6 +33,7 @@ Route::middleware(ApiMiddleware::class)
         Route::get('/tags/all', 'allTags')->name('api.tags.all');
         Route::get('/images/{image}/tags', 'imageSelectedTags')->name('api.images.tags');
         Route::post('/tag/add', 'addTag')->name('api.tag.add');
+        Route::get('/locale/{locale}.json', [MainController::class, 'getLocaleFile'])->name('api.locale');
     });
 
 Route::middleware(['auth'])->group(function () {
