@@ -33,12 +33,17 @@ SESSION_DRIVER=file
 CACHE_STORE=file
 ```
 
-### 5. Run migrations
+### 5. Generate Wayfinder file
+```bash
+php artisan wayfinder:generate --path=resources/js/wayfinder --skip-routes
+```
+
+### 6. Run migrations
 ```bash
 php artisan migrate
 ```
 
-### 6. Start development server
+### 7. Start development server
 ```bash
 php artisan serve
 npm run dev
