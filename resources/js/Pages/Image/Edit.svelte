@@ -469,7 +469,7 @@
     {#if tagsLoading}
       <div class="inline-flex items-center gap-1">
         <span class="loading loading-spinner loading-sm"></span>
-        <span>{$i18n.t("translate.loading")}</span>
+        <span class="text-sm">{$i18n.t("translate.loading")}</span>
       </div>
     {:else if countTags > 0}
       <div class="inline-flex items-center flex-wrap gap-4">
