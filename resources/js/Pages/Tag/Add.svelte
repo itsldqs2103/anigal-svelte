@@ -1,5 +1,5 @@
 <script>
-  import { Link, useForm } from "@inertiajs/svelte";
+  import { Link, router, useForm } from "@inertiajs/svelte";
   import { CircleAlert, House, Save } from "@lucide/svelte";
 
   import i18n from "@/js/lib/i18n";
@@ -120,5 +120,13 @@
         </div>
       {/if}
     </button>
+  </div>
+  <div>
+    <button
+      class="btn btn-success"
+      type="button"
+      onclick={() => router.get(tagIndex())}
+      >{$i18n.t("translate.cancel")}</button
+    >
   </div>
 </form>

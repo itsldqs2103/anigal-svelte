@@ -1,5 +1,5 @@
 <script>
-  import { Link, useForm } from "@inertiajs/svelte";
+  import { Link, router, useForm } from "@inertiajs/svelte";
   import {
     Check,
     ChevronDown,
@@ -534,5 +534,13 @@
         </div>
       {/if}
     </button>
+  </div>
+  <div>
+    <button
+      class="btn btn-success"
+      type="button"
+      onclick={() => router.get(imageIndex())}
+      >{$i18n.t("translate.cancel")}</button
+    >
   </div>
 </form>
