@@ -14,6 +14,7 @@
     Share2,
     Trash2,
   } from "@lucide/svelte";
+  import clsx from "clsx";
   import Lazy from "svelte-lazy";
 
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
@@ -221,7 +222,7 @@
     <ul class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 p-2">
       <li>
         <button
-          class={`${order === "latest" ? "bg-primary text-primary-content" : ""}`}
+          class={clsx(order === "latest" && "bg-primary text-primary-content")}
           onclick={(e) => {
             order = "latest";
             applyFilters();
@@ -234,7 +235,7 @@
       </li>
       <li>
         <button
-          class={`${order === "oldest" ? "bg-primary text-primary-content" : ""}`}
+          class={clsx(order === "oldest" && "bg-primary text-primary-content")}
           onclick={(e) => {
             order = "oldest";
             applyFilters();
@@ -263,7 +264,7 @@
       {#each filters.allowedLimits as limit (limit)}
         <li>
           <button
-            class={`${perPage === limit ? "bg-primary text-primary-content" : ""}`}
+            class={clsx(perPage === limit && "bg-primary text-primary-content")}
             onclick={(e) => {
               perPage = limit;
               applyFilters();

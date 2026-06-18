@@ -1,6 +1,7 @@
 <script>
   import { Link, useForm } from "@inertiajs/svelte";
   import { CircleAlert, House, LogIn } from "@lucide/svelte";
+  import clsx from "clsx";
 
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
@@ -85,7 +86,10 @@
         id="loginInput"
         maxlength="255"
         bind:value={form.login}
-        class={`input w-full ${errors.login && !form.processing ? "input-error" : ""}`}
+        class={clsx(
+          "input w-full",
+          errors.login && !form.processing && "input-error",
+        )}
         autocomplete="off"
         disabled={form.processing}
         use:autofocus
@@ -98,7 +102,10 @@
         id="passwordInput"
         maxlength="255"
         bind:value={form.password}
-        class={`input w-full ${errors.password && !form.processing ? "input-error" : ""}`}
+        class={clsx(
+          "input w-full",
+          errors.password && !form.processing && "input-error",
+        )}
         placeholder={$i18n.t("translate.password")}
         disabled={form.processing}
       />

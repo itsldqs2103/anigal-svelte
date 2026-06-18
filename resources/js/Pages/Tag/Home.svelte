@@ -9,6 +9,7 @@
     Trash2,
   } from "@lucide/svelte";
   import { CircleAlert } from "@lucide/svelte";
+  import clsx from "clsx";
 
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
   import Modal from "@/js/Components/Modal.svelte";
@@ -159,7 +160,7 @@
 
 <div class="mb-4 flex flex-wrap gap-2">
   <button
-    class={`btn btn-neutral ${!startsWith ? "btn-disabled" : ""}`}
+    class={clsx("btn btn-neutral", !startsWith && "btn-disabled")}
     onclick={() => {
       startsWith = null;
       applyFilters();
@@ -171,7 +172,10 @@
 
   {#each "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("") as letter (letter)}
     <button
-      class={`btn btn-neutral btn-square ${startsWith === letter ? "btn-disabled" : ""}`}
+      class={clsx(
+        "btn btn-neutral btn-square",
+        startsWith === letter && "btn-disabled",
+      )}
       onclick={() => {
         startsWith = letter.toLowerCase();
         applyFilters();
@@ -219,7 +223,7 @@
     <ul class="dropdown-content menu bg-base-300 rounded-box z-1 w-24 p-2">
       <li>
         <button
-          class={`${order === "oldest" ? "bg-primary text-primary-content" : ""}`}
+          class={clsx(order === "oldest" && "bg-primary text-primary-content")}
           onclick={(e) => {
             order = "oldest";
             applyFilters();
@@ -232,7 +236,7 @@
       </li>
       <li>
         <button
-          class={`${order === "latest" ? "bg-primary text-primary-content" : ""}`}
+          class={clsx(order === "latest" && "bg-primary text-primary-content")}
           onclick={(e) => {
             order = "latest";
             applyFilters();
@@ -261,7 +265,7 @@
       {#each filters.allowedLimits as limit (limit)}
         <li>
           <button
-            class={`${perPage === limit ? "bg-primary text-primary-content" : ""}`}
+            class={clsx(perPage === limit && "bg-primary text-primary-content")}
             onclick={(e) => {
               perPage = limit;
               applyFilters();

@@ -12,6 +12,7 @@
     Tag,
     User,
   } from "@lucide/svelte";
+  import clsx from "clsx";
   import { onMount } from "svelte";
   import Toastify from "toastify-js";
 
@@ -492,7 +493,15 @@
 
     <div
       use:tooltip={$i18n.t("translate.gototop")}
-      class={`fixed right-4 z-50 transition-[opacity,visibility,bottom] ${showScrollTop ? "visible opacity-100" : "pointer-events-none invisible opacity-0"} ${showScrollTop && isFooterVisible ? "bottom-[calc(var(--footer-height))]" : "bottom-4"}`}
+      class={clsx(
+        "fixed right-4 z-50 transition-[opacity,visibility,bottom]",
+        showScrollTop
+          ? "visible opacity-100"
+          : "pointer-events-none invisible opacity-0",
+        showScrollTop && isFooterVisible
+          ? "bottom-[calc(var(--footer-height))]"
+          : "bottom-4",
+      )}
     >
       <button onclick={scrollToTop} class="btn btn-primary btn-sm btn-square">
         <ArrowUp class="inline h-4 w-4 aspect-square" />
@@ -520,11 +529,11 @@
           <li>
             <Link
               href={item.path}
-              class={`rounded-base gap-1 ${
-                page.component.startsWith(item.component)
-                  ? "bg-primary text-primary-content"
-                  : ""
-              }`}
+              class={clsx(
+                "rounded-base gap-1",
+                page.component.startsWith(item.component) &&
+                  "bg-primary text-primary-content",
+              )}
             >
               <item.icon size={20} />
               {item.name}
@@ -538,11 +547,11 @@
           <li>
             <Link
               href={item.path}
-              class={`rounded-base gap-1 ${
-                page.component.startsWith(item.component)
-                  ? "bg-primary text-primary-content"
-                  : ""
-              }`}
+              class={clsx(
+                "rounded-base gap-1",
+                page.component.startsWith(item.component) &&
+                  "bg-primary text-primary-content",
+              )}
             >
               <item.icon size={24} />
               {item.name}

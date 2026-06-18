@@ -1,6 +1,7 @@
 <script>
   import { Link, router, useForm } from "@inertiajs/svelte";
   import { CircleAlert, House, Save } from "@lucide/svelte";
+  import clsx from "clsx";
 
   import Modal from "@/js/Components/Modal.svelte";
   import i18n from "@/js/lib/i18n";
@@ -144,7 +145,10 @@
       <input
         type={showPassword ? "text" : "password"}
         placeholder={$i18n.t("translate.password")}
-        class={`input w-full ${errors.password && !form.processing ? "input-error" : ""}`}
+        class={clsx(
+          "input w-full",
+          errors.password && !form.processing && "input-error",
+        )}
         id="password"
         maxlength="255"
         bind:value={form.password}

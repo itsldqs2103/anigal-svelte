@@ -1,6 +1,7 @@
 <script>
   import { Link, router, useForm } from "@inertiajs/svelte";
   import { CircleAlert, House, Save } from "@lucide/svelte";
+  import clsx from "clsx";
 
   import Modal from "@/js/Components/Modal.svelte";
   import i18n from "@/js/lib/i18n";
@@ -137,7 +138,10 @@
       <input
         type="text"
         placeholder={$i18n.t("translate.email")}
-        class={`input w-full ${errors.email && !form.processing ? "input-error" : ""}`}
+        class={clsx(
+          "input w-full",
+          errors.email && !form.processing && "input-error",
+        )}
         id="emailInput"
         maxlength="255"
         bind:value={form.email}
@@ -151,7 +155,10 @@
       <input
         type="text"
         placeholder={$i18n.t("translate.username")}
-        class={`input w-full ${errors.username && !form.processing ? "input-error" : ""}`}
+        class={clsx(
+          "input w-full",
+          errors.username && !form.processing && "input-error",
+        )}
         id="usernameInput"
         maxlength="255"
         bind:value={form.username}
@@ -164,7 +171,10 @@
       <input
         type="text"
         placeholder={$i18n.t("translate.fullname")}
-        class={`input w-full ${errors.fulllname && !form.processing ? "input-error" : ""}`}
+        class={clsx(
+          "input w-full",
+          errors.fullname && !form.processing && "input-error",
+        )}
         id="fullnameInput"
         maxlength="255"
         bind:value={form.fullname}

@@ -1,6 +1,7 @@
 <script>
   import { page } from "@inertiajs/svelte";
   import { Pencil, PencilOff } from "@lucide/svelte";
+  import clsx from "clsx";
 
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
@@ -52,7 +53,7 @@
   {#if isAuth}
     <div use:tooltip={$i18n.t("translate.toggleeditmode")}>
       <button
-        class={`btn btn-square btn-sm ${buttonColor}`}
+        class={clsx("btn btn-square btn-sm", buttonColor)}
         onclick={toggleEdit}
       >
         {#if isUserEdit.value}
@@ -78,7 +79,7 @@
     {#if isAuth}
       <div use:tooltip={$i18n.t("translate.toggleeditmode")}>
         <button
-          class={`btn btn-square btn-sm ${buttonColor}`}
+          class={clsx("btn btn-square btn-sm", buttonColor)}
           onclick={toggleEdit}
         >
           {#if isUserEdit.value}

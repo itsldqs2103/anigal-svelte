@@ -1,6 +1,7 @@
 <script>
   import { Link, router, useForm } from "@inertiajs/svelte";
   import { CircleAlert, House, Save } from "@lucide/svelte";
+  import clsx from "clsx";
   import { onMount } from "svelte";
 
   import Modal from "@/js/Components/Modal.svelte";
@@ -145,7 +146,10 @@
   <div>
     <input
       type="text"
-      class={`input w-full ${errors.tag_name && !form.processing ? "input-error" : ""}`}
+      class={clsx(
+        "input w-full",
+        errors.tag_name && !form.processing && "input-error",
+      )}
       id="tagNameInput"
       maxlength="255"
       bind:value={form.tag_name}
@@ -158,7 +162,10 @@
   <div>
     <input
       type="text"
-      class={`input w-full ${errors.tag_desc && !form.processing ? "input-error" : ""}`}
+      class={clsx(
+        "input w-full",
+        errors.tag_desc && !form.processing && "input-error",
+      )}
       id="tagDescriptionInput"
       maxlength="255"
       bind:value={form.tag_desc}

@@ -10,6 +10,7 @@
     Save,
     Upload,
   } from "@lucide/svelte";
+  import clsx from "clsx";
   import { filesize } from "filesize";
   import { onMount } from "svelte";
 
@@ -214,13 +215,14 @@
         ? $i18n.t("translate.fileuploadmax") + ": " + maxUploadFilesize
         : null}
       type="button"
-      class={`btn ${
+      class={clsx(
+        "btn",
         file
           ? "btn-success"
           : errors.image && !form.processing
             ? "btn-error"
-            : "btn-primary"
-      }`}
+            : "btn-primary",
+      )}
       disabled={form.processing || file || newTagProcessing}
       onclick={() => fileInput?.click()}
     >
@@ -282,7 +284,10 @@
   <div class="mt-4">
     <input
       type="text"
-      class={`input w-full ${errors.image_source && !form.processing ? "input-error" : ""}`}
+      class={clsx(
+        "input w-full",
+        errors.image_source && !form.processing && "input-error",
+      )}
       id="imageSourceInput"
       maxlength="255"
       bind:value={form.image_source}
@@ -299,14 +304,20 @@
     >
       <span class="text-sm">{$i18n.t("translate.addnewtag")}</span>
       <ChevronDown
-        class={`w-5 h-5 inline aspect-square ${isCollapsed ? "rotate-180" : ""}`}
+        class={clsx(
+          "w-5 h-5 inline aspect-square",
+          isCollapsed && "rotate-180",
+        )}
       />
     </div>
     <div class="collapse-content space-y-0">
       <div>
         <input
           type="text"
-          class={`input w-full ${newTagErrors.tag_name && !form.processing ? "input-error" : ""}`}
+          class={clsx(
+            "input w-full",
+            newTagErrors.tag_name && !form.processing && "input-error",
+          )}
           id="newTagNameInput"
           maxlength="255"
           bind:value={tagForm.tag_name}
@@ -318,7 +329,10 @@
       <div>
         <input
           type="text"
-          class={`input mt-4 w-full ${newTagErrors.tag_desc && !form.processing ? "input-error" : ""}`}
+          class={clsx(
+            "input w-full",
+            newTagErrors.tag_desc && !form.processing && "input-error",
+          )}
           id="newTagDescriptionInput"
           maxlength="255"
           bind:value={tagForm.tag_desc}
@@ -376,7 +390,10 @@
   {#if countTags > 0}
     <div class="flex flex-wrap gap-2">
       <button
-        class={`btn btn-neutral ${!startsWith || form.processing ? "btn-disabled" : ""}`}
+        class={clsx(
+          "btn btn-neutral",
+          (!startsWith || form.processing) && "btn-disabled",
+        )}
         onclick={() => (startsWith = null)}
         disabled={!startsWith || form.processing}
       >
@@ -385,7 +402,10 @@
 
       {#each "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("") as letter (letter)}
         <button
-          class={`btn btn-neutral btn-square ${startsWith === letter || form.processing ? "btn-disabled" : ""}`}
+          class={clsx(
+            "btn btn-neutral btn-square",
+            (startsWith === letter || form.processing) && "btn-disabled",
+          )}
           onclick={() => (startsWith = letter)}
           disabled={startsWith === letter || form.processing}
         >
@@ -410,7 +430,10 @@
           >
             <input
               type="checkbox"
-              class={`checkbox checkbox-sm ${errors.tag && !form.processing ? "checkbox-error" : ""}`}
+              class={clsx(
+                "checkbox checkbox-sm",
+                errors.tag && !form.processing && "checkbox-error",
+              )}
               id="tag{tag.tag_id}Input"
               checked={form.tag.includes(tag.tag_id)}
               disabled={form.processing || newTagProcessing}
