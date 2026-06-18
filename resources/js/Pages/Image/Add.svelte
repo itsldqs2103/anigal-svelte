@@ -330,7 +330,7 @@
         <input
           type="text"
           class={clsx(
-            "input w-full",
+            "input w-full mt-2",
             newTagErrors.tag_desc && !form.processing && "input-error",
           )}
           id="newTagDescriptionInput"
