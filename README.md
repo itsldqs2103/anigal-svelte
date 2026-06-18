@@ -6,6 +6,7 @@ cd anigal-svelte
 ```
 
 ### 2. Install PHP dependencies
+#### The development environment must use PHP 8.3 or later
 ```bash
 composer install
 ```
