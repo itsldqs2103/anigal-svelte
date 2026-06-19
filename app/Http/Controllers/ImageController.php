@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Intervention\Image\Drivers\Gd\Driver as GdDriver;
-use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Laravel\Facades\Image as InterventionImage;
 use Intervention\Image\Format;
-use Intervention\Image\ImageManager;
 
 class ImageController extends Controller
 {
@@ -318,12 +316,7 @@ class ImageController extends Controller
         string $file,
         ?array $paths = null
     ): array {
-        $driver = extension_loaded('imagick')
-            ? new ImagickDriver
-            : new GdDriver;
-        $manager = ImageManager::usingDriver($driver);
-
-        $image = $manager->decodePath($file);
+        $image = InterventionImage::decode($file);
 
         $width = $image->width();
         $height = $image->height();
