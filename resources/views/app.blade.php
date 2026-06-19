@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="{{ config('app.name') }}" />
-    <meta name="description" content="{{ __('translate.description') }}" />
+    <meta name="description" content="{{ __('translate.description', ['appname' => config('app.name')]) }}" />
     <meta name="rating" content="adult" />
     <meta name="google" value="notranslate" />
 

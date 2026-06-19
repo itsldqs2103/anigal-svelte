@@ -481,7 +481,9 @@
           >
             <div class="flex items-center gap-1">
               <Copyright class="inline h-4 w-4" />
-              2026 AniGal. {$i18n.t("translate.allrightsreserved")}
+              2026 {import.meta.env.VITE_APP_NAME}. {$i18n.t(
+                "translate.allrightsreserved",
+              )}
             </div>
             <div>
               {$i18n.t("translate.lastupdated") + ": " + lastUpdated}

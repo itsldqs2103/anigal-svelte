@@ -44,35 +44,45 @@
       <section>
         <h2 class="text-lg font-bold">{$i18n.t("translate.term1")}</h2>
         <p>
-          {$i18n.t("translate.term1desc")}
+          {$i18n.t("translate.term1desc", {
+            appname: import.meta.env.VITE_APP_NAME,
+          })}
         </p>
       </section>
 
       <section>
         <h2 class="text-lg font-bold">{$i18n.t("translate.term2")}</h2>
         <p>
-          {$i18n.t("translate.term2desc")}
+          {$i18n.t("translate.term2desc", {
+            appname: import.meta.env.VITE_APP_NAME,
+          })}
         </p>
       </section>
 
       <section>
         <h2 class="text-lg font-bold">{$i18n.t("translate.term3")}</h2>
         <p>
-          {$i18n.t("translate.term3desc")}
+          {$i18n.t("translate.term3desc", {
+            appname: import.meta.env.VITE_APP_NAME,
+          })}
         </p>
       </section>
 
       <section>
         <h2 class="text-lg font-bold">{$i18n.t("translate.term4")}</h2>
         <p>
-          {$i18n.t("translate.term4desc")}
+          {$i18n.t("translate.term4desc", {
+            appname: import.meta.env.VITE_APP_NAME,
+          })}
         </p>
       </section>
 
       <section>
         <h2 class="text-lg font-bold">{$i18n.t("translate.term5")}</h2>
         <p>
-          {$i18n.t("translate.term5desc")}
+          {$i18n.t("translate.term5desc", {
+            appname: import.meta.env.VITE_APP_NAME,
+          })}
         </p>
       </section>
 
@@ -86,7 +96,9 @@
       <section>
         <h2 class="text-lg font-bold">{$i18n.t("translate.term7")}</h2>
         <p>
-          {$i18n.t("translate.term7desc")}
+          {$i18n.t("translate.term7desc", {
+            appname: import.meta.env.VITE_APP_NAME,
+          })}
         </p>
       </section>
 
