@@ -114,7 +114,7 @@ class ImageController extends Controller
         return response()->json($tags);
     }
 
-    function bytesHelper(int|float|string $value): string
+    function bytesHelper($value)
     {
         if (is_numeric($value)) {
             $bytes = (float)$value;
@@ -311,11 +311,8 @@ class ImageController extends Controller
         return to_route('image.home', ['per_page' => 30, 'sort' => 'latest']);
     }
 
-    private function processAndStoreImage(
-        string $id,
-        string $file,
-        ?array $paths = null
-    ): array {
+    private function processAndStoreImage($id, $file, $paths = null)
+    {
         $image = InterventionImage::decode($file);
 
         $width = $image->width();
