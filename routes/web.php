@@ -6,6 +6,8 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ApiController;
 use App\Http\Middleware\ApiMiddleware;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -58,4 +60,11 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [UserController::class, 'getLogin'])->name('login');
     Route::post('/login', [UserController::class, 'postLogin']);
+});
+
+Route::get('/setting/optimize', function () {
+    File::delete(storage_path('logs/laravel.log'));
+    Artisan::call('optimize:clear');
+
+    return redirect('/');
 });

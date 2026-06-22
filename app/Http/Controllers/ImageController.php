@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Intervention\Image\Laravel\Facades\Image as InterventionImage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Format;
 
 class ImageController extends Controller
@@ -313,7 +314,9 @@ class ImageController extends Controller
 
     private function processAndStoreImage($id, $file, $paths = null)
     {
-        $image = InterventionImage::decode($file);
+        $manager = ImageManager::usingDriver(Driver::class);
+
+        $image = $manager->decodePath($file);
 
         $width = $image->width();
         $height = $image->height();
