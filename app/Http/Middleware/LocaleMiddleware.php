@@ -14,7 +14,7 @@ class LocaleMiddleware
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle($request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response
     {
         $supported = array_column(config('i18nlocale.supportedLocales'), 'code');
         $locale = $request->cookie('locale');

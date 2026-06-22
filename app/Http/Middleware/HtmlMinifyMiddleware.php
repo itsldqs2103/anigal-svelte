@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use JShrink\Minifier;
 use Throwable;
@@ -21,7 +22,7 @@ class HtmlMinifyMiddleware
         $this->htmlMin->doRemoveSpacesBetweenTags(true);
     }
 
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
 
@@ -55,7 +56,7 @@ class HtmlMinifyMiddleware
 
         libxml_use_internal_errors(true);
         $dom->loadHTML(
-            '<?xml encoding="utf-8" ?>'.$html,
+            '<?xml encoding="utf-8" ?>' . $html,
             LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
         );
         libxml_clear_errors();
