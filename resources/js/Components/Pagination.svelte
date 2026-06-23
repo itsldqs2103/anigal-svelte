@@ -31,8 +31,20 @@
     router.get(url);
   }
 
+  let isNavigating = false;
+
+  router.on("start", () => {
+    isNavigating = true;
+  });
+
+  router.on("finish", () => {
+    isNavigating = false;
+  });
+
   onMount(() => {
     const handleKeydown = (event) => {
+      if (isNavigating) return;
+
       const target = event.target;
       const isTyping =
         target instanceof HTMLInputElement ||
