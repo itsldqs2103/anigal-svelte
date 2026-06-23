@@ -1,7 +1,7 @@
 <script>
-  import { onMount } from "svelte";
   import { router } from "@inertiajs/svelte";
   import { ArrowLeft, ArrowRight } from "@lucide/svelte";
+  import { onMount } from "svelte";
 
   import i18n from "@/js/lib/i18n";
 
