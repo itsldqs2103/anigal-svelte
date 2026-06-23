@@ -15,6 +15,7 @@ return [
     'atoz' => 'A tới Z',
     'cancel' => 'Hủy',
     'chooseimage' => 'Chọn hình ảnh',
+    "navigateWithKeyboard" => "Dùng phím mũi tên để chuyển trang",
     'chooselanguage' => 'Chọn ngôn ngữ bạn muốn sử dụng',
     'close' => 'Đóng',
     'confirm' => 'Xác nhận',

@@ -21,6 +21,7 @@ return [
     'confirmpassword' => 'Confirm password',
     'currentlaravel' => 'Laravel',
     'currentphp' => 'PHP',
+    "navigateWithKeyboard" => "Use arrow keys to navigate pages",
     'dark' => 'Dark',
     'default' => 'Default',
     'delete' => 'Delete',

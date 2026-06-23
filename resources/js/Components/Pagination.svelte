@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import { router } from "@inertiajs/svelte";
   import { ArrowLeft, ArrowRight } from "@lucide/svelte";
 
@@ -29,6 +30,34 @@
   function goToPage(url) {
     router.get(url);
   }
+
+  onMount(() => {
+    const handleKeydown = (event) => {
+      const target = event.target;
+      const isTyping =
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target?.isContentEditable;
+
+      if (isTyping) return;
+
+      if (event.key === "ArrowLeft" && prev?.url) {
+        event.preventDefault();
+        goToPage(prev.url);
+      }
+
+      if (event.key === "ArrowRight" && next?.url) {
+        event.preventDefault();
+        goToPage(next.url);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  });
 </script>
 
 {#if processedLinks.length > 3}
@@ -132,12 +161,18 @@
     </div>
 
     {#if total > 0}
-      <p class="mt-2 text-center text-sm text-base-content/70">
-        {$i18n.t("translate.showingfrom")} <b>{from}</b>
-        {$i18n.t("translate.to")} <b>{to}</b>
-        {$i18n.t("translate.of")} <b>{total}</b>
-        {$i18n.t("translate.results")}
-      </p>
+      <div class="text-center mt-2 space-y-1">
+        <p class="text-sm text-base-content/70">
+          {$i18n.t("translate.showingfrom")} <b>{from}</b>
+          {$i18n.t("translate.to")} <b>{to}</b>
+          {$i18n.t("translate.of")} <b>{total}</b>
+          {$i18n.t("translate.results")}
+        </p>
+
+        <p class="text-xs text-base-content/50">
+          ({$i18n.t("translate.navigateWithKeyboard")})
+        </p>
+      </div>
     {/if}
   </div>
 {/if}
