@@ -41,14 +41,9 @@
   }
 
   function confirmSubmit() {
-    form.post(postEditTag({ query: { tag_id: tag_id } }), {
-      onSuccess: () => {
-        showConfirm = false;
-      },
-      onError: () => {
-        showConfirm = false;
-      },
-    });
+    showConfirm = false;
+
+    form.post(postEditTag({ query: { tag_id: tag_id } }));
   }
 
   function autofocus(node) {
