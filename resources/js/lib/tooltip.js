@@ -21,7 +21,7 @@ export function tooltip(node, options) {
   const tooltip = document.createElement("div");
 
   tooltip.className =
-    "fixed z-50 max-w-64 overflow-visible pointer-events-none rounded-base bg-base-300 px-2 py-1 text-sm text-base-content transition-[opacity,transform]";
+    "fixed z-50 max-w-64 overflow-visible pointer-events-none rounded-base bg-base-300 px-2 py-1 text-xs text-base-content transition-[opacity,transform]";
 
   Object.assign(tooltip.style, {
     opacity: "0",

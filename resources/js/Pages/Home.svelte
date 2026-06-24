@@ -190,11 +190,15 @@
     {#each randomTags as tag (tag.tag_id)}
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
-          <div class="btn btn-primary h-6! text-sm! pointer-events-none mb-1">
+          <div
+            class="btn btn-primary h-5! px-1! text-xs! pointer-events-none mb-1"
+          >
             {$i18n.t("translate.new")}!
           </div>
         {:else}
-          <div class="btn btn-warning h-6! text-sm! pointer-events-none mb-1">
+          <div
+            class="btn btn-warning h-5! px-1! text-xs! pointer-events-none mb-1"
+          >
             {$i18n.t("translate.updated")}!
           </div>
         {/if}
@@ -292,13 +296,13 @@
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-6! text-sm! pointer-events-none"
+                    class="btn btn-primary h-5! px-1! text-xs! pointer-events-none"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning p-2 h-6! text-sm! pointer-events-none"
+                    class="btn btn-warning h-5! px-1! text-xs! pointer-events-none"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -317,7 +321,7 @@
                         tag_slug_name: tag.tag_slug_name,
                       },
                     })}
-                    class="btn btn-primary h-6! text-sm!"
+                    class="btn btn-primary h-5! px-1! text-xs!"
                   >
                     {tag.tag_name}
                   </Link>
@@ -328,7 +332,7 @@
                 <div>
                   <button
                     type="button"
-                    class="btn btn-primary h-6! text-sm!"
+                    class="btn btn-primary h-5! px-1! text-xs!"
                     use:tooltip={image.tags
                       .slice(5)
                       .map((tag) => tag.tag_name)
@@ -445,11 +449,15 @@
     {#each latestTags as tag (tag.tag_id)}
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
-          <div class="btn btn-primary h-6! text-sm! pointer-events-none mb-1">
+          <div
+            class="btn btn-primary h-5! px-1! text-xs! pointer-events-none mb-1"
+          >
             {$i18n.t("translate.new")}!
           </div>
         {:else if tag.created_at !== tag.updated_at}
-          <div class="btn btn-warning h-6! text-sm! pointer-events-none mb-1">
+          <div
+            class="btn btn-warning h-5! px-1! text-xs! pointer-events-none mb-1"
+          >
             {$i18n.t("translate.updated")}!
           </div>
         {/if}
@@ -544,13 +552,13 @@
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-6! text-sm! pointer-events-none"
+                    class="btn btn-primary h-5! px-1! text-xs! pointer-events-none"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning p-2 h-6! text-sm! pointer-events-none"
+                    class="btn btn-warning h-5! px-1! text-xs! pointer-events-none"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -569,7 +577,7 @@
                         tag_slug_name: tag.tag_slug_name,
                       },
                     })}
-                    class="btn btn-primary h-6! text-sm!"
+                    class="btn btn-primary h-5! px-1! text-xs!"
                   >
                     {tag.tag_name}
                   </Link>
@@ -580,7 +588,7 @@
                 <div>
                   <button
                     type="button"
-                    class="btn btn-primary h-6! text-sm!"
+                    class="btn btn-primary h-5! px-1! text-xs!"
                     use:tooltip={image.tags
                       .slice(5)
                       .map((tag) => tag.tag_name)
