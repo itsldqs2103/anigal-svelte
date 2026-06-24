@@ -43,14 +43,9 @@
   }
 
   function confirmSubmit() {
-    form.post(postEditPassword({ query: { user_id: user.user_id } }), {
-      onSuccess: () => {
-        showConfirm = false;
-      },
-      onError: () => {
-        showConfirm = false;
-      },
-    });
+    showConfirm = false;
+
+    form.post(postEditPassword({ query: { user_id: user.user_id } }));
   }
 
   function autofocus(node) {
