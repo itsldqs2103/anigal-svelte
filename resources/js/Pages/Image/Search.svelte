@@ -406,15 +406,18 @@
               {/each}
 
               {#if image.tags.length > 5}
-                <div
-                  class="btn btn-primary h-6! text-sm!"
-                  use:tooltip={image.tags
-                    .slice(5)
-                    .map((tag) => tag.tag_name)
-                    .join(", ")}
-                >
-                  +{image.tags.length - 5}
-                  {$i18n.t("translate.tag").toLowerCase()}
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-primary h-6! text-sm!"
+                    use:tooltip={image.tags
+                      .slice(5)
+                      .map((tag) => tag.tag_name)
+                      .join(", ")}
+                  >
+                    +{image.tags.length - 5}
+                    {$i18n.t("translate.tag").toLowerCase()}
+                  </button>
                 </div>
               {/if}
 
