@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\Format;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 
 class ImageController extends Controller
 {
@@ -314,9 +314,13 @@ class ImageController extends Controller
 
     private function processAndStoreImage($id, $file, $paths = null)
     {
-        $manager = ImageManager::usingDriver(Driver::class);
+        $driver = extension_loaded('imagick')
+            ? new ImagickDriver
+            : new GdDriver;
 
-        $image = $manager->decodePath($file);
+        $manager = new ImageManager($driver);
+
+        $image = $manager->read($file);
 
         $width = $image->width();
         $height = $image->height();
@@ -331,18 +335,18 @@ class ImageController extends Controller
             ];
         }
 
-        $encodedImage = $image->encodeUsingFormat(Format::WEBP, quality: 90);
+        $encodedImage = $image->toWebp(quality: 90);
 
         if ($width > 1024 || $height > 1024) {
-            $encodedPreview = $image->scaleDown(width: 1024, height: 1024)->encodeUsingFormat(Format::WEBP, quality: 70);
+            $encodedPreview = $image->scaleDown(width: 1024, height: 1024)->toWebp(quality: 70);
         } else {
-            $encodedPreview = $image->encodeUsingFormat(Format::WEBP, quality: 70);
+            $encodedPreview = $image->toWebp(quality: 70);
         }
 
         $encodedThumb = $image->coverDown(
             width: 256,
             height: 256
-        )->encodeUsingFormat(Format::WEBP, quality: 70);
+        )->toWebp(quality: 70);
 
         Storage::disk('public')->put($paths['image'], $encodedImage);
         Storage::disk('public')->put($paths['preview'], $encodedPreview);
