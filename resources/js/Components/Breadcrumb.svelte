@@ -12,7 +12,8 @@
   const isAuth = $derived(page.props.currentAuth);
 
   let breadcrumbEl = $state(null);
-  let isBreadcrumbVisible = $state(false);
+  let isBreadcrumbVisible = $state(true);
+  let observerReady = $state(false);
 
   function toggleEdit() {
     isUserEdit.value = !isUserEdit.value;
@@ -24,6 +25,7 @@
     const observer = new IntersectionObserver(
       ([entry]) => {
         isBreadcrumbVisible = entry.isIntersecting;
+        observerReady = true;
       },
       {
         threshold: 0,
@@ -35,7 +37,7 @@
     return () => observer.disconnect();
   });
 
-  const isFloating = $derived(!isBreadcrumbVisible);
+  const isFloating = $derived(observerReady && !isBreadcrumbVisible);
 
   const buttonColor = $derived(isUserEdit.value ? "btn-primary" : "btn-error");
 </script>
@@ -66,9 +68,15 @@
   {/if}
 </div>
 
-{#if isFloating}
+{#if observerReady}
   <div
-    class="bg-base-300 fixed top-0 left-0 z-50 flex w-full items-center justify-between gap-4 p-4 lg:left-64 lg:w-[calc(100%-16rem)]"
+    class={clsx(
+      "bg-base-300 fixed top-0 left-0 z-50 flex w-full items-center justify-between gap-4 p-4 lg:left-64 lg:w-[calc(100%-16rem)]",
+      "transition-[opacity,translate]",
+      isFloating
+        ? "translate-y-0 opacity-100"
+        : "-translate-y-full opacity-0 pointer-events-none",
+    )}
   >
     <div class="breadcrumbs py-0">
       {#if children}
@@ -83,9 +91,9 @@
           onclick={toggleEdit}
         >
           {#if isUserEdit.value}
-            <Pencil class="inline h-4 w-4 aspect-square" />
+            <Pencil class="inline aspect-square h-4 w-4" />
           {:else}
-            <PencilOff class="inline h-4 w-4 aspect-square" />
+            <PencilOff class="inline aspect-square h-4 w-4" />
           {/if}
         </button>
       </div>

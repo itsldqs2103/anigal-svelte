@@ -319,6 +319,14 @@
     }
   });
 
+  router.on("success", () => {
+    const drawer = document.getElementById("my-drawer");
+
+    if (drawer) {
+      drawer.checked = false;
+    }
+  });
+
   onMount(() => {
     updateFooterHeight();
 
