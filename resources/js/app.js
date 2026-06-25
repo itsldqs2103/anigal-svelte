@@ -50,7 +50,7 @@ router.on("httpException", (e) => {
 createInertiaApp({
   defaults: {
     visitOptions: () => {
-      return { viewTransition: false };
+      return { viewTransition: true };
     },
   },
   progress: false,

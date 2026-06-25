@@ -173,7 +173,7 @@
     </div>
 
     {#if total > 0}
-      <div class="text-center mt-2 space-y-1">
+      <div class="text-center mt-2">
         <p class="text-sm text-base-content/70">
           {$i18n.t("translate.showingfrom")} <b>{from}</b>
           {$i18n.t("translate.to")} <b>{to}</b>
@@ -181,7 +181,7 @@
           {$i18n.t("translate.results")}
         </p>
 
-        <p class="text-xs text-base-content/50">
+        <p class="text-sm text-base-content/50">
           ({$i18n.t("translate.navigateWithKeyboard")})
         </p>
       </div>

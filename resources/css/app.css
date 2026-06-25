@@ -165,3 +165,33 @@ html {
 .modal-backdrop {
   @apply backdrop-blur-sm;
 }
+
+main#main-content {
+  view-transition-name: main-content;
+}
+
+::view-transition-old(main-content) {
+  animation: 150ms ease-out both fade-out;
+}
+
+::view-transition-new(main-content) {
+  animation: 150ms ease-in both fade-in;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

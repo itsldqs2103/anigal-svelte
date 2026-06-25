@@ -292,13 +292,13 @@
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
           <div
-            class="btn btn-primary h-5! px-1! text-xs! pointer-events-none mb-1"
+            class="btn btn-primary h-6! px-1! text-sm! pointer-events-none mb-1"
           >
             {$i18n.t("translate.new")}!
           </div>
         {:else if tag.created_at !== tag.updated_at}
           <div
-            class="btn btn-warning h-5! px-1! text-xs! pointer-events-none mb-1"
+            class="btn btn-warning h-6! px-1! text-sm! pointer-events-none mb-1"
           >
             {$i18n.t("translate.updated")}!
           </div>

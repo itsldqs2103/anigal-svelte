@@ -48,13 +48,16 @@
   let randomImagesLoading = $state(false);
 
   function shareImage(image) {
-    const shareData = {
-      url: image.image_source,
-    };
+    const url = image?.image_source;
 
-    if (navigator.share) {
-      navigator.share(shareData).catch(() => {});
+    if (!url || !navigator.share) {
+      return Promise.resolve(false);
     }
+
+    return navigator
+      .share({ url })
+      .then(() => true)
+      .catch(() => false);
   }
 
   async function loadLatestTags() {
@@ -191,13 +194,13 @@
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
           <div
-            class="btn btn-primary h-5! px-1! text-xs! pointer-events-none mb-1"
+            class="btn btn-primary h-6! px-1! text-sm! pointer-events-none mb-1"
           >
             {$i18n.t("translate.new")}!
           </div>
         {:else}
           <div
-            class="btn btn-warning h-5! px-1! text-xs! pointer-events-none mb-1"
+            class="btn btn-warning h-6! px-1! text-sm! pointer-events-none mb-1"
           >
             {$i18n.t("translate.updated")}!
           </div>
@@ -296,13 +299,13 @@
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-5! px-1! text-xs! pointer-events-none"
+                    class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning h-5! px-1! text-xs! pointer-events-none"
+                    class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -321,7 +324,7 @@
                         tag_slug_name: tag.tag_slug_name,
                       },
                     })}
-                    class="btn btn-primary h-5! px-1! text-xs!"
+                    class="btn btn-primary h-6! px-1! text-sm!"
                   >
                     {tag.tag_name}
                   </Link>
@@ -332,7 +335,7 @@
                 <div>
                   <button
                     type="button"
-                    class="btn btn-primary h-5! px-1! text-xs!"
+                    class="btn btn-primary h-6! px-1! text-sm!"
                     use:tooltip={image.tags
                       .slice(5)
                       .map((tag) => tag.tag_name)
@@ -450,13 +453,13 @@
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
           <div
-            class="btn btn-primary h-5! px-1! text-xs! pointer-events-none mb-1"
+            class="btn btn-primary h-6! px-1! text-sm! pointer-events-none mb-1"
           >
             {$i18n.t("translate.new")}!
           </div>
         {:else if tag.created_at !== tag.updated_at}
           <div
-            class="btn btn-warning h-5! px-1! text-xs! pointer-events-none mb-1"
+            class="btn btn-warning h-6! px-1! text-sm! pointer-events-none mb-1"
           >
             {$i18n.t("translate.updated")}!
           </div>
@@ -552,13 +555,13 @@
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-5! px-1! text-xs! pointer-events-none"
+                    class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning h-5! px-1! text-xs! pointer-events-none"
+                    class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -577,7 +580,7 @@
                         tag_slug_name: tag.tag_slug_name,
                       },
                     })}
-                    class="btn btn-primary h-5! px-1! text-xs!"
+                    class="btn btn-primary h-6! px-1! text-sm!"
                   >
                     {tag.tag_name}
                   </Link>
@@ -588,7 +591,7 @@
                 <div>
                   <button
                     type="button"
-                    class="btn btn-primary h-5! px-1! text-xs!"
+                    class="btn btn-primary h-6! px-1! text-sm!"
                     use:tooltip={image.tags
                       .slice(5)
                       .map((tag) => tag.tag_name)
