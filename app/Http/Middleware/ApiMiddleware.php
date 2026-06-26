@@ -15,7 +15,7 @@ class ApiMiddleware
 
         if (RateLimiter::tooManyAttempts($key, 60)) {
             return response()->json([
-                'message' => 'Too many requests.'
+                'message' => __('translate.toomanyrequests')
             ], 429);
         }
 

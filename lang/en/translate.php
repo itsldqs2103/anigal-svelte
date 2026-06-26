@@ -110,6 +110,7 @@ return [
     'tagname' => 'Tag name',
     'term' => 'Terms of Service',
     'term1' => '1. Acceptance of Terms',
+    'toomanyrequests' => 'Too many requests',
     'term1desc' => 'By accessing, browsing, registering for, or otherwise using {{appname}}, you acknowledge that you have carefully read, understood, and agreed to be legally bound by these Terms of Service. These Terms govern your access to and use of the platform and apply to all visitors, registered users, contributors, and any other individuals who interact with the service. If you do not agree with any provision of these Terms, you must immediately discontinue use of the platform. Your continued use of {{appname}} constitutes your ongoing acceptance of these Terms, including any future updates or modifications.',
     'term2' => '2. Eligibility',
     'term2desc' => 'To access or use {{appname}}, you must be at least 18 years old or have reached the age of majority in your jurisdiction. By using the platform, you represent and warrant that you satisfy all eligibility requirements and possess the legal authority and capacity to enter into a binding agreement. If you access the service on behalf of a company, organization, or other legal entity, you represent that you have the authority to bind such entity to these Terms.',

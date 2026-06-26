@@ -106,6 +106,7 @@ return [
     'switchtheme' => 'Chuyển đổi giữa các chủ đề',
     'system' => 'Hệ thống',
     'tag' => 'Thẻ',
+    'toomanyrequests' => 'Quá nhiều yêu cầu',
     'tagdesc' => 'Mô tả thẻ',
     'tagname' => 'Tên thẻ',
     'term' => 'Điều Khoản Dịch Vụ',
