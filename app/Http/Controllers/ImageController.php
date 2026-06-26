@@ -17,6 +17,8 @@ class ImageController extends Controller
 {
     public function index(Request $request)
     {
+        $userId = auth()->id();
+
         $defaultLimit = 30;
         $defaultSortBy = 'created_at';
         $defaultOrder = 'latest';
@@ -48,6 +50,10 @@ class ImageController extends Controller
                 $query->orderBy('tag_name', 'asc');
             },
         ])
+            ->withCount('likes')
+            ->withExists([
+                'likes as liked' => fn($query) => $query->where('user_id', $userId),
+            ])
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
             ->withQueryString();
@@ -72,6 +78,7 @@ class ImageController extends Controller
     {
         $tagSlug = $request->query('tag_slug_name');
         $suggestedTags = Tag::oldest('tag_name')->get();
+        $userId = auth()->id();
 
         if (! $tagSlug) {
             return Inertia::render('Image/Search', [
@@ -88,12 +95,22 @@ class ImageController extends Controller
         $tag = Tag::where('tag_slug_name', $tagSlug)->firstOrFail();
 
         $images = Image::with([
-            'tags' => function ($query) {
-                $query->orderBy('tag_name', 'asc');
-            },
-        ])->whereHas('tags', function ($query) use ($tag) {
-            $query->where('tags.tag_id', $tag->tag_id);
-        })->latest()->paginate(18)->withQueryString();
+            'tags' => fn($query) => $query->orderBy('tag_name'),
+        ])
+            ->withCount('likes')
+            ->when(
+                $userId,
+                fn($query) => $query->withExists([
+                    'likes as liked' => fn($query) => $query->where('user_id', $userId),
+                ]),
+                fn($query) => $query->select('*')->selectRaw('false as liked')
+            )
+            ->whereHas('tags', function ($query) use ($tag) {
+                $query->where('tags.tag_id', $tag->tag_id);
+            })
+            ->latest()
+            ->paginate(18)
+            ->withQueryString();
 
         return Inertia::render('Image/Search', [
             'images' => $images,
@@ -202,7 +219,7 @@ class ImageController extends Controller
             ],
         ]);
 
-        return to_route('image.home', ['per_page' => 30, 'sort' => 'latest']);
+        return to_route('image.home', ['per_page' => 30, 'order' => 'latest', 'sort_by' => 'created_at']);
     }
 
     public function getEditImage(Request $request)
@@ -269,7 +286,7 @@ class ImageController extends Controller
             ],
         ]);
 
-        return to_route('image.home', ['per_page' => 30, 'sort' => 'latest']);
+        return to_route('image.home', ['per_page' => 30, 'order' => 'latest', 'sort_by' => 'created_at']);
     }
 
     public function postDeleteImage(Request $request)
@@ -309,7 +326,7 @@ class ImageController extends Controller
             ],
         ]);
 
-        return to_route('image.home', ['per_page' => 30, 'sort' => 'latest']);
+        return to_route('image.home', ['per_page' => 30, 'order' => 'latest', 'sort_by' => 'created_at']);
     }
 
     private function processAndStoreImage($id, $file, $paths = null)
@@ -358,5 +375,22 @@ class ImageController extends Controller
             'width' => $width,
             'height' => $height,
         ];
+    }
+
+    public function likeImage(Image $image)
+    {
+        $user = auth()->user();
+
+        $like = $image->likes()
+            ->where('user_id', $user->user_id)
+            ->first();
+
+        if ($like) {
+            $like->delete();
+        } else {
+            $image->likes()->create([
+                'user_id' => $user->user_id,
+            ]);
+        }
     }
 }

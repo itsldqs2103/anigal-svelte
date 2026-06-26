@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use App\Models\Image;
 
 class UserController extends Controller
 {
@@ -52,8 +53,22 @@ class UserController extends Controller
         $id = $request->query('user_id');
         $user = User::where('user_id', $id)->select(['user_id', 'username', 'email', 'fullname'])->firstOrFail();
 
+        $likedImages = Image::with('tags')->withCount('likes')
+            ->withExists([
+                'likes as liked' => fn($query) => $query->where('user_id', $id),
+            ])->whereHas('likes', function ($query) use ($user) {
+                $query->where('user_id', $user->user_id);
+            })->get();
+
+        $uploadedImages = Image::with('tags')->withCount('likes')
+            ->withExists([
+                'likes as liked' => fn($query) => $query->where('user_id', $id),
+            ])->where('user_id', $user->user_id)->get();
+
         return Inertia::render('User/Profile', [
             'user' => $user,
+            'likedImages' => $likedImages,
+            'uploadedImages' => $uploadedImages,
         ]);
     }
 

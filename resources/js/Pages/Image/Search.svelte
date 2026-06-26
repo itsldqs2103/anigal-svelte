@@ -5,6 +5,8 @@
     Download,
     ExternalLink,
     Eye,
+    Heart,
+    HeartOff,
     House,
     Pencil,
     Plus,
@@ -156,6 +158,14 @@
 
   function autofocus(node) {
     node.focus();
+  }
+
+  async function likeImage(imageId) {
+    try {
+      router.post(`/image/${imageId}/like`);
+    } finally {
+      router.reload();
+    }
   }
 </script>
 
@@ -425,6 +435,22 @@
               {/if}
 
               <div class="flex w-full items-center justify-end gap-2">
+                {#if isAuth}
+                  <div use:tooltip={$i18n.t("translate.like")}>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-square btn-neutral"
+                      disabled={form.processing}
+                      onclick={() => likeImage(image.image_id)}
+                    >
+                      {#if image.liked}
+                        <HeartOff class="inline aspect-square h-4 w-4" />
+                      {:else}
+                        <Heart class="inline aspect-square h-4 w-4" />
+                      {/if}
+                    </button>
+                  </div>
+                {/if}
                 <div use:tooltip={$i18n.t("translate.viewimage")}>
                   <button
                     type="button"

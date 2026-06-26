@@ -34,8 +34,8 @@ class Image extends Model
     {
         parent::boot();
 
-        static::creating(function ($tag) {
-            $tag->image_id = Str::uuid();
+        static::creating(function ($image) {
+            $image->image_id = Str::uuid();
         });
     }
 
@@ -52,7 +52,7 @@ class Image extends Model
             return asset($relativePath);
         }
 
-        return asset($relativePath).'?version='.filemtime($fullPath);
+        return asset($relativePath) . '?version=' . filemtime($fullPath);
     }
 
     public function getImagePathUrlAttribute(): ?string
@@ -78,5 +78,10 @@ class Image extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'images_tags', 'image_id', 'tag_id');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
     }
 }

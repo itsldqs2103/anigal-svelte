@@ -36,13 +36,9 @@ class ApiController extends Controller
 
     public function latestImages()
     {
-        return response()->json(
-            Image::with([
-                'tags' => function ($query) {
-                    $query->orderBy('tag_name', 'asc');
-                },
-            ])->latest()->limit(5)->get()
-        );
+        return response()->json(Image::with(['tags' => function ($query) {
+            $query->orderBy('tag_name', 'asc');
+        }, 'likes'])->latest()->limit(5)->get());
     }
 
     public function randomTags()

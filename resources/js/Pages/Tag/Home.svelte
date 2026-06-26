@@ -220,7 +220,7 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content menu bg-base-300 rounded-box z-1 w-24 p-2">
+    <ul class="dropdown-content mt-1 menu bg-base-300 rounded-box z-1 w-24 p-2">
       <li>
         <button
           class={clsx(order === "oldest" && "bg-primary text-primary-content")}
@@ -260,7 +260,7 @@
     </button>
 
     <ul
-      class="dropdown-content menu bg-base-300 rounded-box z-1 w-42 space-y-1 p-2"
+      class="dropdown-content menu bg-base-300 rounded-box mt-1 z-1 w-42 space-y-1 p-2"
     >
       {#each filters.allowedLimits as limit (limit)}
         <li>

@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/image/edit', [ImageController::class, 'getEditImage'])->name('image.edit');
     Route::post('/image/edit', [ImageController::class, 'postEditImage']);
     Route::delete('/image/delete', [ImageController::class, 'postDeleteImage']);
+    Route::post('/image/{image}/like', [ImageController::class, 'likeImage']);
 });
 
 Route::middleware(['guest'])->group(function () {

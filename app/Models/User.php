@@ -35,4 +35,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function likedImages()
+    {
+        return $this->morphedByMany(
+            Image::class,
+            'likeable',
+            'likes',
+            'user_id',
+            'likeable_id',
+            'user_id',
+            'image_id'
+        );
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }

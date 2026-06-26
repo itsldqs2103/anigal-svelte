@@ -6,6 +6,8 @@
     Download,
     ExternalLink,
     Eye,
+    Heart,
+    HeartOff,
     House,
     Pencil,
     Plus,
@@ -112,6 +114,14 @@
     selectedId = null;
 
     form.delete(postDeleteImage({ query: { image_id: imageId } }));
+  }
+
+  async function likeImage(imageId) {
+    try {
+      router.post(`/image/${imageId}/like`);
+    } finally {
+      router.reload();
+    }
   }
 </script>
 
@@ -222,7 +232,7 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 p-2">
+    <ul class="dropdown-content menu bg-base-200 mt-1 rounded-box z-1 w-32 p-2">
       <li>
         <button
           class={clsx(order === "latest" && "bg-primary text-primary-content")}
@@ -262,7 +272,7 @@
     </button>
 
     <ul
-      class="dropdown-content menu bg-base-200 rounded-box z-1 w-42 space-y-1 p-2"
+      class="dropdown-content menu bg-base-200 rounded-box mt-1 z-1 w-42 space-y-1 p-2"
     >
       {#each filters.allowedLimits as limit (limit)}
         <li>
@@ -391,6 +401,22 @@
               {/if}
 
               <div class="flex w-full items-center justify-end gap-2">
+                {#if isAuth}
+                  <div use:tooltip={$i18n.t("translate.like")}>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-square btn-neutral"
+                      disabled={form.processing}
+                      onclick={() => likeImage(image.image_id)}
+                    >
+                      {#if image.liked}
+                        <HeartOff class="inline aspect-square h-4 w-4" />
+                      {:else}
+                        <Heart class="inline aspect-square h-4 w-4" />
+                      {/if}
+                    </button>
+                  </div>
+                {/if}
                 <div use:tooltip={$i18n.t("translate.viewimage")}>
                   <button
                     type="button"

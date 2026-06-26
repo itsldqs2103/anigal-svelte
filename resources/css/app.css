@@ -104,6 +104,11 @@ html {
   border-radius: var(--radius-field);
 }
 
+.rounded-t-base {
+  border-top-left-radius: var(--radius-field);
+  border-top-right-radius: var(--radius-field);
+}
+
 .breadcrumbs {
   @apply text-sm;
 }
