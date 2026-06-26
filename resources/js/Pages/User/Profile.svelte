@@ -194,7 +194,10 @@
           class="mt-4 grid grid-cols-1 gap-4 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
         >
           {#each currentImages as image (image.image_id)}
-            <Lazy fadeOptions={{ duration: 150, delay: 0, offset: 0 }}>
+            <Lazy
+              keep={true}
+              fadeOptions={{ duration: 150, delay: 0, offset: 0 }}
+            >
               <div
                 slot="placeholder"
                 class="rounded-base bg-base-300 animate-pulse w-full h-full"
