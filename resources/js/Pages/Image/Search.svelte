@@ -28,6 +28,7 @@
     getEditImage,
     getSearch,
     index as imageIndex,
+    likeImage as postLikeImage,
     postDeleteImage,
   } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
   import { index } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
@@ -162,7 +163,7 @@
 
   async function likeImage(imageId) {
     try {
-      router.post(`/image/${imageId}/like`);
+      router.post(postLikeImage(imageId));
     } finally {
       router.reload();
     }
@@ -337,11 +338,6 @@
     {#each images.data as image (image.image_id)}
       <div class="relative">
         <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0, offset: 0 }}>
-          <div
-            slot="placeholder"
-            class="rounded-base bg-base-300 animate-pulse w-full h-full"
-          ></div>
-
           <img
             src={image.thumbnail_image_path_url}
             alt={image.image_id}

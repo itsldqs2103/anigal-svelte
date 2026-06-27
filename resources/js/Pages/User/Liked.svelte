@@ -21,6 +21,7 @@
   import {
     getEditImage,
     getSearch,
+    likeImage as postLikeImage,
     postDeleteImage,
   } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
 
@@ -78,7 +79,7 @@
 
   async function likeImage(imageId) {
     try {
-      router.post(`/image/${imageId}/like`);
+      router.post(postLikeImage(imageId));
     } finally {
       router.reload();
     }
