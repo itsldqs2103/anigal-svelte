@@ -83,6 +83,11 @@
       router.reload();
     }
   }
+
+  const IMAGES_PER_PAGE = 15;
+  let visibleCount = $state(IMAGES_PER_PAGE);
+
+  const visibleImages = $derived(uploadedImages.slice(0, visibleCount));
 </script>
 
 <Modal
@@ -124,7 +129,7 @@
     <div
       class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
     >
-      {#each uploadedImages as image (image.image_id)}
+      {#each visibleImages as image (image.image_id)}
         <div class="relative">
           <Lazy
             keep={true}
@@ -300,6 +305,18 @@
         </div>
       {/each}
     </div>
+
+    {#if visibleCount < uploadedImages.length}
+      <div class="mt-4 flex justify-center">
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick={() => (visibleCount += IMAGES_PER_PAGE)}
+        >
+          {$i18n.t("translate.viewmore")}
+        </button>
+      </div>
+    {/if}
   {:else}
     <div class="mt-4">
       <div role="alert" class="alert alert-error alert-soft inline-flex">
