@@ -51,24 +51,50 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         $id = $request->query('user_id');
-        $user = User::where('user_id', $id)->select(['user_id', 'username', 'email', 'fullname'])->firstOrFail();
+        $tab = $request->query('tab', 'uploaded');
 
-        $likedImages = Image::with('tags')->withCount('likes')
+        $user = User::where('user_id', $id)
+            ->select(['user_id', 'username', 'email', 'fullname'])
+            ->firstOrFail();
+
+        $countUploaded = Image::where('user_id', $user->user_id)->count();
+
+        $countLiked = Image::whereHas('likes', function ($query) use ($user) {
+            $query->where('user_id', $user->user_id);
+        })->count();
+
+        if ($tab === 'liked') {
+            $likedImages = Image::with('tags')
+                ->withCount('likes')
+                ->withExists([
+                    'likes as liked' => fn($query) => $query->where('user_id', $id),
+                ])
+                ->whereHas('likes', function ($query) use ($user) {
+                    $query->where('user_id', $user->user_id);
+                })
+                ->get();
+
+            return Inertia::render('User/Liked', [
+                'user' => $user,
+                'likedImages' => $likedImages,
+                'countUploaded' => $countUploaded,
+                'countLiked' => $countLiked,
+            ]);
+        }
+
+        $uploadedImages = Image::with('tags')
+            ->withCount('likes')
             ->withExists([
                 'likes as liked' => fn($query) => $query->where('user_id', $id),
-            ])->whereHas('likes', function ($query) use ($user) {
-                $query->where('user_id', $user->user_id);
-            })->get();
+            ])
+            ->where('user_id', $user->user_id)
+            ->get();
 
-        $uploadedImages = Image::with('tags')->withCount('likes')
-            ->withExists([
-                'likes as liked' => fn($query) => $query->where('user_id', $id),
-            ])->where('user_id', $user->user_id)->get();
-
-        return Inertia::render('User/Profile', [
+        return Inertia::render('User/Uploaded', [
             'user' => $user,
-            'likedImages' => $likedImages,
             'uploadedImages' => $uploadedImages,
+            'countUploaded' => $countUploaded,
+            'countLiked' => $countLiked,
         ]);
     }
 
