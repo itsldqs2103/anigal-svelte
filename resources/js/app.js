@@ -47,6 +47,11 @@ router.on("httpException", (e) => {
   location.reload();
 });
 
+router.on("networkError", (e) => {
+  e.preventDefault();
+  location.reload();
+});
+
 createInertiaApp({
   defaults: {
     visitOptions: () => {
