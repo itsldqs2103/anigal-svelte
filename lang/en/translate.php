@@ -22,6 +22,7 @@ return [
     'confirmpassword' => 'Confirm password',
     'currentlaravel' => 'Laravel',
     'currentphp' => 'PHP',
+    "loadmore" => "Load more",
     'dark' => 'Dark',
     'default' => 'Default',
     'delete' => 'Delete',

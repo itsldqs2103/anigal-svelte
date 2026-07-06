@@ -68,15 +68,17 @@ class UserController extends Controller
         })->count();
 
         if ($tab === 'liked') {
-            $likedImages = Image::with('tags')
-                ->withCount('likes')
-                ->withExists([
-                    'likes as liked' => fn($query) => $query->where('user_id', $id),
-                ])
-                ->whereHas('likes', function ($query) use ($user) {
-                    $query->where('user_id', $user->user_id);
-                })
-                ->get();
+            $likedImages = Inertia::scroll(
+                fn() => Image::with('tags')
+                    ->withCount('likes')
+                    ->withExists([
+                        'likes as liked' => fn($query) => $query->where('user_id', $id),
+                    ])
+                    ->whereHas('likes', function ($query) use ($user) {
+                        $query->where('user_id', $user->user_id);
+                    })
+                    ->paginate(15)
+            );
 
             return Inertia::render('User/Liked', [
                 'user' => $user,
@@ -86,13 +88,15 @@ class UserController extends Controller
             ]);
         }
 
-        $uploadedImages = Image::with('tags')
-            ->withCount('likes')
-            ->withExists([
-                'likes as liked' => fn($query) => $query->where('user_id', $id),
-            ])
-            ->where('user_id', $user->user_id)
-            ->get();
+        $uploadedImages = Inertia::scroll(
+            fn() => Image::with('tags')
+                ->withCount('likes')
+                ->withExists([
+                    'likes as liked' => fn($query) => $query->where('user_id', $id),
+                ])
+                ->where('user_id', $user->user_id)
+                ->paginate(15)
+        );
 
         return Inertia::render('User/Uploaded', [
             'user' => $user,
@@ -241,7 +245,7 @@ class UserController extends Controller
             'avatar' => $result['paths']['image'],
         ]);
 
-        return back();
+        return to_route('profile', ['user_id' => $user->user_id]);
     }
 
     public function postDeleteAvatar(Request $request)
@@ -258,6 +262,6 @@ class UserController extends Controller
             'avatar' => null,
         ]);
 
-        return back();
+        return to_route('profile', ['user_id' => $user->user_id]);
     }
 }

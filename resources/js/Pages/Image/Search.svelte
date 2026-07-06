@@ -337,7 +337,7 @@
   >
     {#each images.data as image (image.image_id)}
       <div class="relative">
-        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0, offset: 0 }}>
+        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
           <img
             src={image.thumbnail_image_path_url}
             alt={image.image_id}

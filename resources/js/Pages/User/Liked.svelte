@@ -1,5 +1,11 @@
 <script>
-  import { Link, page, router, useForm } from "@inertiajs/svelte";
+  import {
+    InfiniteScroll,
+    Link,
+    page,
+    router,
+    useForm,
+  } from "@inertiajs/svelte";
   import {
     CircleAlert,
     Download,
@@ -84,11 +90,6 @@
       router.reload();
     }
   }
-
-  const IMAGES_PER_PAGE = 15;
-  let visibleCount = $state(IMAGES_PER_PAGE);
-
-  const visibleImages = $derived(likedImages.slice(0, visibleCount));
 </script>
 
 <Modal
@@ -126,198 +127,197 @@
 </Modal>
 
 <Profile {user} {countUploaded} {countLiked}>
-  {#if likedImages.length}
-    <div
-      class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-    >
-      {#each visibleImages as image (image.image_id)}
-        <div class="relative">
-          <Lazy
-            keep={true}
-            fadeOptions={{ duration: 150, delay: 0, offset: 0 }}
-          >
-            <div
-              slot="placeholder"
-              class="rounded-base bg-base-300 animate-pulse w-full h-full"
-            ></div>
-
-            <img
-              src={image.thumbnail_image_path_url}
-              alt={image.image_id}
-              class="rounded-base object-cover"
-              onload={() => handleImageLoad(image.image_id)}
-            />
-          </Lazy>
-
-          {#if loadedImages[image.image_id]}
-            <div
-              class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent hover:to-black/70 transition-[--tw-gradient-to]"
-            >
-              <div class="absolute top-0 left-0 w-full p-2">
-                <div class="flex items-center justify-between">
-                  {#if image.created_at === image.updated_at}
-                    <div
-                      class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
-                    >
-                      {$i18n.t("translate.new")}!
-                    </div>
-                  {:else if image.created_at !== image.updated_at}
-                    <div
-                      class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
-                    >
-                      {$i18n.t("translate.updated")}!
-                    </div>
-                  {/if}
-
-                  {#if isAuth && isUserEdit.value === true}
-                    <div
-                      class="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100"
-                    >
-                      <div use:tooltip={$i18n.t("translate.edit")}>
-                        <button
-                          type="button"
-                          class="btn btn-square btn-sm btn-warning"
-                          disabled={form.processing}
-                          onclick={() => editImage(image.image_id)}
-                        >
-                          <Pencil class="inline h-4 w-4" />
-                        </button>
-                      </div>
-
-                      <div use:tooltip={$i18n.t("translate.delete")}>
-                        <button
-                          type="button"
-                          disabled={form.processing}
-                          onclick={() => deleteImage(image.image_id)}
-                          class="btn btn-square btn-sm btn-error"
-                        >
-                          <Trash2 class="inline h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  {/if}
-                </div>
-              </div>
-
+  {#if likedImages}
+    <InfiniteScroll data="likedImages" manual>
+      <div
+        class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      >
+        {#each likedImages.data as image (image.image_id)}
+          <div class="relative">
+            <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
               <div
-                class="absolute bottom-0 left-0 flex flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
+                slot="placeholder"
+                class="rounded-base bg-base-300 animate-pulse w-full h-full"
+              ></div>
+
+              <img
+                src={image.thumbnail_image_path_url}
+                alt={image.image_id}
+                class="rounded-base object-cover"
+                onload={() => handleImageLoad(image.image_id)}
+              />
+            </Lazy>
+
+            {#if loadedImages[image.image_id]}
+              <div
+                class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent hover:to-black/70 transition-[--tw-gradient-to]"
               >
-                {#each image.tags.slice(0, 5) as tag (tag.tag_id)}
-                  <div use:tooltip={tag.tag_desc}>
-                    <Link
-                      href={getSearch({
-                        query: {
-                          tag_slug_name: tag.tag_slug_name,
-                        },
-                      })}
-                      class="btn btn-primary h-6! px-1! text-sm!"
-                    >
-                      {tag.tag_name}
-                    </Link>
-                  </div>
-                {/each}
+                <div class="absolute top-0 left-0 w-full p-2">
+                  <div class="flex items-center justify-between">
+                    {#if image.created_at === image.updated_at}
+                      <div
+                        class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
+                      >
+                        {$i18n.t("translate.new")}!
+                      </div>
+                    {:else if image.created_at !== image.updated_at}
+                      <div
+                        class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
+                      >
+                        {$i18n.t("translate.updated")}!
+                      </div>
+                    {/if}
 
-                {#if image.tags.length > 5}
-                  <div>
-                    <button
-                      type="button"
-                      class="btn btn-primary h-6! px-1! text-sm!"
-                      use:tooltip={image.tags
-                        .slice(5)
-                        .map((tag) => tag.tag_name)
-                        .join(", ")}
-                    >
-                      +{image.tags.length - 5}
-                      {$i18n.t("translate.tag").toLowerCase()}
-                    </button>
-                  </div>
-                {/if}
+                    {#if isAuth && isUserEdit.value === true}
+                      <div
+                        class="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100"
+                      >
+                        <div use:tooltip={$i18n.t("translate.edit")}>
+                          <button
+                            type="button"
+                            class="btn btn-square btn-sm btn-warning"
+                            disabled={form.processing}
+                            onclick={() => editImage(image.image_id)}
+                          >
+                            <Pencil class="inline h-4 w-4" />
+                          </button>
+                        </div>
 
-                <div class="flex w-full items-center justify-end gap-2">
-                  {#if isAuth}
-                    <div use:tooltip={$i18n.t("translate.like")}>
+                        <div use:tooltip={$i18n.t("translate.delete")}>
+                          <button
+                            type="button"
+                            disabled={form.processing}
+                            onclick={() => deleteImage(image.image_id)}
+                            class="btn btn-square btn-sm btn-error"
+                          >
+                            <Trash2 class="inline h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+                    {/if}
+                  </div>
+                </div>
+
+                <div
+                  class="absolute bottom-0 left-0 flex flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
+                >
+                  {#each image.tags.slice(0, 5) as tag (tag.tag_id)}
+                    <div use:tooltip={tag.tag_desc}>
+                      <Link
+                        href={getSearch({
+                          query: {
+                            tag_slug_name: tag.tag_slug_name,
+                          },
+                        })}
+                        class="btn btn-primary h-6! px-1! text-sm!"
+                      >
+                        {tag.tag_name}
+                      </Link>
+                    </div>
+                  {/each}
+
+                  {#if image.tags.length > 5}
+                    <div>
                       <button
                         type="button"
-                        class="btn btn-sm btn-square btn-neutral"
-                        disabled={form.processing}
-                        onclick={() => likeImage(image.image_id)}
+                        class="btn btn-primary h-6! px-1! text-sm!"
+                        use:tooltip={image.tags
+                          .slice(5)
+                          .map((tag) => tag.tag_name)
+                          .join(", ")}
                       >
-                        {#if image.liked}
-                          <HeartOff class="inline aspect-square h-4 w-4" />
-                        {:else}
-                          <Heart class="inline aspect-square h-4 w-4" />
-                        {/if}
+                        +{image.tags.length - 5}
+                        {$i18n.t("translate.tag").toLowerCase()}
                       </button>
                     </div>
                   {/if}
-                  <div use:tooltip={$i18n.t("translate.viewimage")}>
-                    <button
-                      type="button"
-                      tabindex="-1"
-                      class="btn btn-square btn-sm btn-neutral"
-                      onclick={() =>
-                        showImage(
-                          image.preview_image_path_url,
-                          image.image_path_url,
-                          image.image_id,
-                          $i18n,
-                        )}
-                      disabled={form.processing}
-                    >
-                      <Eye class="inline aspect-square h-4 w-4" />
-                    </button>
-                  </div>
-                  <div use:tooltip={$i18n.t("translate.download")}>
-                    <a
-                      href={image.image_path_url}
-                      download
-                      class="btn btn-square btn-sm btn-neutral"
-                    >
-                      <Download class="inline aspect-square h-4 w-4" />
-                    </a>
-                  </div>
-                  {#if image.image_source}
-                    <div use:tooltip={$i18n.t("translate.openinnewtab")}>
-                      <a
-                        href={image.image_source}
-                        class="btn btn-square btn-sm btn-neutral"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink class="inline aspect-square h-4 w-4" />
-                      </a>
-                    </div>
 
-                    <div use:tooltip={$i18n.t("translate.share")}>
+                  <div class="flex w-full items-center justify-end gap-2">
+                    {#if isAuth}
+                      <div use:tooltip={$i18n.t("translate.like")}>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-square btn-neutral"
+                          disabled={form.processing}
+                          onclick={() => likeImage(image.image_id)}
+                        >
+                          {#if image.liked}
+                            <HeartOff class="inline aspect-square h-4 w-4" />
+                          {:else}
+                            <Heart class="inline aspect-square h-4 w-4" />
+                          {/if}
+                        </button>
+                      </div>
+                    {/if}
+                    <div use:tooltip={$i18n.t("translate.viewimage")}>
                       <button
                         type="button"
                         tabindex="-1"
                         class="btn btn-square btn-sm btn-neutral"
-                        onclick={() => shareImage(image)}
+                        onclick={() =>
+                          showImage(
+                            image.preview_image_path_url,
+                            image.image_path_url,
+                            image.image_id,
+                            $i18n,
+                          )}
+                        disabled={form.processing}
                       >
-                        <Share2 class="inline aspect-square h-4 w-4" />
+                        <Eye class="inline aspect-square h-4 w-4" />
                       </button>
                     </div>
-                  {/if}
+                    <div use:tooltip={$i18n.t("translate.download")}>
+                      <a
+                        href={image.image_path_url}
+                        download
+                        class="btn btn-square btn-sm btn-neutral"
+                      >
+                        <Download class="inline aspect-square h-4 w-4" />
+                      </a>
+                    </div>
+                    {#if image.image_source}
+                      <div use:tooltip={$i18n.t("translate.openinnewtab")}>
+                        <a
+                          href={image.image_source}
+                          class="btn btn-square btn-sm btn-neutral"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink class="inline aspect-square h-4 w-4" />
+                        </a>
+                      </div>
+
+                      <div use:tooltip={$i18n.t("translate.share")}>
+                        <button
+                          type="button"
+                          tabindex="-1"
+                          class="btn btn-square btn-sm btn-neutral"
+                          onclick={() => shareImage(image)}
+                        >
+                          <Share2 class="inline aspect-square h-4 w-4" />
+                        </button>
+                      </div>
+                    {/if}
+                  </div>
                 </div>
               </div>
-            </div>
-          {/if}
-        </div>
-      {/each}
-    </div>
-
-    {#if visibleCount < likedImages.length}
-      <div class="mt-4 flex justify-center">
-        <button
-          type="button"
-          class="btn btn-primary"
-          onclick={() => (visibleCount += IMAGES_PER_PAGE)}
-        >
-          {$i18n.t("translate.viewmore")}
-        </button>
+            {/if}
+          </div>
+        {/each}
       </div>
-    {/if}
+
+      {#snippet next({ hasMore, fetch, loading })}
+        {#if hasMore}
+          <div class="text-center mt-4">
+            <button class="btn btn-primary" onclick={fetch} disabled={loading}>
+              {loading
+                ? $i18n.t("translate.loading") + "..."
+                : $i18n.t("translate.loadmore")}
+            </button>
+          </div>
+        {/if}
+      {/snippet}
+    </InfiniteScroll>
   {:else}
     <div class="mt-4">
       <div role="alert" class="alert alert-error alert-soft inline-flex">
