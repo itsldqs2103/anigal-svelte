@@ -3,9 +3,11 @@ import "./lib/i18n";
 
 import { createInertiaApp } from "@inertiajs/svelte";
 import { router } from "@inertiajs/svelte";
+import lazySizes from "lazysizes";
 import NProgress from "nprogress";
 
 import Main from "@/js/Layouts/Main.svelte";
+lazySizes.cfg.srcAttr = "data-lazyload-src";
 
 NProgress.configure({
   parent: "#nprogress-container",

@@ -14,7 +14,6 @@
     Trash2,
     X,
   } from "@lucide/svelte";
-  import Lazy from "svelte-lazy";
 
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
   import Modal from "@/js/Components/Modal.svelte";
@@ -337,14 +336,12 @@
   >
     {#each images.data as image (image.image_id)}
       <div class="relative">
-        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
-          <img
-            src={image.thumbnail_image_path_url}
-            alt={image.image_id}
-            class="rounded-base object-cover"
-            onload={() => handleImageLoad(image.image_id)}
-          />
-        </Lazy>
+        <img
+          data-lazyload-src={image.thumbnail_image_path_url}
+          alt={image.image_id}
+          class="rounded-base object-cover lazyload"
+          onload={() => handleImageLoad(image.image_id)}
+        />
 
         {#if loadedImages[image.image_id]}
           <div

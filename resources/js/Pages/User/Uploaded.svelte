@@ -17,7 +17,6 @@
     Share2,
     Trash2,
   } from "@lucide/svelte";
-  import Lazy from "svelte-lazy";
 
   import Modal from "@/js/Components/Modal.svelte";
   import { showImage } from "@/js/lib/fancybox";
@@ -134,19 +133,12 @@
       >
         {#each uploadedImages.data as image (image.image_id)}
           <div class="relative">
-            <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
-              <div
-                slot="placeholder"
-                class="rounded-base bg-base-300 animate-pulse w-full h-full"
-              ></div>
-
-              <img
-                src={image.thumbnail_image_path_url}
-                alt={image.image_id}
-                class="rounded-base object-cover"
-                onload={() => handleImageLoad(image.image_id)}
-              />
-            </Lazy>
+            <img
+              data-lazyload-src={image.thumbnail_image_path_url}
+              alt={image.image_id}
+              class="rounded-base object-cover lazyload"
+              onload={() => handleImageLoad(image.image_id)}
+            />
 
             {#if loadedImages[image.image_id]}
               <div

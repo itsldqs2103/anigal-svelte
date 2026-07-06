@@ -11,7 +11,6 @@
     Share2,
   } from "@lucide/svelte";
   import { onMount } from "svelte";
-  import Lazy from "svelte-lazy";
 
   import { api } from "@/js/lib/axios";
   import { showImage } from "@/js/lib/fancybox";
@@ -277,14 +276,12 @@
   >
     {#each randomImages as image (image.image_id)}
       <div class="relative">
-        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
-          <img
-            src={image.thumbnail_image_path_url}
-            alt={image.image_id}
-            class="rounded-base object-cover"
-            onload={() => handleImageLoad(`random-${image.image_id}`)}
-          />
-        </Lazy>
+        <img
+          data-lazyload-src={image.thumbnail_image_path_url}
+          alt={image.image_id}
+          class="rounded-base object-cover lazyload"
+          onload={() => handleImageLoad(`random-${image.image_id}`)}
+        />
 
         {#if loadedImages[`random-${image.image_id}`]}
           <div
@@ -528,14 +525,12 @@
   >
     {#each latestImages as image (image.image_id)}
       <div class="relative">
-        <Lazy keep={true} fadeOptions={{ duration: 150, delay: 0 }}>
-          <img
-            src={image.thumbnail_image_path_url}
-            alt={image.image_id}
-            class="rounded-base object-cover"
-            onload={() => handleImageLoad(`image-${image.image_id}`)}
-          />
-        </Lazy>
+        <img
+          data-lazyload-src={image.thumbnail_image_path_url}
+          alt={image.image_id}
+          class="rounded-base object-cover lazyload"
+          onload={() => handleImageLoad(`image-${image.image_id}`)}
+        />
 
         {#if loadedImages[`image-${image.image_id}`]}
           <div

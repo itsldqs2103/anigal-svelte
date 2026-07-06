@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,6 +33,7 @@ return new class extends Migration
             'email' => 'itsldqs2103@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('Ldqs@2103'),
+            'avatar' => null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
