@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image_path');
             $table->string('preview_image_path');
             $table->string('thumbnail_image_path');
+            $table->string('avatar');
             $table->unsignedBigInteger('file_size');
             $table->unsignedBigInteger('width');
             $table->unsignedBigInteger('height');
