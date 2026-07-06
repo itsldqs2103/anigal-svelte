@@ -68,7 +68,7 @@ return [
     'like' => 'Thích',
     'liked' => 'Đã thích',
     'loading' => 'Đang tải',
-    "loadmore" => "Tải thêm",
+    'loadmore' => 'Tải thêm',
     'loggedin' => 'Đã đăng nhập!',
     'loggedout' => 'Đã đăng xuất!',
     'loggingin' => 'Đang đăng nhập',
