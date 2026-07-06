@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use App\Models\Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 
 class UserController extends Controller
 {
@@ -54,7 +58,7 @@ class UserController extends Controller
         $tab = $request->query('tab', 'uploaded');
 
         $user = User::where('user_id', $id)
-            ->select(['user_id', 'username', 'email', 'fullname'])
+            ->select(['user_id', 'username', 'email', 'fullname', 'avatar'])
             ->firstOrFail();
 
         $countUploaded = Image::where('user_id', $user->user_id)->count();
@@ -179,5 +183,81 @@ class UserController extends Controller
         ]);
 
         return to_route('profile', ['user_id' => $user->user_id]);
+    }
+
+    private function processAndStoreImage($id, $file, $paths = null)
+    {
+        $manager = new ImageManager(
+            extension_loaded('imagick')
+                ? new ImagickDriver()
+                : new GdDriver()
+        );
+
+        $image = $manager->read($file);
+
+        $width = $image->width();
+        $height = $image->height();
+
+        if (! $paths) {
+            $paths = [
+                'image' => "avatars/{$id}/{$id}.webp",
+            ];
+        }
+
+        $encodedImage = $image->scaleDown(width: 256, height: 256)->toWebp(quality: 70);
+
+        Storage::disk('public')->put($paths['image'], $encodedImage);
+
+        return [
+            'paths' => $paths,
+            'file_size' => strlen($encodedImage),
+            'width' => $width,
+            'height' => $height,
+        ];
+    }
+
+    public function postEditAvatar(Request $request)
+    {
+        $id = $request->query('user_id');
+
+        $user = User::where('user_id', $id)->firstOrFail();
+
+        $request->validate([
+            'avatar' => ['required', 'image', 'max:20480'],
+        ], [], [
+            'avatar' => __('translate.avatar'),
+        ]);
+
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $result = $this->processAndStoreImage(
+            $user->user_id,
+            $request->file('avatar')
+        );
+
+        $user->update([
+            'avatar' => $result['paths']['image'],
+        ]);
+
+        return back();
+    }
+
+    public function postDeleteAvatar(Request $request)
+    {
+        $id = $request->query('user_id');
+
+        $user = User::where('user_id', $id)->firstOrFail();
+
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $user->update([
+            'avatar' => null,
+        ]);
+
+        return back();
     }
 }

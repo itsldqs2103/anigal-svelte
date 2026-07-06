@@ -7,10 +7,12 @@
     KeyRound,
     LogOut,
     Mail,
+    Pencil,
     User,
   } from "@lucide/svelte";
 
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
+  import Modal from "@/js/Components/Modal.svelte";
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
   import { title } from "@/js/lib/title";
@@ -18,6 +20,8 @@
   import {
     getEditPassword as editPassword,
     getEditProfile as editProfile,
+    postDeleteAvatar,
+    postEditAvatar,
     postLogout as logout,
     profile,
   } from "@/js/wayfinder/actions/App/Http/Controllers/UserController";
@@ -52,6 +56,44 @@
   }
 
   const avatarLetter = $derived(user.fullname?.charAt(0)?.toUpperCase());
+
+  let showAvatarModal = $state(false);
+
+  const avatarForm = useForm({
+    avatar: null,
+  });
+
+  function openAvatarModal() {
+    if (!isUserEdit.value) return;
+
+    showAvatarModal = true;
+  }
+
+  function onAvatarChange(event) {
+    avatarForm.avatar = event.currentTarget.files?.[0] ?? null;
+  }
+
+  function uploadAvatar() {
+    showAvatarModal = false;
+    avatarForm.post(
+      postEditAvatar({
+        query: {
+          user_id: user.user_id,
+        },
+      }),
+    );
+  }
+
+  function removeAvatar() {
+    showAvatarModal = false;
+    avatarForm.post(
+      postDeleteAvatar({
+        query: {
+          user_id: user.user_id,
+        },
+      }),
+    );
+  }
 </script>
 
 <svelte:head>
@@ -74,19 +116,93 @@
   </ul>
 </Breadcrumb>
 
+<Modal open={showAvatarModal} title={$i18n.t("translate.changeavatar")}>
+  <div class="space-y-4">
+    <div class="space-y-2">
+      <input
+        type="file"
+        accept="image/*"
+        class="file-input w-full"
+        onchange={onAvatarChange}
+        disabled={avatarForm.processing}
+      />
+
+      {#if user.avatar}
+        <button
+          type="button"
+          class="btn btn-error w-full"
+          onclick={removeAvatar}
+          disabled={avatarForm.processing}
+        >
+          {$i18n.t("translate.deleteavatar")}
+        </button>
+      {/if}
+    </div>
+  </div>
+
+  {#snippet footer()}
+    <button
+      class="btn btn-neutral"
+      onclick={() => (showAvatarModal = false)}
+      disabled={avatarForm.processing}
+    >
+      {$i18n.t("translate.cancel")}
+    </button>
+
+    <button
+      class="btn btn-primary"
+      onclick={uploadAvatar}
+      disabled={!avatarForm.avatar || avatarForm.processing}
+    >
+      {$i18n.t("translate.upload")}
+    </button>
+  {/snippet}
+
+  {#snippet backdrop()}
+    <button
+      onclick={() => (showAvatarModal = false)}
+      disabled={avatarForm.processing}
+    >
+      {$i18n.t("translate.close")}
+    </button>
+  {/snippet}
+</Modal>
+
 <div>
   <div class="rounded-base bg-base-300">
-    <div class="h-32 bg-primary rounded-t-base"></div>
+    <div class="h-24 bg-primary rounded-t-base"></div>
 
     <div class="relative px-4 pb-4">
       <div class="-mt-16 flex justify-center sm:justify-start">
-        <div class="avatar">
+        <button
+          type="button"
+          class="avatar group cursor-pointer"
+          onclick={openAvatarModal}
+        >
           <div
-            class="flex h-24 w-24 items-center justify-center rounded-full border-4 border-base-100 bg-primary text-5xl font-bold text-primary-content select-none"
+            class="relative h-24 w-24 overflow-hidden rounded-full border-4 border-base-100"
           >
-            {avatarLetter}
+            {#if user.avatar}
+              <img
+                src={user.avatar_path}
+                alt={user.fullname}
+                class="h-full w-full object-cover"
+              />
+            {:else}
+              <div
+                class="flex h-full w-full items-center justify-center bg-primary text-5xl font-bold text-primary-content"
+              >
+                {avatarLetter}
+              </div>
+            {/if}
+
+            <div
+              class="absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-[opacity,background-color] group-hover:bg-base-100/70 group-hover:opacity-100"
+            >
+              <Pencil class="h-6 w-6 aspect-square inline" />
+            </div>
           </div>
-        </div>
+        </button>
       </div>
 
       <div class="-mt-4 flex justify-end">

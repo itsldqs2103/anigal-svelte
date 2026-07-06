@@ -17,6 +17,11 @@ export const themes = [
     label: "light",
     color: "#eeeeee",
   },
+  {
+    key: "night",
+    label: "night",
+    color: "#0f172a",
+  },
 ];
 
 export const theme = writable("dark");

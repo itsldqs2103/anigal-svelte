@@ -44,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/edit', [UserController::class, 'postEditProfile']);
     Route::get('/password/edit', [UserController::class, 'getEditPassword'])->name('password.edit');
     Route::post('/password/edit', [UserController::class, 'postEditPassword']);
+    Route::post('/profile/avatar/edit', [UserController::class, 'postEditAvatar'])->name('profile.avatar.edit');
+    Route::post('/profile/avatar/delete', [UserController::class, 'postDeleteAvatar'])->name('profile.avatar.delete');
     Route::post('/logout', [UserController::class, 'postLogout']);
     Route::get('/tag/add', [TagController::class, 'getAddTag'])->name('tag.add');
     Route::post('/tag/add', [TagController::class, 'postAddTag']);
