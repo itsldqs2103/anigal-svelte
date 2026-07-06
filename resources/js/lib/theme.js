@@ -23,15 +23,6 @@ export const theme = writable("dark");
 
 export function applyTheme(themeKey) {
   document.documentElement.setAttribute("data-theme", themeKey);
-
-  const meta = document.getElementById("themeColorMetaTag");
-
-  if (meta) {
-    const color = themes.find((t) => t.key === themeKey)?.color;
-    if (color) {
-      meta.setAttribute("content", color);
-    }
-  }
 }
 
 export function initializeTheme() {
