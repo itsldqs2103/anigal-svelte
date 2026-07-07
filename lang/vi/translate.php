@@ -58,6 +58,7 @@ return [
     'image' => 'Hình ảnh',
     'image_source' => 'Nguồn hình ảnh',
     'imagepreview' => 'Xem trước hình ảnh',
+    'joined' => 'Đã tham gia',
     'language' => 'Ngôn ngữ',
     'lastupdated' => 'Cập nhật lần cuối',
     'latest' => 'Mới nhất',

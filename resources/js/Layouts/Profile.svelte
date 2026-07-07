@@ -2,6 +2,7 @@
   import { Link, page, router, useForm } from "@inertiajs/svelte";
   import {
     AtSign,
+    CalendarClock,
     EllipsisVertical,
     House,
     KeyRound,
@@ -254,14 +255,19 @@
           {user.fullname}
         </h1>
 
-        <div class="text-base-content/50">
+        <div class="text-base-content/50 text-sm">
           <span><AtSign class="w-4 h-4 inline aspect-square" /></span>
           <span>{user.username}</span>
         </div>
 
-        <div class="text-base-content/50">
-          <Mail class="h-4 w-4 shrink-0 inline aspect-square" />
+        <div class="text-base-content/50 text-sm">
+          <Mail class="w-4 h-4 inline aspect-square" />
           <span>{user.email}</span>
+        </div>
+
+        <div class="text-base-content/50 text-sm">
+          <CalendarClock class="w-4 h-4 inline aspect-square" />
+          <span>{$i18n.t("translate.joined")} {user.created_at_diff}</span>
         </div>
       </div>
     </div>

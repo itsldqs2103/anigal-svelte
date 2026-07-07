@@ -58,6 +58,7 @@ return [
     'image' => 'Image',
     'image_source' => 'Image source',
     'imagepreview' => 'Image preview',
+    'joined' => 'Joined',
     'language' => 'Language',
     'lastupdated' => 'Last updated',
     'latest' => 'Latest',

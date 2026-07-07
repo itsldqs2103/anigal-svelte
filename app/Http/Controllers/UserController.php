@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use App\Models\Image;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
@@ -58,8 +59,17 @@ class UserController extends Controller
         $tab = $request->query('tab', 'uploaded');
 
         $user = User::where('user_id', $id)
-            ->select(['user_id', 'username', 'email', 'fullname', 'avatar'])
+            ->select([
+                'user_id',
+                'username',
+                'email',
+                'fullname',
+                'avatar',
+                'created_at'
+            ])
             ->firstOrFail();
+
+        $user->created_at_diff = $user->created_at->diffForHumans();
 
         $countUploaded = Image::where('user_id', $user->user_id)->count();
 
