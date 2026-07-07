@@ -302,8 +302,11 @@
         {#if hasMore}
           <div class="text-center mt-4">
             <button class="btn btn-primary" onclick={fetch} disabled={loading}>
+              {#if loading}
+                <span class="loading loading-spinner loading-xs"></span>
+              {/if}
               {loading
-                ? $i18n.t("translate.loading") + "..."
+                ? $i18n.t("translate.loading")
                 : $i18n.t("translate.loadmore")}
             </button>
           </div>
