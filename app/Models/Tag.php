@@ -29,7 +29,7 @@ class Tag extends Model
         });
 
         static::saving(function ($tag) {
-            if (!empty($tag->tag_name)) {
+            if (! empty($tag->tag_name)) {
                 $tag->tag_slug_name = Str::slug($tag->tag_name, '_');
             }
         });

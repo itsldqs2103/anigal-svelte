@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use App\Models\Image;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -64,7 +65,7 @@ class UserController extends Controller
                 'email',
                 'fullname',
                 'avatar',
-                'created_at'
+                'created_at',
             ])
             ->firstOrFail();
 
@@ -78,10 +79,10 @@ class UserController extends Controller
 
         if ($tab === 'liked') {
             $likedImages = Inertia::scroll(
-                fn() => Image::with('tags')
+                fn () => Image::with('tags')
                     ->withCount('likes')
                     ->withExists([
-                        'likes as liked' => fn($query) => $query->where('user_id', $id),
+                        'likes as liked' => fn ($query) => $query->where('user_id', $id),
                     ])
                     ->whereHas('likes', function ($query) use ($user) {
                         $query->where('user_id', $user->user_id);
@@ -98,10 +99,10 @@ class UserController extends Controller
         }
 
         $uploadedImages = Inertia::scroll(
-            fn() => Image::with('tags')
+            fn () => Image::with('tags')
                 ->withCount('likes')
                 ->withExists([
-                    'likes as liked' => fn($query) => $query->where('user_id', $id),
+                    'likes as liked' => fn ($query) => $query->where('user_id', $id),
                 ])
                 ->where('user_id', $user->user_id)
                 ->paginate(15)
@@ -136,13 +137,13 @@ class UserController extends Controller
                 'required',
                 'string',
                 'max:255',
-                'unique:users,username,' . $user->user_id . ',user_id',
+                'unique:users,username,'.$user->user_id.',user_id',
             ],
             'email' => [
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email,' . $user->user_id . ',user_id',
+                'unique:users,email,'.$user->user_id.',user_id',
             ],
         ], [], [
             'fullname' => Str::lower(__('translate.fullname')),
@@ -198,12 +199,15 @@ class UserController extends Controller
         return to_route('profile', ['user_id' => $user->user_id]);
     }
 
-    private function processAndStoreImage($id, $file, $paths = null)
-    {
+    private function processAndStoreImage(
+        int $id,
+        UploadedFile $file,
+        ?array $paths = null
+    ) {
         $manager = new ImageManager(
             extension_loaded('imagick')
-                ? new ImagickDriver()
-                : new GdDriver()
+                ? new ImagickDriver
+                : new GdDriver
         );
 
         $image = $manager->read($file);

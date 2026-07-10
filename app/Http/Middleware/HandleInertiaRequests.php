@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
             'currentLocale' => app()->getLocale(),
             'lastUpdated' => Carbon::parse(
                 File::lastModified(base_path('resources/js/app.js'))
-            )->toDateTimeString()
+            )->toDateTimeString(),
         ];
     }
 }

@@ -11,11 +11,11 @@ class ApiMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $key = 'api:' . $request->ip();
+        $key = 'api:'.$request->ip();
 
         if (RateLimiter::tooManyAttempts($key, 60)) {
             return response()->json([
-                'message' => __('translate.toomanyrequests')
+                'message' => __('translate.toomanyrequests'),
             ], 429);
         }
 

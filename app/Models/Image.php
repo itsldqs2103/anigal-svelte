@@ -52,7 +52,7 @@ class Image extends Model
             return asset($relativePath);
         }
 
-        return asset($relativePath) . '?version=' . filemtime($fullPath);
+        return asset($relativePath).'?version='.filemtime($fullPath);
     }
 
     public function getImagePathUrlAttribute(): ?string

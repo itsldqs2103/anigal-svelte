@@ -24,6 +24,7 @@ class SortTranslations extends Command
 
             if (! File::exists($path)) {
                 $this->warn("File not found: {$path}");
+
                 continue;
             }
 
@@ -31,6 +32,7 @@ class SortTranslations extends Command
 
             if (! is_array($translations)) {
                 $this->warn("Invalid translation file: {$path}");
+
                 continue;
             }
 
@@ -62,6 +64,7 @@ class SortTranslations extends Command
 
         if ($process->isSuccessful()) {
             $this->info('Translation files formatted.');
+
             return;
         }
 

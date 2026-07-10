@@ -5,19 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\ImageManager;
 
 class ImageController extends Controller
 {
     public function index(Request $request)
     {
-        $userId = auth()->id();
+        $userId = Auth::id();
 
         $defaultLimit = 30;
         $defaultSortBy = 'created_at';
@@ -31,15 +32,15 @@ class ImageController extends Controller
         $order = $request->input('order', $defaultOrder);
         $perPage = (int) $request->input('per_page', $defaultLimit);
 
-        if (!in_array($sortBy, $allowedSortBy)) {
+        if (! in_array($sortBy, $allowedSortBy)) {
             $sortBy = $defaultSortBy;
         }
 
-        if (!in_array($order, $allowedOrders)) {
+        if (! in_array($order, $allowedOrders)) {
             $order = $defaultOrder;
         }
 
-        if (!in_array($perPage, $allowedLimits)) {
+        if (! in_array($perPage, $allowedLimits)) {
             $perPage = $defaultLimit;
         }
 
@@ -52,7 +53,7 @@ class ImageController extends Controller
         ])
             ->withCount('likes')
             ->withExists([
-                'likes as liked' => fn($query) => $query->where('user_id', $userId),
+                'likes as liked' => fn ($query) => $query->where('user_id', $userId),
             ])
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
@@ -78,7 +79,7 @@ class ImageController extends Controller
     {
         $tagSlug = $request->query('tag_slug_name');
         $suggestedTags = Tag::oldest('tag_name')->get();
-        $userId = auth()->id();
+        $userId = Auth::id();
 
         if (! $tagSlug) {
             return Inertia::render('Image/Search', [
@@ -95,15 +96,15 @@ class ImageController extends Controller
         $tag = Tag::where('tag_slug_name', $tagSlug)->firstOrFail();
 
         $images = Image::with([
-            'tags' => fn($query) => $query->orderBy('tag_name'),
+            'tags' => fn ($query) => $query->orderBy('tag_name'),
         ])
             ->withCount('likes')
             ->when(
                 $userId,
-                fn($query) => $query->withExists([
-                    'likes as liked' => fn($query) => $query->where('user_id', $userId),
+                fn ($query) => $query->withExists([
+                    'likes as liked' => fn ($query) => $query->where('user_id', $userId),
                 ]),
-                fn($query) => $query->select('*')->selectRaw('false as liked')
+                fn ($query) => $query->select('*')->selectRaw('false as liked')
             )
             ->whereHas('tags', function ($query) use ($tag) {
                 $query->where('tags.tag_id', $tag->tag_id);
@@ -132,23 +133,23 @@ class ImageController extends Controller
         return response()->json($tags);
     }
 
-    function bytesHelper($value)
+    public function bytesHelper(string $value)
     {
         if (is_numeric($value)) {
-            $bytes = (float)$value;
+            $bytes = (float) $value;
         } else {
             $unit = strtolower(substr($value, -1));
-            $number = (float)$value;
+            $number = (float) $value;
 
             switch ($unit) {
                 case 'g':
-                    return $number . 'GB';
+                    return $number.'GB';
                 case 'm':
-                    return $number . 'MB';
+                    return $number.'MB';
                 case 'k':
-                    return $number . 'KB';
+                    return $number.'KB';
                 default:
-                    return $number . 'B';
+                    return $number.'B';
             }
         }
 
@@ -160,7 +161,7 @@ class ImageController extends Controller
             $i++;
         }
 
-        return round($bytes, 2) . $units[$i];
+        return round($bytes, 2).$units[$i];
     }
 
     public function getAddImage()
@@ -170,7 +171,7 @@ class ImageController extends Controller
 
         return Inertia::render('Image/Add', [
             'countTags' => $countTags,
-            'maxUploadFilesize' => $maxUploadFilesize
+            'maxUploadFilesize' => $maxUploadFilesize,
         ]);
     }
 
@@ -231,7 +232,7 @@ class ImageController extends Controller
         return Inertia::render('Image/Edit', [
             'image_id' => $image_id,
             'countTags' => $countTags,
-            'maxUploadFilesize' => $maxUploadFilesize
+            'maxUploadFilesize' => $maxUploadFilesize,
         ]);
     }
 
@@ -329,12 +330,15 @@ class ImageController extends Controller
         return to_route('image.home', ['per_page' => 30, 'order' => 'latest', 'sort_by' => 'created_at']);
     }
 
-    private function processAndStoreImage($id, $file, $paths = null)
-    {
+    private function processAndStoreImage(
+        int $id,
+        UploadedFile $file,
+        ?array $paths = null
+    ) {
         $manager = new ImageManager(
             extension_loaded('imagick')
-                ? new ImagickDriver()
-                : new GdDriver()
+                ? new ImagickDriver
+                : new GdDriver
         );
 
         $image = $manager->read($file);
@@ -379,7 +383,7 @@ class ImageController extends Controller
 
     public function likeImage(Image $image)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $like = $image->likes()
             ->where('user_id', $user->user_id)

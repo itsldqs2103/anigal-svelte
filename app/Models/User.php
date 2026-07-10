@@ -71,7 +71,7 @@ class User extends Authenticatable
             return asset($relativePath);
         }
 
-        return asset($relativePath) . '?version=' . filemtime($fullPath);
+        return asset($relativePath).'?version='.filemtime($fullPath);
     }
 
     public function getAvatarPathAttribute(): ?string

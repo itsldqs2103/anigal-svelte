@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ApiController;
 use App\Http\Middleware\ApiMiddleware;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;

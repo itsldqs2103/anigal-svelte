@@ -123,5 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'max_upload_filesize' => ini_get('upload_max_filesize')
+    'max_upload_filesize' => ini_get('upload_max_filesize'),
 ];

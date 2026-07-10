@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
 use App\Models\Image;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -23,7 +23,7 @@ class ApiController extends Controller
         $selectedTags = $image->tags->pluck('tag_id');
 
         return response()->json([
-            'selectedTags' => $selectedTags
+            'selectedTags' => $selectedTags,
         ]);
     }
 

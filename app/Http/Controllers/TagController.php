@@ -24,22 +24,22 @@ class TagController extends Controller
         $perPage = (int) $request->input('per_page', $defaultLimit);
         $startsWith = $request->input('starts_with');
 
-        if (!in_array($sortBy, $allowedSortBy)) {
+        if (! in_array($sortBy, $allowedSortBy)) {
             $sortBy = $defaultSortBy;
         }
 
-        if (!in_array($order, $allowedOrders)) {
+        if (! in_array($order, $allowedOrders)) {
             $order = $defaultOrder;
         }
 
-        if (!in_array($perPage, $allowedLimits)) {
+        if (! in_array($perPage, $allowedLimits)) {
             $perPage = $defaultLimit;
         }
 
         if ($startsWith) {
             $startsWith = strtoupper($startsWith);
 
-            if (!preg_match('/^[A-Z]$/', $startsWith)) {
+            if (! preg_match('/^[A-Z]$/', $startsWith)) {
                 $startsWith = null;
             }
         }
@@ -48,7 +48,7 @@ class TagController extends Controller
 
         $tags = Tag::query()
             ->when($startsWith, function ($query, $startsWith) {
-                return $query->where('tag_name', 'like', $startsWith . '%');
+                return $query->where('tag_name', 'like', $startsWith.'%');
             })
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
@@ -117,7 +117,7 @@ class TagController extends Controller
         $tag = Tag::where('tag_id', $id)->firstOrFail();
 
         $request->validate([
-            'tag_name' => ['required', 'string', 'max:255', 'unique:tags,tag_name,' . $tag->tag_id . ',tag_id'],
+            'tag_name' => ['required', 'string', 'max:255', 'unique:tags,tag_name,'.$tag->tag_id.',tag_id'],
             'tag_desc' => ['nullable', 'string', 'max:255'],
         ], [], [
             'tag_name' => Str::lower(__('translate.tagname')),

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->unique([
                 'user_id',
                 'likeable_id',
-                'likeable_type'
+                'likeable_type',
             ]);
         });
     }

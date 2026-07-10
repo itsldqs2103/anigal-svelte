@@ -74,7 +74,7 @@ class MainController extends Controller
 
         return response()->json(
             collect(File::files(base_path("lang/$locale")))
-                ->mapWithKeys(fn($file) => [
+                ->mapWithKeys(fn ($file) => [
                     pathinfo($file, PATHINFO_FILENAME) => require $file,
                 ])
         );
