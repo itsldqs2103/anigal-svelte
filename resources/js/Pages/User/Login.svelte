@@ -59,7 +59,7 @@
   <form onsubmit={submit} class="space-y-4">
     {#if errors && Object.keys(errors).length > 0}
       <div role="alert" class="alert alert-error alert-soft inline-flex">
-        <CircleAlert class="h-6 w-6 shrink-0" />
+        <CircleAlert class="h-6 w-6 inline aspect-square" />
         <div>
           <h3 class="font-bold">
             {$i18n.t("translate.thereareerror")}
