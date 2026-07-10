@@ -3,7 +3,7 @@
 </script>
 
 <dialog class="modal" class:modal-open={open}>
-  <div class="modal-box max-w-96">
+  <div class="modal-box max-w-md">
     <div class="mb-2 flex items-center justify-between gap-4">
       <h3 class="text-lg font-bold">{title}</h3>
     </div>

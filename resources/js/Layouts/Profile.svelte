@@ -3,20 +3,26 @@
   import {
     AtSign,
     CalendarClock,
+    Check,
     EllipsisVertical,
     House,
     KeyRound,
     LogOut,
     Mail,
     Pencil,
+    Upload,
     User,
   } from "@lucide/svelte";
+  import clsx from "clsx";
+  import { filesize } from "filesize";
 
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
   import Modal from "@/js/Components/Modal.svelte";
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
   import { title } from "@/js/lib/title";
+  import { tooltip } from "@/js/lib/tooltip";
+  import { truncate } from "@/js/lib/truncate";
   import { index } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
   import {
     getEditPassword as editPassword,
@@ -27,7 +33,14 @@
     profile,
   } from "@/js/wayfinder/actions/App/Http/Controllers/UserController";
 
-  let { user, children, countUploaded, countLiked } = $props();
+  let {
+    user,
+    children,
+    countUploaded,
+    countLiked,
+    errors = {},
+    maxUploadFilesize,
+  } = $props();
 
   const form = useForm({});
 
@@ -70,9 +83,14 @@
     showAvatarModal = true;
   }
 
-  function onAvatarChange(event) {
-    avatarForm.avatar = event.currentTarget.files?.[0] ?? null;
-  }
+  let fileInput = $state(null);
+  let files = $state();
+
+  let file = $derived(files?.[0]);
+
+  $effect(() => {
+    avatarForm.avatar = file ?? null;
+  });
 
   function uploadAvatar() {
     showAvatarModal = false;
@@ -82,6 +100,16 @@
           user_id: user.user_id,
         },
       }),
+      {
+        onSuccess: () => {
+          files = null;
+          avatarForm.reset("avatar");
+
+          if (fileInput) {
+            fileInput.value = "";
+          }
+        },
+      },
     );
   }
 
@@ -95,6 +123,12 @@
       }),
     );
   }
+
+  let fileLabel = $derived(
+    file
+      ? `${truncate(file.name, 24)} (${filesize(file.size, { standard: "jedec" })})`
+      : $i18n.t("translate.chooseimage"),
+  );
 </script>
 
 <svelte:head>
@@ -118,27 +152,67 @@
 </Breadcrumb>
 
 <Modal open={showAvatarModal} title={$i18n.t("translate.changeavatar")}>
-  <div class="space-y-4">
-    <div class="space-y-2">
+  <div class="space-y-2">
+    <div>
       <input
         type="file"
-        accept="image/*"
-        class="file-input w-full"
-        onchange={onAvatarChange}
-        disabled={avatarForm.processing}
+        accept=".png, .jpg, .jpeg, .webp"
+        class="hidden"
+        hidden
+        bind:this={fileInput}
+        bind:files
+        disabled={avatarForm.processing || file}
       />
 
-      {#if user.avatar}
+      <button
+        use:tooltip={!avatarForm.processing || !file
+          ? $i18n.t("translate.fileuploadmax") + ": " + maxUploadFilesize
+          : null}
+        type="button"
+        class={clsx(
+          "btn",
+          file
+            ? "btn-success"
+            : errors.image && !avatarForm.processing
+              ? "btn-error"
+              : "btn-primary",
+        )}
+        disabled={avatarForm.processing || file}
+        onclick={() => fileInput?.click()}
+      >
+        {#if !file}
+          <Upload class="inline aspect-square h-4 w-4" />
+        {:else}
+          <Check class="inline aspect-square h-4 w-4" />
+        {/if}
+        <span class="block truncate">{fileLabel}</span>
+      </button>
+
+      {#if file}
         <button
           type="button"
-          class="btn btn-error w-full"
-          onclick={removeAvatar}
-          disabled={avatarForm.processing}
+          class="btn btn-error ms-2"
+          disabled={form.processing}
+          onclick={() => {
+            files = null;
+            fileInput.value = null;
+          }}
         >
-          {$i18n.t("translate.deleteavatar")}
+          {$i18n.t("translate.cancel")}
         </button>
       {/if}
     </div>
+
+    {#if user.avatar}
+      <button
+        type="button"
+        class="btn btn-error w-full"
+        onclick={removeAvatar}
+        disabled={avatarForm.processing}
+      >
+        {$i18n.t("translate.deleteavatar")}
+      </button>
+    {/if}
   </div>
 
   {#snippet footer()}

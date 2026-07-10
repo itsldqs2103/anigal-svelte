@@ -19,6 +19,7 @@
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
+  import { truncate } from "@/js/lib/truncate";
   import { addTag as apiAddTag } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import {
     allTags,
@@ -174,21 +175,9 @@
     };
   });
 
-  function truncateName(name, maxLength = 24) {
-    if (name.length <= maxLength) return name;
-
-    const extIndex = name.lastIndexOf(".");
-    const ext = extIndex !== -1 ? name.slice(extIndex) : "";
-    const base = extIndex !== -1 ? name.slice(0, extIndex) : name;
-
-    const keep = Math.floor((maxLength - ext.length - 1) / 2);
-
-    return `${base.slice(0, keep)}…${base.slice(-keep)}${ext}`;
-  }
-
   let fileLabel = $derived(
     file
-      ? `${truncateName(file.name)} (${filesize(file.size, { standard: "jedec" })})`
+      ? `${truncate(file.name, 24)} (${filesize(file.size, { standard: "jedec" })})`
       : $i18n.t("translate.chooseimage"),
   );
 </script>
