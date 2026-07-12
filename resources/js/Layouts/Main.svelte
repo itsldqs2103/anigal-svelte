@@ -68,6 +68,15 @@
     }
   });
 
+  let sidebarCollapsed = $state(
+    localStorage.getItem("sidebarCollapsed") === "true",
+  );
+
+  function toggleSidebar() {
+    sidebarCollapsed = !sidebarCollapsed;
+    localStorage.setItem("sidebarCollapsed", String(sidebarCollapsed));
+  }
+
   function handleImageError(event) {
     const img = event.target;
     if (img instanceof HTMLImageElement) {
@@ -353,7 +362,7 @@
     <div class="navbar bg-base-300 w-full gap-4 lg:hidden">
       <div class="flex-none">
         <label for="my-drawer" class="btn btn-square btn-ghost">
-          <Menu class="inline h-4 w-4 aspect-square" />
+          <Menu class="inline h-5 w-5 aspect-square" />
         </label>
       </div>
       <Link
@@ -514,7 +523,7 @@
       )}
     >
       <button onclick={scrollToTop} class="btn btn-primary btn-sm btn-square">
-        <ArrowUp class="inline h-4 w-4 aspect-square" />
+        <ArrowUp class="inline h-5 w-5 aspect-square" />
       </button>
     </div>
   </div>
@@ -523,15 +532,29 @@
     <label for="my-drawer" class="drawer-overlay"></label>
 
     <aside
-      class="menu text-base-content bg-base-300 flex min-h-full w-64 flex-col p-4"
+      class={clsx(
+        "menu text-base-content bg-base-300 flex min-h-full flex-col p-4 transition-all duration-300",
+        sidebarCollapsed ? "w-20" : "w-64",
+      )}
     >
-      <div class="mb-4">
-        <Link
-          href={index()}
-          class="text-2xl font-bold uppercase transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-0 focus-visible:outline-transparent"
-        >
-          Ani<span class="text-primary">Gal</span>
-        </Link>
+      <div
+        class={clsx(
+          "mb-4 flex items-center",
+          sidebarCollapsed ? "justify-center" : "justify-between",
+        )}
+      >
+        {#if !sidebarCollapsed}
+          <Link
+            href={index()}
+            class="text-2xl font-bold uppercase transition-opacity hover:opacity-70"
+          >
+            Ani<span class="text-primary">Gal</span>
+          </Link>
+        {/if}
+
+        <button class="btn btn-square btn-neutral" onclick={toggleSidebar}>
+          <Menu class="h-5 w-5 inline aspect-square" />
+        </button>
       </div>
 
       <ul class="space-y-2">
@@ -540,13 +563,18 @@
             <Link
               href={item.path}
               class={clsx(
-                "rounded-base gap-1",
-                page.component.startsWith(item.component) &&
-                  "bg-primary text-primary-content",
+                "btn",
+                sidebarCollapsed ? "justify-center" : "gap-1 justify-start",
+                page.component.startsWith(item.component)
+                  ? "btn-primary"
+                  : "btn-neutral",
               )}
             >
               <item.icon size={20} />
-              {item.name}
+
+              {#if !sidebarCollapsed}
+                <span>{item.name}</span>
+              {/if}
             </Link>
           </li>
         {/each}
@@ -558,13 +586,17 @@
             <Link
               href={item.path}
               class={clsx(
-                "rounded-base gap-1",
+                "rounded-base flex items-center",
+                sidebarCollapsed ? "justify-center px-0" : "gap-2",
                 page.component.startsWith(item.component) &&
                   "bg-primary text-primary-content",
               )}
             >
-              <item.icon size={24} />
-              {item.name}
+              <item.icon size={20} />
+
+              {#if !sidebarCollapsed}
+                <span>{item.name}</span>
+              {/if}
             </Link>
           </li>
         {/each}

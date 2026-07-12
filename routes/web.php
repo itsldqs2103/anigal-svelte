@@ -65,9 +65,16 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login', [UserController::class, 'postLogin']);
 });
 
-Route::get('/setting/optimize', function () {
+Route::get('/optimize/clear', function () {
     File::delete(storage_path('logs/laravel.log'));
     Artisan::call('optimize:clear');
+
+    return redirect('/');
+});
+
+Route::get('/optimize', function () {
+    File::delete(storage_path('logs/laravel.log'));
+    Artisan::call('optimize');
 
     return redirect('/');
 });
