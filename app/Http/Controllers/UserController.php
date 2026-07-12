@@ -5,16 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Image;
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Intervention\Image\Drivers\Gd\Driver as GdDriver;
-use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
-use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -199,41 +196,7 @@ class UserController extends Controller
         return to_route('profile', ['user_id' => $user->user_id]);
     }
 
-    private function processAndStoreImage(
-        int $id,
-        UploadedFile $file,
-        ?array $paths = null
-    ) {
-        $manager = new ImageManager(
-            extension_loaded('imagick')
-                ? new ImagickDriver
-                : new GdDriver
-        );
-
-        $image = $manager->read($file);
-
-        $width = $image->width();
-        $height = $image->height();
-
-        if (! $paths) {
-            $paths = [
-                'image' => "avatars/{$id}/{$id}.webp",
-            ];
-        }
-
-        $encodedImage = $image->scaleDown(width: 256, height: 256)->toWebp(quality: 70);
-
-        Storage::disk('public')->put($paths['image'], $encodedImage);
-
-        return [
-            'paths' => $paths,
-            'file_size' => strlen($encodedImage),
-            'width' => $width,
-            'height' => $height,
-        ];
-    }
-
-    public function postEditAvatar(Request $request)
+    public function postEditAvatar(Request $request, ImageService $imageService)
     {
         $id = $request->query('user_id');
 
@@ -249,9 +212,13 @@ class UserController extends Controller
             Storage::disk('public')->delete($user->avatar);
         }
 
-        $result = $this->processAndStoreImage(
+        $result = $imageService->processAndStoreImage(
             $user->user_id,
-            $request->file('avatar')
+            $request->file('avatar'),
+            null,
+            [
+                'type' => 'avatar',
+            ]
         );
 
         $user->update([
