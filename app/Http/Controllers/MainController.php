@@ -13,17 +13,36 @@ class MainController extends Controller
 {
     public function index()
     {
+        $randomTags = Tag::inRandomOrder()->limit(5)->get();
+        $latestTags = Tag::latest()->limit(5)->get();
+        $randomImages = Image::with([
+            'tags' => function ($query) {
+                $query->orderBy('tag_name', 'asc');
+            },
+        ])->inRandomOrder()->limit(5)->get();
+        $latestImages = Image::with(['tags' => function ($query) {
+            $query->orderBy('tag_name', 'asc');
+        }, 'likes'])->latest()->limit(5)->get();
+
         return Inertia::render('Home', [
-            'countLatestTags' => Tag::count(),
-            'countLatestImages' => Image::count(),
-            'countRandomTags' => Tag::count(),
-            'countRandomImages' => Image::count(),
+            'randomTags' => $randomTags,
+            'latestTags' => $latestTags,
+            'randomImages' => $randomImages,
+            'latestImages' => $latestImages
         ]);
     }
 
     public function stats()
     {
-        return Inertia::render('Stats');
+        $totalTags = Tag::count();
+        $totalImages = Image::count();
+        $totalImagesFilesize = Image::sum('file_size');
+
+        return Inertia::render('Stats', [
+            'totalTags' => $totalTags,
+            'totalImages' => $totalImages,
+            'totalImagesFilesize' => $totalImagesFilesize
+        ]);
     }
 
     public function setting()
@@ -74,7 +93,7 @@ class MainController extends Controller
 
         return response()->json(
             collect(File::files(base_path("lang/$locale")))
-                ->mapWithKeys(fn ($file) => [
+                ->mapWithKeys(fn($file) => [
                     pathinfo($file, PATHINFO_FILENAME) => require $file,
                 ])
         );

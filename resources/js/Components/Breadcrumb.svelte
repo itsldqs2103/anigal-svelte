@@ -59,9 +59,9 @@
         onclick={toggleEdit}
       >
         {#if isUserEdit.value}
-          <Pencil class="inline h-4 w-4 aspect-square" />
+          <Pencil class="inline aspect-square h-4 w-4" />
         {:else}
-          <PencilOff class="inline h-4 w-4 aspect-square" />
+          <PencilOff class="inline aspect-square h-4 w-4" />
         {/if}
       </button>
     </div>
@@ -75,7 +75,7 @@
       "transition-[opacity,translate]",
       isFloating
         ? "translate-y-0 opacity-100"
-        : "-translate-y-full opacity-0 pointer-events-none",
+        : "pointer-events-none -translate-y-full opacity-0",
     )}
   >
     <div class="breadcrumbs py-0">

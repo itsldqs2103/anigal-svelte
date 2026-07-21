@@ -28,14 +28,14 @@
   <title>{$i18n.t("translate.setting")} - {$title}</title>
 </svelte:head>
 
-<div class="breadcrumbs inline-flex bg-base-300 rounded-base mb-4 p-2">
+<div class="breadcrumbs bg-base-300 rounded-base mb-4 inline-flex p-2">
   <ul>
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />
+        <House class="inline aspect-square h-4 w-4" />
         {$i18n.t("translate.home")}
       </Link>
     </li>
@@ -51,7 +51,7 @@
 
     <div class="rounded-base bg-base-300 flex items-center justify-between p-4">
       <div>
-        <p class="font-bold text-sm">{$i18n.t("translate.theme")}</p>
+        <p class="text-sm font-bold">{$i18n.t("translate.theme")}</p>
         <p class="text-sm opacity-70">
           {$i18n.t("translate.switchtheme")}
         </p>
@@ -95,7 +95,7 @@
 
     <div class="rounded-base bg-base-300 flex items-center justify-between p-4">
       <div>
-        <p class="font-bold text-sm">{$i18n.t("translate.language")}</p>
+        <p class="text-sm font-bold">{$i18n.t("translate.language")}</p>
         <p class="text-sm opacity-70">
           {$i18n.t("translate.chooselanguage")}
         </p>

@@ -2,38 +2,24 @@
   import { Link, router, useForm } from "@inertiajs/svelte";
   import { CircleAlert, House, Save } from "@lucide/svelte";
   import clsx from "clsx";
-  import { onMount } from "svelte";
 
   import Modal from "@/js/Components/Modal.svelte";
-  import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
-  import { fetchTag } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import { index } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
   import {
     index as tagIndex,
     postEditTag,
   } from "@/js/wayfinder/actions/App/Http/Controllers/TagController";
 
-  let { errors = {}, tag_id } = $props();
+  let { errors = {}, tag } = $props();
 
   let showConfirm = $state(false);
 
   const form = useForm(() => ({
-    tag_name: [],
-    tag_desc: [],
+    tag_name: tag.tag_name,
+    tag_desc: tag.tag_desc,
   }));
-
-  async function loadTag() {
-    const { data } = await api.get(fetchTag({ tag: tag_id }).url);
-
-    form.tag_name = data.tag_name;
-    form.tag_desc = data.tag_desc;
-  }
-
-  onMount(() => {
-    loadTag();
-  });
 
   function submit(e) {
     e.preventDefault();
@@ -43,7 +29,7 @@
   function confirmSubmit() {
     showConfirm = false;
 
-    form.post(postEditTag({ query: { tag_id: tag_id } }));
+    form.post(postEditTag({ query: { tag_id: tag.tag_id } }));
   }
 
   function autofocus(node) {
@@ -94,9 +80,9 @@
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />{$i18n.t(
+        <House class="inline aspect-square h-4 w-4" />{$i18n.t(
           "translate.home",
         )}
       </Link>
@@ -124,7 +110,7 @@
 <form class="space-y-4" onsubmit={submit}>
   {#if errors && Object.keys(errors).length > 0}
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">
@@ -179,7 +165,7 @@
         </div>
       {:else}
         <div class="flex items-center gap-1">
-          <Save class="inline h-4 w-4 aspect-square" />
+          <Save class="inline aspect-square h-4 w-4" />
           {$i18n.t("translate.save")}
         </div>
       {/if}

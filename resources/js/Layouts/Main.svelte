@@ -362,12 +362,12 @@
     <div class="navbar bg-base-300 w-full gap-4 lg:hidden">
       <div class="flex-none">
         <label for="my-drawer" class="btn btn-square btn-ghost">
-          <Menu class="inline h-5 w-5 aspect-square" />
+          <Menu class="inline aspect-square h-5 w-5" />
         </label>
       </div>
       <Link
         href={index()}
-        class="text-2xl font-bold uppercase transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-0 focus-visible:outline-transparent flex-1"
+        class="flex-1 text-2xl font-bold uppercase transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-0 focus-visible:outline-transparent"
       >
         Ani<span class="text-primary">Gal</span>
       </Link>
@@ -391,7 +391,7 @@
             </h6>
             <Link
               href={index()}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.home")}</Link
             >
             <Link
@@ -403,7 +403,7 @@
                   starts_with: null,
                 },
               })}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.tag")}</Link
             >
             <Link
@@ -414,17 +414,17 @@
                   per_page: 30,
                 },
               })}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.image")}</Link
             >
             <Link
               href={stats()}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.stats")}</Link
             >
             <Link
               href={setting()}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.setting")}</Link
             >
           </nav>
@@ -439,13 +439,13 @@
                     user_id: page.props.currentAuth.user_id,
                   },
                 })}
-                class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+                class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
                 >{page.props.currentAuth.username}</Link
               >
             {:else}
               <Link
                 href={getLogin()}
-                class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+                class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
                 >{$i18n.t("translate.login")}</Link
               >
             {/if}
@@ -456,18 +456,18 @@
             </h6>
             <Link
               href={dmca()}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.dmca")}</Link
             >
             <Link
               href={term()}
-              class="text-sm text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
+              class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer text-sm no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
               >{$i18n.t("translate.term")}</Link
             >
           </nav>
         </div>
 
-        <div class="footer flex md:justify-end gap-4 px-4 pt-0 pb-4 opacity-70">
+        <div class="footer flex gap-4 px-4 pt-0 pb-4 opacity-70 md:justify-end">
           {$i18n.t("translate.currentlaravel") + ": " + currentLaravel}. {$i18n.t(
             "translate.currentphp",
           ) +
@@ -475,7 +475,7 @@
             currentPHP}
         </div>
 
-        <div class="footer flex md:justify-end px-4 pt-0 pb-4">
+        <div class="footer flex px-4 pt-0 pb-4 md:justify-end">
           <div>
             <a
               href="https://www.infinityfree.com/"
@@ -486,7 +486,7 @@
               <img
                 src={infinityFreeLogoUrl}
                 alt="InfinityFree's logo"
-                class="h-5 w-auto inline"
+                class="inline h-5 w-auto"
               />
             </a>
           </div>
@@ -523,7 +523,7 @@
       )}
     >
       <button onclick={scrollToTop} class="btn btn-primary btn-sm btn-square">
-        <ArrowUp class="inline h-5 w-5 aspect-square" />
+        <ArrowUp class="inline aspect-square h-5 w-5" />
       </button>
     </div>
   </div>
@@ -533,13 +533,13 @@
 
     <aside
       class={clsx(
-        "menu text-base-content bg-base-300 flex min-h-full flex-col p-4 transition-all duration-300",
-        sidebarCollapsed ? "w-20" : "w-64",
+        "menu bg-base-300 text-base-content flex min-h-full flex-col overflow-x-hidden transition-[width,padding]",
+        sidebarCollapsed ? "w-12 items-center px-0" : "w-56 px-4",
       )}
     >
       <div
         class={clsx(
-          "mb-4 flex items-center",
+          "mb-4 flex w-full items-center",
           sidebarCollapsed ? "justify-center" : "justify-between",
         )}
       >
@@ -553,7 +553,7 @@
         {/if}
 
         <button class="btn btn-square btn-neutral" onclick={toggleSidebar}>
-          <Menu class="h-5 w-5 inline aspect-square" />
+          <Menu class="inline aspect-square h-5 w-5" />
         </button>
       </div>
 
@@ -563,8 +563,10 @@
             <Link
               href={item.path}
               class={clsx(
-                "btn",
-                sidebarCollapsed ? "justify-center" : "gap-1 justify-start",
+                "btn w-full",
+                sidebarCollapsed
+                  ? "btn-square justify-center px-0"
+                  : "justify-start gap-2",
                 page.component.startsWith(item.component)
                   ? "btn-primary"
                   : "btn-neutral",
@@ -586,10 +588,13 @@
             <Link
               href={item.path}
               class={clsx(
-                "rounded-base flex items-center",
-                sidebarCollapsed ? "justify-center px-0" : "gap-2",
-                page.component.startsWith(item.component) &&
-                  "bg-primary text-primary-content",
+                "btn w-full",
+                sidebarCollapsed
+                  ? "btn-square justify-center px-0"
+                  : "justify-start gap-2",
+                page.component.startsWith(item.component)
+                  ? "btn-primary"
+                  : "btn-neutral",
               )}
             >
               <item.icon size={20} />

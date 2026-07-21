@@ -213,9 +213,9 @@
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />{$i18n.t(
+        <House class="inline aspect-square h-4 w-4" />{$i18n.t(
           "translate.home",
         )}
       </Link>
@@ -248,7 +248,7 @@
       onclick={addImage}
       disabled={form.processing}
     >
-      <Plus class="inline h-4 w-4 aspect-square" />
+      <Plus class="inline aspect-square h-4 w-4" />
       {$i18n.t("translate.addnew")}
     </button>
   {/if}
@@ -293,7 +293,7 @@
         onclick={clearSearch}
         disabled={form.processing}
       >
-        <X class="inline h-4 w-4 aspect-square" />
+        <X class="inline aspect-square h-4 w-4" />
         {$i18n.t("translate.cancel")}
       </button>
     </div>
@@ -339,25 +339,25 @@
         <img
           data-lazyload-src={image.thumbnail_image_path_url}
           alt={image.image_id}
-          class="rounded-base object-cover lazyload"
+          class="rounded-base lazyload object-cover"
           onload={() => handleImageLoad(image.image_id)}
         />
 
         {#if loadedImages[image.image_id]}
           <div
-            class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent hover:to-black/70 transition-[--tw-gradient-to]"
+            class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent transition-[--tw-gradient-to] hover:to-black/70"
           >
             <div class="absolute top-0 left-0 w-full p-2">
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
+                    class="btn btn-primary pointer-events-none h-6! px-1! text-sm!"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
+                    class="btn btn-warning pointer-events-none h-6! px-1! text-sm!"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -394,7 +394,7 @@
             </div>
 
             <div
-              class="absolute bottom-0 left-0 flex flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
+              class="absolute bottom-0 left-0 flex w-full flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
             >
               {#each image.tags.slice(0, 5) as tag (tag.tag_id)}
                 <div use:tooltip={tag.tag_desc}>
@@ -510,7 +510,7 @@
 {:else}
   <div class="mt-4">
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">

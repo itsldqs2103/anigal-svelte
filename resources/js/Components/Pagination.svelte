@@ -84,14 +84,14 @@
               class="btn btn-neutral"
             >
               <span class="flex items-center gap-1">
-                <ArrowLeft class="h-4 w-4 inline aspect-square" />
+                <ArrowLeft class="inline aspect-square h-4 w-4" />
                 {prev.label}
               </span>
             </button>
           {:else}
             <button class="btn btn-neutral" disabled>
               <span class="flex items-center gap-1">
-                <ArrowLeft class="h-4 w-4 inline aspect-square" />
+                <ArrowLeft class="inline aspect-square h-4 w-4" />
                 {prev.label}
               </span>
             </button>
@@ -107,14 +107,14 @@
             >
               <span class="flex items-center gap-1">
                 {next.label}
-                <ArrowRight class="h-4 w-4 inline aspect-square" />
+                <ArrowRight class="inline aspect-square h-4 w-4" />
               </span>
             </button>
           {:else}
             <button class="btn btn-neutral" disabled>
               <span class="flex items-center gap-1">
                 {next.label}
-                <ArrowRight class="h-4 w-4 inline aspect-square" />
+                <ArrowRight class="inline aspect-square h-4 w-4" />
               </span>
             </button>
           {/if}
@@ -129,11 +129,11 @@
               onclick={goToPage(prev.url)}
               class="btn btn-neutral btn-square"
             >
-              <ArrowLeft class="h-4 w-4 inline aspect-square" />
+              <ArrowLeft class="inline aspect-square h-4 w-4" />
             </button>
           {:else}
             <button class="btn btn-neutral btn-square" disabled>
-              <ArrowLeft class="h-4 w-4 inline aspect-square" />
+              <ArrowLeft class="inline aspect-square h-4 w-4" />
             </button>
           {/if}
         {/if}
@@ -161,11 +161,11 @@
               onclick={goToPage(next.url)}
               class="btn btn-neutral btn-square"
             >
-              <ArrowRight class="h-4 w-4 inline aspect-square" />
+              <ArrowRight class="inline aspect-square h-4 w-4" />
             </button>
           {:else}
             <button class="btn btn-neutral btn-square" disabled>
-              <ArrowRight class="h-4 w-4 inline aspect-square" />
+              <ArrowRight class="inline aspect-square h-4 w-4" />
             </button>
           {/if}
         {/if}
@@ -173,15 +173,15 @@
     </div>
 
     {#if total > 0}
-      <div class="text-center mt-2">
-        <p class="text-sm text-base-content/70">
+      <div class="mt-2 text-center">
+        <p class="text-base-content/70 text-sm">
           {$i18n.t("translate.showingfrom")} <b>{from}</b>
           {$i18n.t("translate.to")} <b>{to}</b>
           {$i18n.t("translate.of")} <b>{total}</b>
           {$i18n.t("translate.results")}
         </p>
 
-        <p class="text-sm text-base-content/50">
+        <p class="text-base-content/50 text-sm">
           ({$i18n.t("translate.navigateWithKeyboard")})
         </p>
       </div>

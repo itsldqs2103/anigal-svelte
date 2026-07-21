@@ -12,7 +12,6 @@
   } from "@lucide/svelte";
   import clsx from "clsx";
   import { filesize } from "filesize";
-  import { onMount } from "svelte";
 
   import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
@@ -20,7 +19,6 @@
   import { tooltip } from "@/js/lib/tooltip";
   import { truncate } from "@/js/lib/truncate";
   import { addTag as apiAddTag } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
-  import { allTags } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import {
     index as imageIndex,
     postAddImage,
@@ -29,26 +27,8 @@
 
   let isCollapsed = $state(true);
 
-  let { errors = {}, countTags = [], maxUploadFilesize } = $props();
+  let { errors = {}, tags, maxUploadFilesize } = $props();
   let startsWith = $state(null);
-
-  let tags = $state([]);
-  let tagsLoading = $state(false);
-
-  async function loadTags() {
-    tagsLoading = true;
-
-    try {
-      const { data } = await api.get(allTags().url);
-      tags = data;
-    } finally {
-      tagsLoading = false;
-    }
-  }
-
-  onMount(() => {
-    loadTags();
-  });
 
   let filteredTags = $derived(
     startsWith
@@ -134,20 +114,26 @@
       ? `${truncate(file.name, 24)} (${filesize(file.size, { standard: "jedec" })})`
       : $i18n.t("translate.chooseimage"),
   );
+
+  const refreshTags = () => {
+    router.reload({
+      only: ["tags"],
+    });
+  };
 </script>
 
 <svelte:head>
   <title>{$i18n.t("translate.addnew")} - {$title}</title>
 </svelte:head>
 
-<div class="breadcrumbs inline-flex bg-base-300 rounded-base mb-4 p-2">
+<div class="breadcrumbs bg-base-300 rounded-base mb-4 inline-flex p-2">
   <ul>
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />{$i18n.t(
+        <House class="inline aspect-square h-4 w-4" />{$i18n.t(
           "translate.home",
         )}
       </Link>
@@ -174,7 +160,7 @@
 <form onsubmit={submit} class="space-y-4">
   {#if errors && Object.keys(errors).length > 0}
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">
@@ -294,7 +280,7 @@
       <span class="text-sm">{$i18n.t("translate.addnewtag")}</span>
       <ChevronDown
         class={clsx(
-          "w-5 h-5 inline aspect-square",
+          "inline aspect-square h-5 w-5",
           isCollapsed && "rotate-180",
         )}
       />
@@ -319,7 +305,7 @@
         <input
           type="text"
           class={clsx(
-            "input w-full mt-2",
+            "input mt-2 w-full",
             newTagErrors.tag_desc && !form.processing && "input-error",
           )}
           id="newTagDescriptionInput"
@@ -342,10 +328,7 @@
       <button
         type="button"
         class="btn btn-primary mt-4"
-        disabled={newTagProcessing ||
-          form.processing ||
-          tagsLoading ||
-          !tagForm.tag_name}
+        disabled={newTagProcessing || form.processing || !tagForm.tag_name}
         onclick={addTag}
       >
         {#if newTagProcessing}
@@ -356,7 +339,7 @@
           </div>
         {:else}
           <div class="flex items-center gap-1">
-            <Plus class="inline h-4 w-4 aspect-square" />
+            <Plus class="inline aspect-square h-4 w-4" />
             {$i18n.t("translate.add")}
           </div>
         {/if}
@@ -369,14 +352,14 @@
       type="button"
       class="btn btn-primary btn-square"
       use:tooltip={$i18n.t("translate.refresh")}
-      onclick={loadTags}
-      disabled={tagsLoading || form.processing}
+      disabled={form.processing}
+      onclick={refreshTags}
     >
-      <RefreshCw class="inline h-4 w-4 aspect-square" />
+      <RefreshCw class="inline aspect-square h-4 w-4" />
     </button>
   </div>
 
-  {#if countTags > 0}
+  {#if tags.length > 0}
     <div class="flex flex-wrap gap-2">
       <button
         class={clsx(
@@ -405,13 +388,8 @@
   {/if}
 
   <div>
-    {#if tagsLoading}
-      <div class="inline-flex items-center gap-1">
-        <span class="loading loading-spinner loading-sm"></span>
-        <span class="text-sm">{$i18n.t("translate.loading")}</span>
-      </div>
-    {:else if countTags > 0}
-      <div class="mt-4 inline-flex items-center flex-wrap gap-4">
+    {#if filteredTags.length > 0}
+      <div class="mt-4 inline-flex flex-wrap items-center gap-4">
         {#each filteredTags as tag (tag.tag_id)}
           <label
             class="label text-sm select-none"
@@ -443,7 +421,7 @@
     {:else}
       <div class="mt-4">
         <div role="alert" class="alert alert-error alert-soft inline-flex">
-          <CircleAlert class="h-6 w-6 inline aspect-square" />
+          <CircleAlert class="inline aspect-square h-6 w-6" />
           <div>
             <h3 class="font-bold">
               {$i18n.t("translate.thereareerror")}
@@ -471,7 +449,7 @@
         </div>
       {:else}
         <div class="flex items-center gap-1">
-          <Save class="inline h-4 w-4 aspect-square" />
+          <Save class="inline aspect-square h-4 w-4" />
           {$i18n.t("translate.add")}
         </div>
       {/if}

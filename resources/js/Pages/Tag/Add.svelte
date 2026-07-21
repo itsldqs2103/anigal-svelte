@@ -32,14 +32,14 @@
   <title>Add tag - {$title}</title>
 </svelte:head>
 
-<div class="breadcrumbs inline-flex bg-base-300 rounded-base mb-4 p-2">
+<div class="breadcrumbs bg-base-300 rounded-base mb-4 inline-flex p-2">
   <ul>
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />{$i18n.t(
+        <House class="inline aspect-square h-4 w-4" />{$i18n.t(
           "translate.home",
         )}
       </Link>
@@ -67,7 +67,7 @@
 <form class="space-y-4" onsubmit={submit}>
   {#if errors && Object.keys(errors).length > 0}
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">
@@ -122,7 +122,7 @@
         </div>
       {:else}
         <div class="flex items-center gap-1">
-          <Save class="inline h-4 w-4 aspect-square" />
+          <Save class="inline aspect-square h-4 w-4" />
           {$i18n.t("translate.add")}
         </div>
       {/if}

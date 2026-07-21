@@ -48,7 +48,7 @@ class TagController extends Controller
 
         $tags = Tag::query()
             ->when($startsWith, function ($query, $startsWith) {
-                return $query->where('tag_name', 'like', $startsWith.'%');
+                return $query->where('tag_name', 'like', $startsWith . '%');
             })
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
@@ -103,10 +103,12 @@ class TagController extends Controller
 
     public function getEditTag(Request $request)
     {
-        $tag_id = $request->query('tag_id');
+        $id = $request->query('tag_id');
+
+        $tag = Tag::where('tag_id', $id)->firstOrFail();
 
         return Inertia::render('Tag/Edit', [
-            'tag_id' => $tag_id,
+            'tag' => $tag,
         ]);
     }
 
@@ -117,7 +119,7 @@ class TagController extends Controller
         $tag = Tag::where('tag_id', $id)->firstOrFail();
 
         $request->validate([
-            'tag_name' => ['required', 'string', 'max:255', 'unique:tags,tag_name,'.$tag->tag_id.',tag_id'],
+            'tag_name' => ['required', 'string', 'max:255', 'unique:tags,tag_name,' . $tag->tag_id . ',tag_id'],
             'tag_desc' => ['nullable', 'string', 'max:255'],
         ], [], [
             'tag_name' => Str::lower(__('translate.tagname')),
@@ -143,6 +145,7 @@ class TagController extends Controller
         $id = $request->query('tag_id');
 
         $tag = Tag::where('tag_id', $id)->firstOrFail();
+        
         $tag->delete();
 
         Inertia::flash([

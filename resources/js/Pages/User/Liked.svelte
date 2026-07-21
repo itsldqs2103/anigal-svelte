@@ -136,25 +136,25 @@
             <img
               data-lazyload-src={image.thumbnail_image_path_url}
               alt={image.image_id}
-              class="rounded-base object-cover lazyload"
+              class="rounded-base lazyload object-cover"
               onload={() => handleImageLoad(image.image_id)}
             />
 
             {#if loadedImages[image.image_id]}
               <div
-                class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent hover:to-black/70 transition-[--tw-gradient-to]"
+                class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent transition-[--tw-gradient-to] hover:to-black/70"
               >
                 <div class="absolute top-0 left-0 w-full p-2">
                   <div class="flex items-center justify-between">
                     {#if image.created_at === image.updated_at}
                       <div
-                        class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
+                        class="btn btn-primary pointer-events-none h-6! px-1! text-sm!"
                       >
                         {$i18n.t("translate.new")}!
                       </div>
                     {:else if image.created_at !== image.updated_at}
                       <div
-                        class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
+                        class="btn btn-warning pointer-events-none h-6! px-1! text-sm!"
                       >
                         {$i18n.t("translate.updated")}!
                       </div>
@@ -300,7 +300,7 @@
 
       {#snippet next({ hasMore, fetch, loading })}
         {#if hasMore}
-          <div class="text-center mt-4">
+          <div class="mt-4 text-center">
             <button class="btn btn-primary" onclick={fetch} disabled={loading}>
               {#if loading}
                 <span class="loading loading-spinner loading-xs"></span>
@@ -316,7 +316,7 @@
   {:else}
     <div class="mt-4">
       <div role="alert" class="alert alert-error alert-soft inline-flex">
-        <CircleAlert class="h-6 w-6 inline aspect-square" />
+        <CircleAlert class="inline aspect-square h-6 w-6" />
         <div>
           <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
           <div class="text-sm">

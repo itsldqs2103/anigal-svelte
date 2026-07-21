@@ -50,7 +50,7 @@ class ImageController extends Controller
         ])
             ->withCount('likes')
             ->withExists([
-                'likes as liked' => fn ($query) => $query->where('user_id', $userId),
+                'likes as liked' => fn($query) => $query->where('user_id', $userId),
             ])
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
@@ -93,15 +93,15 @@ class ImageController extends Controller
         $tag = Tag::where('tag_slug_name', $tagSlug)->firstOrFail();
 
         $images = Image::with([
-            'tags' => fn ($query) => $query->orderBy('tag_name'),
+            'tags' => fn($query) => $query->orderBy('tag_name'),
         ])
             ->withCount('likes')
             ->when(
                 $userId,
-                fn ($query) => $query->withExists([
-                    'likes as liked' => fn ($query) => $query->where('user_id', $userId),
+                fn($query) => $query->withExists([
+                    'likes as liked' => fn($query) => $query->where('user_id', $userId),
                 ]),
-                fn ($query) => $query->select('*')->selectRaw('false as liked')
+                fn($query) => $query->select('*')->selectRaw('false as liked')
             )
             ->whereHas('tags', function ($query) use ($tag) {
                 $query->where('tags.tag_id', $tag->tag_id);
@@ -132,11 +132,11 @@ class ImageController extends Controller
 
     public function getAddImage()
     {
-        $countTags = Tag::count();
+        $tags = Tag::all();
         $maxUploadFilesize = formatBytes(config('app.max_upload_filesize'));
 
         return Inertia::render('Image/Add', [
-            'countTags' => $countTags,
+            'tags' => $tags,
             'maxUploadFilesize' => $maxUploadFilesize,
         ]);
     }
@@ -191,13 +191,19 @@ class ImageController extends Controller
 
     public function getEditImage(Request $request)
     {
-        $image_id = $request->query('image_id');
-        $countTags = Tag::count();
+        $id = $request->query('image_id');
+
+        $image = Image::with('tags:tag_id,tag_name')->findOrFail($id);
+
+        $selectedTags = $image->tags->pluck('tag_id');
+        $tags = Tag::all();
+
         $maxUploadFilesize = formatBytes(config('app.max_upload_filesize'));
 
         return Inertia::render('Image/Edit', [
-            'image_id' => $image_id,
-            'countTags' => $countTags,
+            'image' => $image,
+            'tags' => $tags,
+            'selectedTags' => $selectedTags,
             'maxUploadFilesize' => $maxUploadFilesize,
         ]);
     }

@@ -245,7 +245,7 @@
 
 <div>
   <div class="rounded-base bg-base-300">
-    <div class="h-24 bg-primary rounded-t-base"></div>
+    <div class="bg-primary rounded-t-base h-24"></div>
 
     <div class="relative px-4 pb-4">
       <div class="-mt-16 flex justify-center sm:justify-start">
@@ -255,7 +255,7 @@
           onclick={openAvatarModal}
         >
           <div
-            class="relative h-24 w-24 overflow-hidden rounded-full border-4 border-base-100"
+            class="border-base-100 relative h-24 w-24 overflow-hidden rounded-full border-4"
           >
             {#if user.avatar}
               <img
@@ -265,16 +265,16 @@
               />
             {:else}
               <div
-                class="flex h-full w-full items-center justify-center bg-primary text-5xl font-bold text-primary-content"
+                class="bg-primary text-primary-content flex h-full w-full items-center justify-center text-5xl font-bold"
               >
                 {avatarLetter}
               </div>
             {/if}
 
             <div
-              class="absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-[opacity,background-color] group-hover:bg-base-100/70 group-hover:opacity-100"
+              class="group-hover:bg-base-100/70 absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-[opacity,background-color] group-hover:opacity-100"
             >
-              <Pencil class="h-6 w-6 aspect-square inline" />
+              <Pencil class="inline aspect-square h-6 w-6" />
             </div>
           </div>
         </button>
@@ -283,10 +283,10 @@
       <div class="-mt-4 flex justify-end">
         <div class="dropdown dropdown-end select-none">
           <button type="button" class="btn btn-square btn-primary">
-            <EllipsisVertical class="w-4 h-4 aspect-square inline" />
+            <EllipsisVertical class="inline aspect-square h-4 w-4" />
           </button>
           <ul
-            class="dropdown-content mt-1 menu bg-base-100 rounded-box z-1 w-42 space-y-1 p-2"
+            class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-42 space-y-1 p-2"
           >
             {#if isUserEdit.value}
               <li>
@@ -295,7 +295,7 @@
                   disabled={form.processing}
                   type="button"
                 >
-                  <User class="h-4 w-4 inline aspect-square" />
+                  <User class="inline aspect-square h-4 w-4" />
                   {$i18n.t("translate.editprofile")}
                 </button>
               </li>
@@ -305,7 +305,7 @@
                   disabled={form.processing}
                   type="button"
                 >
-                  <KeyRound class="h-4 w-4 inline aspect-square" />
+                  <KeyRound class="inline aspect-square h-4 w-4" />
                   {$i18n.t("translate.editpassword")}
                 </button>
               </li>
@@ -316,7 +316,7 @@
                 onclick={postLogout}
                 disabled={form.processing}
               >
-                <LogOut class="h-4 w-4 inline aspect-square" />
+                <LogOut class="inline aspect-square h-4 w-4" />
                 {$i18n.t("translate.logout")}
               </button>
             </li>
@@ -330,17 +330,17 @@
         </h1>
 
         <div class="text-base-content/50 text-sm">
-          <span><AtSign class="w-4 h-4 inline aspect-square" /></span>
+          <span><AtSign class="inline aspect-square h-4 w-4" /></span>
           <span>{user.username}</span>
         </div>
 
         <div class="text-base-content/50 text-sm">
-          <Mail class="w-4 h-4 inline aspect-square" />
+          <Mail class="inline aspect-square h-4 w-4" />
           <span>{user.email}</span>
         </div>
 
         <div class="text-base-content/50 text-sm">
-          <CalendarClock class="w-4 h-4 inline aspect-square" />
+          <CalendarClock class="inline aspect-square h-4 w-4" />
           <span>{$i18n.t("translate.joined")} {user.created_at_diff}</span>
         </div>
       </div>

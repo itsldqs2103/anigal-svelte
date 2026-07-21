@@ -10,107 +10,36 @@
     RefreshCw,
     Share2,
   } from "@lucide/svelte";
-  import { onMount } from "svelte";
 
-  import { api } from "@/js/lib/axios";
   import { showImage } from "@/js/lib/fancybox";
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
-  import {
-    latestImages as apiLatestImages,
-    latestTags as apiLatestTags,
-    randomImages as apiRandomImages,
-    randomTags as apiRandomTags,
-  } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import {
     getSearch,
     index as imageIndex,
   } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
   import { index as tagIndex } from "@/js/wayfinder/actions/App/Http/Controllers/TagController";
 
-  let {
-    countLatestTags = [],
-    countLatestImages = [],
-    countRandomTags = [],
-    countRandomImages = [],
-  } = $props();
-
-  let latestTags = $state([]);
-  let latestImages = $state([]);
-  let randomTags = $state([]);
-  let randomImages = $state([]);
-
-  let latestTagsLoading = $state(false);
-  let latestImagesLoading = $state(false);
-  let randomTagsLoading = $state(false);
-  let randomImagesLoading = $state(false);
-
-  function shareImage(image) {
-    const url = image?.image_source;
-
-    if (!url || !navigator.share) {
-      return Promise.resolve(false);
-    }
-
-    return navigator
-      .share({ url })
-      .then(() => true)
-      .catch(() => false);
-  }
-
-  async function loadLatestTags() {
-    latestTagsLoading = true;
-
-    try {
-      const { data } = await api.get(apiLatestTags().url);
-      latestTags = data;
-    } finally {
-      latestTagsLoading = false;
-    }
-  }
-
-  async function loadLatestImages() {
-    latestImagesLoading = true;
-
-    try {
-      const { data } = await api.get(apiLatestImages().url);
-      latestImages = data;
-    } finally {
-      latestImagesLoading = false;
-    }
-  }
-
-  async function loadRandomTags() {
-    randomTagsLoading = true;
-
-    try {
-      const { data } = await api.get(apiRandomTags().url);
-      randomTags = data;
-    } finally {
-      randomTagsLoading = false;
-    }
-  }
-
-  async function loadRandomImages() {
-    randomImagesLoading = true;
-
-    try {
-      const { data } = await api.get(apiRandomImages().url);
-      randomImages = data;
-    } finally {
-      randomImagesLoading = false;
-    }
-  }
-
-  onMount(() => {
-    loadLatestTags();
-    loadLatestImages();
-    loadRandomTags();
-    loadRandomImages();
-  });
+  let { randomTags, randomImages, latestTags, latestImages } = $props();
 
   let loadedImages = $state({});
+
+  const refreshRandomTags = () => {
+    router.reload({ only: ["randomTags"] });
+  };
+
+  const refreshLatestTags = () => {
+    router.reload({ only: ["latestTags"] });
+  };
+
+  const refreshRandomImages = () => {
+    router.reload({ only: ["randomImages"] });
+  };
+
+  const refreshLatestImages = () => {
+    router.reload({ only: ["latestImages"] });
+  };
 
   function handleImageLoad(imageId) {
     loadedImages = {
@@ -141,13 +70,26 @@
       }),
     );
   }
+
+  function shareImage(image) {
+    const url = image?.image_source;
+
+    if (!url || !navigator.share) {
+      return Promise.resolve(false);
+    }
+
+    return navigator
+      .share({ url })
+      .then(() => true)
+      .catch(() => false);
+  }
 </script>
 
 <svelte:head>
   <title>{$i18n.t("translate.home")} - {$title}</title>
 </svelte:head>
 
-<div class="breadcrumbs inline-flex bg-base-300 rounded-base mb-4 p-2">
+<div class="breadcrumbs bg-base-300 rounded-base mb-4 inline-flex p-2">
   <ul>
     <li>
       <House class="pointer-events-none me-1 h-4 w-4" />{$i18n.t(
@@ -168,24 +110,18 @@
       type="button"
       class="btn btn-primary btn-square"
       use:tooltip={$i18n.t("translate.refresh")}
-      onclick={loadRandomTags}
-      disabled={randomTagsLoading}
+      onclick={refreshRandomTags}
     >
-      <RefreshCw class="inline h-4 w-4 aspect-square" />
+      <RefreshCw class="inline aspect-square h-4 w-4" />
     </button>
     <button type="button" class="btn btn-primary" onclick={viewMoreTags}>
       <span>{$i18n.t("translate.viewmore")}</span>
-      <ArrowRight class="inline h-4 w-4 aspect-square" />
+      <ArrowRight class="inline aspect-square h-4 w-4" />
     </button>
   </div>
 </div>
 
-{#if randomTagsLoading}
-  <div class="inline-flex items-center gap-1">
-    <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
-  </div>
-{:else if countRandomTags > 0}
+{#if randomTags.length > 0}
   <div
     class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
@@ -193,13 +129,13 @@
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
           <div
-            class="btn btn-primary h-6! px-1! text-sm! pointer-events-none mb-1"
+            class="btn btn-primary pointer-events-none mb-1 h-6! px-1! text-sm!"
           >
             {$i18n.t("translate.new")}!
           </div>
         {:else}
           <div
-            class="btn btn-warning h-6! px-1! text-sm! pointer-events-none mb-1"
+            class="btn btn-warning pointer-events-none mb-1 h-6! px-1! text-sm!"
           >
             {$i18n.t("translate.updated")}!
           </div>
@@ -229,7 +165,7 @@
 {:else}
   <div class="mt-4">
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">
           {$i18n.t("translate.thereareerror")}
@@ -252,25 +188,19 @@
     <button
       type="button"
       class="btn btn-primary btn-square"
+      onclick={refreshRandomImages}
       use:tooltip={$i18n.t("translate.refresh")}
-      onclick={loadRandomImages}
-      disabled={randomImagesLoading}
     >
-      <RefreshCw class="inline h-4 w-4 aspect-square" />
+      <RefreshCw class="inline aspect-square h-4 w-4" />
     </button>
     <button type="button" class="btn btn-primary" onclick={viewMoreImages}>
       <span>{$i18n.t("translate.viewmore")}</span>
-      <ArrowRight class="inline h-4 w-4 aspect-square" />
+      <ArrowRight class="inline aspect-square h-4 w-4" />
     </button>
   </div>
 </div>
 
-{#if randomImagesLoading}
-  <div class="inline-flex items-center gap-1">
-    <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
-  </div>
-{:else if countRandomImages > 0}
+{#if randomImages.length > 0}
   <div
     class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
@@ -279,25 +209,25 @@
         <img
           data-lazyload-src={image.thumbnail_image_path_url}
           alt={image.image_id}
-          class="rounded-base object-cover lazyload"
+          class="rounded-base lazyload object-cover"
           onload={() => handleImageLoad(`random-${image.image_id}`)}
         />
 
         {#if loadedImages[`random-${image.image_id}`]}
           <div
-            class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent hover:to-black/70 transition-[--tw-gradient-to]"
+            class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent transition-[--tw-gradient-to] hover:to-black/70"
           >
             <div class="absolute top-0 left-0 w-full p-2">
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
+                    class="btn btn-primary pointer-events-none h-6! px-1! text-sm!"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
+                    class="btn btn-warning pointer-events-none h-6! px-1! text-sm!"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -306,7 +236,7 @@
             </div>
 
             <div
-              class="absolute bottom-0 left-0 flex flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
+              class="absolute bottom-0 left-0 flex w-full flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
             >
               {#each image.tags.slice(0, 5) as tag (tag.tag_id)}
                 <div use:tooltip={tag.tag_desc}>
@@ -398,7 +328,7 @@
 {:else}
   <div class="mt-4">
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">
@@ -410,7 +340,7 @@
 {/if}
 
 <div
-  class="space-y-4 sm:flex sm:items-center sm:justify-between sm:gap-4 sm:space-y-0 mt-4"
+  class="mt-4 space-y-4 sm:flex sm:items-center sm:justify-between sm:gap-4 sm:space-y-0"
 >
   <div>
     <h1 class="text-lg font-bold">{$i18n.t("translate.latesttags")}</h1>
@@ -419,25 +349,19 @@
     <button
       type="button"
       class="btn btn-primary btn-square"
+      onclick={refreshLatestTags}
       use:tooltip={$i18n.t("translate.refresh")}
-      onclick={loadLatestTags}
-      disabled={latestTagsLoading}
     >
-      <RefreshCw class="inline h-4 w-4 aspect-square" />
+      <RefreshCw class="inline aspect-square h-4 w-4" />
     </button>
     <button type="button" class="btn btn-primary" onclick={viewMoreTags}>
       <span>{$i18n.t("translate.viewmore")}</span>
-      <ArrowRight class="inline h-4 w-4 aspect-square" />
+      <ArrowRight class="inline aspect-square h-4 w-4" />
     </button>
   </div>
 </div>
 
-{#if latestTagsLoading}
-  <div class="inline-flex items-center gap-1">
-    <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
-  </div>
-{:else if countLatestTags > 0}
+{#if latestTags.length > 0}
   <div
     class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
@@ -445,13 +369,13 @@
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
           <div
-            class="btn btn-primary h-6! px-1! text-sm! pointer-events-none mb-1"
+            class="btn btn-primary pointer-events-none mb-1 h-6! px-1! text-sm!"
           >
             {$i18n.t("translate.new")}!
           </div>
         {:else if tag.created_at !== tag.updated_at}
           <div
-            class="btn btn-warning h-6! px-1! text-sm! pointer-events-none mb-1"
+            class="btn btn-warning pointer-events-none mb-1 h-6! px-1! text-sm!"
           >
             {$i18n.t("translate.updated")}!
           </div>
@@ -480,7 +404,7 @@
 {:else}
   <div class="mt-4">
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">
@@ -501,25 +425,19 @@
     <button
       type="button"
       class="btn btn-primary btn-square"
+      onclick={refreshLatestImages}
       use:tooltip={$i18n.t("translate.refresh")}
-      onclick={loadLatestImages}
-      disabled={latestImagesLoading}
     >
-      <RefreshCw class="inline h-4 w-4 aspect-square" />
+      <RefreshCw class="inline aspect-square h-4 w-4" />
     </button>
     <button type="button" class="btn btn-primary" onclick={viewMoreImages}>
       <span>{$i18n.t("translate.viewmore")}</span>
-      <ArrowRight class="inline h-4 w-4 aspect-square" />
+      <ArrowRight class="inline aspect-square h-4 w-4" />
     </button>
   </div>
 </div>
 
-{#if latestImagesLoading}
-  <div class="inline-flex items-center gap-1">
-    <span class="loading loading-spinner loading-sm"></span>
-    <span class="text-sm">{$i18n.t("translate.loading")}</span>
-  </div>
-{:else if countLatestImages > 0}
+{#if latestImages.length > 0}
   <div
     class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
@@ -528,25 +446,25 @@
         <img
           data-lazyload-src={image.thumbnail_image_path_url}
           alt={image.image_id}
-          class="rounded-base object-cover lazyload"
+          class="rounded-base lazyload object-cover"
           onload={() => handleImageLoad(`image-${image.image_id}`)}
         />
 
         {#if loadedImages[`image-${image.image_id}`]}
           <div
-            class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent hover:to-black/70 transition-[--tw-gradient-to]"
+            class="rounded-base group absolute inset-0 bg-linear-to-b from-black/70 via-transparent transition-[--tw-gradient-to] hover:to-black/70"
           >
             <div class="absolute top-0 left-0 w-full p-2">
               <div class="flex items-center justify-between">
                 {#if image.created_at === image.updated_at}
                   <div
-                    class="btn btn-primary h-6! px-1! text-sm! pointer-events-none"
+                    class="btn btn-primary pointer-events-none h-6! px-1! text-sm!"
                   >
                     {$i18n.t("translate.new")}!
                   </div>
                 {:else if image.created_at !== image.updated_at}
                   <div
-                    class="btn btn-warning h-6! px-1! text-sm! pointer-events-none"
+                    class="btn btn-warning pointer-events-none h-6! px-1! text-sm!"
                   >
                     {$i18n.t("translate.updated")}!
                   </div>
@@ -555,7 +473,7 @@
             </div>
 
             <div
-              class="absolute bottom-0 left-0 flex flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
+              class="absolute bottom-0 left-0 flex w-full flex-wrap gap-2 p-2 opacity-0 transition-opacity group-hover:opacity-100"
             >
               {#each image.tags.slice(0, 5) as tag (tag.tag_id)}
                 <div use:tooltip={tag.tag_desc}>
@@ -647,7 +565,7 @@
 {:else}
   <div class="mt-4">
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">

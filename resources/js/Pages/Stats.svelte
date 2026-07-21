@@ -1,53 +1,34 @@
 <script>
-  import { Link } from "@inertiajs/svelte";
+  import { Link, router } from "@inertiajs/svelte";
   import { House, RefreshCw } from "@lucide/svelte";
   import { filesize } from "filesize";
-  import { onMount } from "svelte";
 
-  import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
-  import { stats } from "@/js/wayfinder/actions/App/Http/Controllers/ApiController";
   import { index } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
 
-  let totalTags = $state(0);
-  let totalImages = $state(0);
-  let totalImagesFilesize = $state([]);
+  let { totalTags, totalImages, totalImagesFilesize } = $props();
 
-  let statsLoading = $state(false);
-
-  async function loadStats() {
-    statsLoading = true;
-
-    try {
-      const { data } = await api.get(stats().url);
-
-      totalTags = data.totalTags;
-      totalImages = data.totalImages;
-      totalImagesFilesize = data.totalImagesFilesize;
-    } finally {
-      statsLoading = false;
-    }
-  }
-
-  onMount(() => {
-    loadStats();
-  });
+  const refreshStats = () => {
+    router.reload({
+      only: ["totalTags", "totalImages", "totalImagesFilesize"],
+    });
+  };
 </script>
 
 <svelte:head>
   <title>{$i18n.t("translate.stats")} - {$title}</title>
 </svelte:head>
 
-<div class="breadcrumbs inline-flex bg-base-300 rounded-base mb-4 p-2">
+<div class="breadcrumbs bg-base-300 rounded-base mb-4 inline-flex p-2">
   <ul>
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />
+        <House class="inline aspect-square h-4 w-4" />
         {$i18n.t("translate.home")}
       </Link>
     </li>
@@ -63,11 +44,10 @@
   <button
     type="button"
     class="btn btn-primary btn-square"
+    onclick={refreshStats}
     use:tooltip={$i18n.t("translate.refresh")}
-    onclick={loadStats}
-    disabled={statsLoading}
   >
-    <RefreshCw class="inline h-4 w-4 aspect-square" />
+    <RefreshCw class="inline aspect-square h-4 w-4" />
   </button>
 </div>
 

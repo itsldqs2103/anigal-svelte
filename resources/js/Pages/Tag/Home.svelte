@@ -133,9 +133,9 @@
     <li>
       <Link
         href={index()}
-        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent gap-1"
+        class="text-base-content hover:text-primary focus:text-primary focus-visible:text-primary cursor-pointer gap-1 no-underline transition-[color] focus:outline-0 focus:outline-transparent focus-visible:outline-0 focus-visible:outline-transparent"
       >
-        <House class="inline h-4 w-4 aspect-square" />{$i18n.t(
+        <House class="inline aspect-square h-4 w-4" />{$i18n.t(
           "translate.home",
         )}
       </Link>
@@ -153,7 +153,7 @@
     onclick={addTag}
     disabled={form.processing}
   >
-    <Plus class="inline h-4 w-4 aspect-square" />
+    <Plus class="inline aspect-square h-4 w-4" />
     {$i18n.t("translate.addnew")}
   </button>
 {/if}
@@ -201,7 +201,7 @@
         only: ["tags"],
       })}
   >
-    <RefreshCw class="inline h-4 w-4 aspect-square" />
+    <RefreshCw class="inline aspect-square h-4 w-4" />
   </button>
   <div class="dropdown dropdown-end select-none">
     <button
@@ -220,7 +220,7 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content mt-1 menu bg-base-300 rounded-box z-1 w-24 p-2">
+    <ul class="dropdown-content menu bg-base-300 rounded-box z-1 mt-1 w-24 p-2">
       <li>
         <button
           class={clsx(order === "oldest" && "bg-primary text-primary-content")}
@@ -260,7 +260,7 @@
     </button>
 
     <ul
-      class="dropdown-content menu bg-base-300 rounded-box mt-1 z-1 w-42 space-y-1 p-2"
+      class="dropdown-content menu bg-base-300 rounded-box z-1 mt-1 w-42 space-y-1 p-2"
     >
       {#each filters.allowedLimits as limit (limit)}
         <li>
@@ -292,13 +292,13 @@
       <div class="group bg-base-300 rounded-base p-4">
         {#if tag.created_at === tag.updated_at}
           <div
-            class="btn btn-primary h-6! px-1! text-sm! pointer-events-none mb-1"
+            class="btn btn-primary pointer-events-none mb-1 h-6! px-1! text-sm!"
           >
             {$i18n.t("translate.new")}!
           </div>
         {:else if tag.created_at !== tag.updated_at}
           <div
-            class="btn btn-warning h-6! px-1! text-sm! pointer-events-none mb-1"
+            class="btn btn-warning pointer-events-none mb-1 h-6! px-1! text-sm!"
           >
             {$i18n.t("translate.updated")}!
           </div>
@@ -324,7 +324,7 @@
 
         {#if isAuth && isUserEdit.value}
           <div
-            class="mt-4 flex items-center justify-end gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+            class="mt-4 flex items-center justify-end gap-2 opacity-100 transition-opacity md:opacity-0 md:group-hover:opacity-100"
           >
             <button
               use:tooltip={$i18n.t("translate.edit")}
@@ -358,7 +358,7 @@
 {:else}
   <div class="mt-4">
     <div role="alert" class="alert alert-error alert-soft inline-flex">
-      <CircleAlert class="h-6 w-6 inline aspect-square" />
+      <CircleAlert class="inline aspect-square h-6 w-6" />
       <div>
         <h3 class="font-bold">{$i18n.t("translate.thereareerror")}</h3>
         <div class="text-sm">
