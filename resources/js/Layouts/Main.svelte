@@ -18,6 +18,7 @@
 
   import infinityFreeLogoUrl from "@/images/infinityfree-logo.svg";
   import i18n from "@/js/lib/i18n";
+  import { sidebarState, toggleSidebar } from "@/js/lib/sidebar.svelte";
   import { initializeTheme } from "@/js/lib/theme";
   import { tooltip } from "@/js/lib/tooltip";
   import { index as imageIndex } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
@@ -67,15 +68,6 @@
       }).showToast();
     }
   });
-
-  let sidebarCollapsed = $state(
-    localStorage.getItem("sidebarCollapsed") === "true",
-  );
-
-  function toggleSidebar() {
-    sidebarCollapsed = !sidebarCollapsed;
-    localStorage.setItem("sidebarCollapsed", String(sidebarCollapsed));
-  }
 
   function handleImageError(event) {
     const img = event.target;
@@ -534,16 +526,16 @@
     <aside
       class={clsx(
         "menu bg-base-300 text-base-content flex min-h-full flex-col overflow-x-hidden transition-[width,padding]",
-        sidebarCollapsed ? "w-12 items-center px-0" : "w-56 px-4",
+        sidebarState.collapsed ? "w-12 items-center px-0" : "w-56 px-4",
       )}
     >
       <div
         class={clsx(
           "mb-4 flex w-full items-center",
-          sidebarCollapsed ? "justify-center" : "justify-between",
+          sidebarState.collapsed ? "justify-center" : "justify-between",
         )}
       >
-        {#if !sidebarCollapsed}
+        {#if !sidebarState.collapsed}
           <Link
             href={index()}
             class="text-2xl font-bold uppercase transition-opacity hover:opacity-70"
@@ -564,7 +556,7 @@
               href={item.path}
               class={clsx(
                 "btn w-full",
-                sidebarCollapsed
+                sidebarState.collapsed
                   ? "btn-square justify-center px-0"
                   : "justify-start gap-2",
                 page.component.startsWith(item.component)
@@ -574,7 +566,7 @@
             >
               <item.icon size={20} />
 
-              {#if !sidebarCollapsed}
+              {#if !sidebarState.collapsed}
                 <span>{item.name}</span>
               {/if}
             </Link>
@@ -589,7 +581,7 @@
               href={item.path}
               class={clsx(
                 "btn w-full",
-                sidebarCollapsed
+                sidebarState.collapsed
                   ? "btn-square justify-center px-0"
                   : "justify-start gap-2",
                 page.component.startsWith(item.component)
@@ -599,7 +591,7 @@
             >
               <item.icon size={20} />
 
-              {#if !sidebarCollapsed}
+              {#if !sidebarState.collapsed}
                 <span>{item.name}</span>
               {/if}
             </Link>
