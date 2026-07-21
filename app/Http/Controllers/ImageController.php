@@ -132,7 +132,7 @@ class ImageController extends Controller
 
     public function getAddImage()
     {
-        $tags = Tag::all();
+        $tags = Tag::orderBy('tag_name', 'ASC')->get();
         $maxUploadFilesize = formatBytes(config('app.max_upload_filesize'));
 
         return Inertia::render('Image/Add', [
@@ -195,8 +195,8 @@ class ImageController extends Controller
 
         $image = Image::with('tags:tag_id,tag_name')->findOrFail($id);
 
+        $tags = Tag::orderBy('tag_name', 'ASC')->get();
         $selectedTags = $image->tags->pluck('tag_id');
-        $tags = Tag::all();
 
         $maxUploadFilesize = formatBytes(config('app.max_upload_filesize'));
 
