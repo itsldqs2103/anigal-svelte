@@ -111,7 +111,7 @@
 
   function searchByTag() {
     if (searchInput.trim()) {
-      router.visit(
+      router.get(
         getSearch({
           query: { tag_slug_name: searchInput.trim() },
         }),
