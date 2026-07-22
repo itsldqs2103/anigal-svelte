@@ -1,5 +1,5 @@
 <script>
-  import { Link, page, router } from "@inertiajs/svelte";
+  import { inertia, Link, page, router } from "@inertiajs/svelte";
   import {
     ArrowUp,
     ChartBar,
@@ -552,8 +552,14 @@
       <ul class="space-y-2">
         {#each topMenuItems as item (item.path)}
           <li>
-            <Link
-              href={item.path}
+            <a
+              href={item.path.url}
+              use:inertia
+              use:tooltip={{
+                text: sidebarState.collapsed ? item.name : "",
+                root: sidebarState.collapsed ? document.body : "",
+                placement: sidebarState.collapsed ? "right" : "",
+              }}
               class={clsx(
                 "btn w-full",
                 sidebarState.collapsed
@@ -569,7 +575,7 @@
               {#if !sidebarState.collapsed}
                 <span>{item.name}</span>
               {/if}
-            </Link>
+            </a>
           </li>
         {/each}
       </ul>
@@ -577,8 +583,14 @@
       <ul class="mt-auto space-y-2">
         {#each bottomMenuItems as item (item.path)}
           <li>
-            <Link
-              href={item.path}
+            <a
+              href={item.path.url}
+              use:inertia
+              use:tooltip={{
+                text: sidebarState.collapsed ? item.name : "",
+                root: sidebarState.collapsed ? document.body : "",
+                placement: sidebarState.collapsed ? "right" : "",
+              }}
               class={clsx(
                 "btn w-full",
                 sidebarState.collapsed
@@ -594,7 +606,7 @@
               {#if !sidebarState.collapsed}
                 <span>{item.name}</span>
               {/if}
-            </Link>
+            </a>
           </li>
         {/each}
       </ul>

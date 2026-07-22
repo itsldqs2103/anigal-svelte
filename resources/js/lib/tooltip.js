@@ -1,5 +1,4 @@
 import {
-  arrow,
   autoUpdate,
   computePosition,
   flip,
@@ -11,32 +10,24 @@ export function tooltip(node, options) {
   const config =
     typeof options === "string" ? { text: options } : (options ?? {});
 
-  let { text = "", root } = config;
+  let { text = "", root, placement = "top" } = config;
 
   root ??= document.querySelector("main#main-content");
 
   let cleanup;
-  let currentPlacement = "top";
+  let currentPlacement = placement.split("-")[0];
 
   const tooltip = document.createElement("div");
 
   tooltip.className =
-    "fixed z-50 max-w-64 overflow-visible pointer-events-none rounded-base bg-base-300 px-2 py-1 text-xs text-base-content transition-[opacity,transform]";
+    "fixed z-50 max-w-64 pointer-events-none rounded-base bg-base-300 px-2 py-1 text-xs text-base-content transition-[opacity,transform]";
 
   Object.assign(tooltip.style, {
     opacity: "0",
     transform: "translateY(4px)",
   });
 
-  const arrowEl = document.createElement("div");
-
-  arrowEl.className = "absolute h-2 w-2 rotate-45 bg-base-300";
-
-  const content = document.createElement("div");
-
-  content.textContent = text;
-
-  tooltip.append(content, arrowEl);
+  tooltip.textContent = text;
 
   function hiddenTransform() {
     switch (currentPlacement) {
@@ -56,54 +47,33 @@ export function tooltip(node, options) {
   async function updatePosition() {
     if (!tooltip.isConnected) return;
 
-    const { x, y, placement, middlewareData } = await computePosition(
-      node,
-      tooltip,
-      {
-        strategy: "fixed",
-        placement: "top",
-        middleware: [
-          offset(12),
-          flip({
-            boundary: root,
-            padding: 8,
-          }),
-          shift({
-            boundary: root,
-            padding: 8,
-          }),
-          arrow({
-            element: arrowEl,
-          }),
-        ],
-      },
-    );
+    const {
+      x,
+      y,
+      placement: resolvedPlacement,
+    } = await computePosition(node, tooltip, {
+      strategy: "fixed",
+      placement,
+      middleware: [
+        offset(6),
+        flip({
+          boundary: root,
+          padding: 4,
+        }),
+        shift({
+          boundary: root,
+          padding: 4,
+        }),
+      ],
+    });
 
-    currentPlacement = placement.split("-")[0];
+    currentPlacement = resolvedPlacement.split("-")[0];
 
     Object.assign(tooltip.style, {
       position: "fixed",
       left: `${x}px`,
       top: `${y}px`,
     });
-
-    const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {};
-
-    const staticSide = {
-      top: "bottom",
-      right: "left",
-      bottom: "top",
-      left: "right",
-    }[currentPlacement];
-
-    Object.assign(arrowEl.style, {
-      left: arrowX != null ? `${arrowX}px` : "",
-      top: arrowY != null ? `${arrowY}px` : "",
-      right: "",
-      bottom: "",
-    });
-
-    arrowEl.style[staticSide] = "-4px";
   }
 
   function show() {
@@ -157,8 +127,9 @@ export function tooltip(node, options) {
 
       text = config.text ?? text;
       root = config.root ?? root;
+      placement = config.placement ?? placement;
 
-      content.textContent = text;
+      tooltip.textContent = text;
 
       if (!text?.trim()) {
         hide();

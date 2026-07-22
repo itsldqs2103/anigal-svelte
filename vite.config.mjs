@@ -38,12 +38,7 @@ export default defineConfig({
   },
 
   build: {
-    cssMinify: "lightningcss",
-    minify: "terser",
-    target: "baseline-widely-available",
-    license: false,
     chunkSizeWarningLimit: 1024,
-    sourcemap: false,
     rolldownOptions: {
       output: {
         hashCharacters: "base64",
