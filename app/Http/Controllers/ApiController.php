@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ApiController extends Controller
 {
@@ -21,6 +22,12 @@ class ApiController extends Controller
         $tag = Tag::create([
             'tag_name' => $request->tag_name,
             'tag_desc' => $request->tag_desc,
+        ]);
+
+        Inertia::flash([
+            'toast' => [
+                'success' => __('translate.addsuccess', ['attribute' => __('translate.tag')]),
+            ],
         ]);
 
         return response()->json($tag, 201);

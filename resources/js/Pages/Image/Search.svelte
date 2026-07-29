@@ -18,6 +18,7 @@
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
   import Modal from "@/js/Components/Modal.svelte";
   import Pagination from "@/js/Components/Pagination.svelte";
+  import { showImage } from "@/js/lib/fancybox";
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
   import { title } from "@/js/lib/title";
@@ -153,8 +154,6 @@
     searchInput = input;
     updateTagSuggestions(input);
   }
-
-  import { showImage } from "@/js/lib/fancybox";
 
   function autofocus(node) {
     node.focus();
