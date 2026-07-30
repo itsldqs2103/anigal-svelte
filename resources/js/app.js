@@ -11,7 +11,7 @@ import Main from "@/js/Layouts/Main.svelte";
 createInertiaApp({
   defaults: {
     visitOptions: () => {
-      return { viewTransition: true };
+      return { viewTransition: false };
     },
   },
   progress: false,
