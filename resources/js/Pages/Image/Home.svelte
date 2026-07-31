@@ -17,6 +17,8 @@
     Trash2,
   } from "@lucide/svelte";
   import clsx from "clsx";
+  import simpleParallax from "simple-parallax-js/vanilla";
+  import { onMount } from "svelte";
 
   import Breadcrumb from "@/js/Components/Breadcrumb.svelte";
   import Modal from "@/js/Components/Modal.svelte";
@@ -123,6 +125,22 @@
       router.reload();
     }
   }
+
+  onMount(() => {
+    const images = document.querySelectorAll("img[data-parallax]");
+
+    if (images.length === 0) return;
+
+    const parallax = new simpleParallax(images, {
+      scale: 1.25,
+      delay: 0,
+      customWrapper: ".parallax-wrapper",
+    });
+
+    return () => {
+      parallax.destroy();
+    };
+  });
 </script>
 
 <svelte:head>
@@ -301,11 +319,12 @@
     class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
     {#each images.data as image (image.image_id)}
-      <div class="relative">
+      <div class="parallax-wrapper rounded-base relative">
         <img
           data-lazyload-src={image.thumbnail_image_path_url}
           alt={image.image_id}
-          class="rounded-base lazyload object-cover"
+          data-parallax
+          class="lazyload rounded-base object-cover"
           onload={() => handleImageLoad(image.image_id)}
         />
 

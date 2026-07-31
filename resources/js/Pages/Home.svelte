@@ -10,6 +10,8 @@
     RefreshCw,
     Share2,
   } from "@lucide/svelte";
+  import simpleParallax from "simple-parallax-js/vanilla";
+  import { onMount } from "svelte";
 
   import { showImage } from "@/js/lib/fancybox";
   import i18n from "@/js/lib/i18n";
@@ -83,6 +85,22 @@
       .then(() => true)
       .catch(() => false);
   }
+
+  onMount(() => {
+    const images = document.querySelectorAll("img[data-parallax]");
+
+    if (images.length === 0) return;
+
+    const parallax = new simpleParallax(images, {
+      scale: 1.25,
+      delay: 0,
+      customWrapper: ".parallax-wrapper",
+    });
+
+    return () => {
+      parallax.destroy();
+    };
+  });
 </script>
 
 <svelte:head>
@@ -205,10 +223,11 @@
     class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
     {#each randomImages as image (image.image_id)}
-      <div class="relative">
+      <div class="parallax-wrapper rounded-base relative">
         <img
           data-lazyload-src={image.thumbnail_image_path_url}
           alt={image.image_id}
+          data-parallax
           class="rounded-base lazyload object-cover"
           onload={() => handleImageLoad(`random-${image.image_id}`)}
         />
@@ -442,10 +461,11 @@
     class="mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
   >
     {#each latestImages as image (image.image_id)}
-      <div class="relative">
+      <div class="parallax-wrapper rounded-base relative">
         <img
           data-lazyload-src={image.thumbnail_image_path_url}
           alt={image.image_id}
+          data-parallax
           class="rounded-base lazyload object-cover"
           onload={() => handleImageLoad(`image-${image.image_id}`)}
         />

@@ -11,6 +11,7 @@
     Settings,
     Tag,
     User,
+    X,
   } from "@lucide/svelte";
   import clsx from "clsx";
   import { onMount } from "svelte";
@@ -545,7 +546,11 @@
         {/if}
 
         <button class="btn btn-square btn-neutral" onclick={toggleSidebar}>
-          <Menu class="inline aspect-square h-5 w-5" />
+          {#if !sidebarState.collapsed}
+            <X class="inline aspect-square h-5 w-5" />
+          {:else}
+            <Menu class="inline aspect-square h-5 w-5" />
+          {/if}
         </button>
       </div>
 
