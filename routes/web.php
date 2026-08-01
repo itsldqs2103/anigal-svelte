@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [MainController::class, 'index'])->name('home');
+Route::get('/', [MainController::class, 'landing'])->name('home.landing');
+Route::get('/home', [MainController::class, 'index'])->name('home');
 Route::get('/tag', [TagController::class, 'index'])->name('tag.home');
 Route::get('/image', [ImageController::class, 'index'])->name('image.home');
 Route::get('/image/search', [ImageController::class, 'getSearch'])->name('image.search');

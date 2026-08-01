@@ -24,6 +24,7 @@
   import { showImage } from "@/js/lib/fancybox";
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
+  import { shareImage } from "@/js/lib/shareimage.js";
   import { tooltip } from "@/js/lib/tooltip";
   import {
     getEditImage,
@@ -36,19 +37,6 @@
 
   let { user, likedImages, countUploaded, countLiked } = $props();
   let loadedImages = $state({});
-
-  function shareImage(image) {
-    const url = image?.image_source;
-
-    if (!url || !navigator.share) {
-      return Promise.resolve(false);
-    }
-
-    return navigator
-      .share({ url })
-      .then(() => true)
-      .catch(() => false);
-  }
 
   let showConfirm = $state(false);
   let selectedId = $state(null);
@@ -325,8 +313,12 @@
                 <span class="loading loading-spinner loading-xs"></span>
               {/if}
               {loading
-                ? $i18n.t("translate.loading")
-                : $i18n.t("translate.loadmore")}
+                ? $i18n.t("translate.loading") +
+                  " " +
+                  $i18n.t("translate.image").toLowerCase()
+                : $i18n.t("translate.loadmore") +
+                  " " +
+                  $i18n.t("translate.image").toLowerCase()}
             </button>
           </div>
         {/if}

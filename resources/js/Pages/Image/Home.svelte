@@ -26,6 +26,7 @@
   import { showImage } from "@/js/lib/fancybox";
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
+  import { shareImage } from "@/js/lib/shareimage.js";
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
   import {
@@ -43,19 +44,6 @@
   let sortBy = $derived(filters.sort_by ?? defaults.sort_by);
   let order = $derived(filters.order ?? defaults.order);
   let perPage = $derived(filters.perPage ?? defaults.perPage);
-
-  function shareImage(image) {
-    const url = image?.image_source;
-
-    if (!url || !navigator.share) {
-      return Promise.resolve(false);
-    }
-
-    return navigator
-      .share({ url })
-      .then(() => true)
-      .catch(() => false);
-  }
 
   function applyFilters() {
     router.get(
@@ -241,7 +229,7 @@
   </button>
   <div class="dropdown dropdown-end select-none">
     <button
-      class="btn btn-primary"
+      class="btn btn-primary btn-soft"
       disabled={images.total === 0 || form.processing}
     >
       {order === "latest"
@@ -250,7 +238,7 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content menu bg-base-200 rounded-box z-1 mt-1 w-32 p-2">
+    <ul class="dropdown-content menu bg-base-200 rounded-box z-1 mt-2 w-32 p-2">
       <li>
         <button
           class={clsx(order === "latest" && "bg-primary text-primary-content")}
@@ -282,7 +270,7 @@
 
   <div class="dropdown dropdown-end select-none">
     <button
-      class="btn btn-primary"
+      class="btn btn-primary btn-soft"
       disabled={images.total <= 1 || form.processing}
     >
       {perPage}
@@ -290,7 +278,7 @@
     </button>
 
     <ul
-      class="dropdown-content menu bg-base-200 rounded-box z-1 mt-1 w-42 space-y-1 p-2"
+      class="dropdown-content menu bg-base-200 rounded-box z-1 mt-2 w-42 space-y-1 p-2"
     >
       {#each filters.allowedLimits as limit (limit)}
         <li>

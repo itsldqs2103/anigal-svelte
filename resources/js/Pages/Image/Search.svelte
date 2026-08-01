@@ -23,6 +23,7 @@
   import { showImage } from "@/js/lib/fancybox";
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
+  import { shareImage } from "@/js/lib/shareimage.js";
   import { title } from "@/js/lib/title";
   import { tooltip } from "@/js/lib/tooltip";
   import {
@@ -47,19 +48,6 @@
       searchInput = searchTag;
     }
   });
-
-  function shareImage(image) {
-    const url = image?.image_source;
-
-    if (!url || !navigator.share) {
-      return Promise.resolve(false);
-    }
-
-    return navigator
-      .share({ url })
-      .then(() => true)
-      .catch(() => false);
-  }
 
   const form = useForm({});
 

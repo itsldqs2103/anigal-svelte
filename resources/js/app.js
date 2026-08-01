@@ -15,5 +15,11 @@ createInertiaApp({
     },
   },
   progress: false,
-  layout: () => Main,
+  layout: (name) => {
+    if (name.startsWith("Landing")) {
+      return null;
+    }
+
+    return Main;
+  },
 });

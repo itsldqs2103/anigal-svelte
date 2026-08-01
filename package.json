@@ -17,7 +17,7 @@
         "@sveltejs/vite-plugin-svelte": "^7.2.0",
         "@tailwindcss/vite": "^4.3.3",
         "concurrently": "^10.0.4",
-        "daisyui": "^5.7.7",
+        "daisyui": "^5.7.9",
         "eslint": "^10.8.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.6",
@@ -30,7 +30,7 @@
         "prettier-plugin-svelte": "^4.1.1",
         "prettier-plugin-tailwindcss": "^0.8.1",
         "tailwindcss": "^4.3.3",
-        "vite": "^8.1.5"
+        "vite": "^8.2.0"
     },
     "dependencies": {
         "@fancyapps/ui": "^6.1.14",
@@ -39,7 +39,7 @@
         "@fontsource-variable/roboto-flex": "^5.3.0",
         "@inertiajs/svelte": "3.6",
         "@inertiajs/vite": "3.6",
-        "@lucide/svelte": "^1.27.0",
+        "@lucide/svelte": "^1.28.0",
         "axios": "^1.19.0",
         "clsx": "^2.1.1",
         "filesize": "^11.0.22",

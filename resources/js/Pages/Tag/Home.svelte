@@ -205,7 +205,7 @@
   </button>
   <div class="dropdown dropdown-end select-none">
     <button
-      class="btn btn-primary"
+      class="btn btn-primary btn-soft"
       disabled={form.processing || tags.total <= 1}
     >
       {#if sortBy === "created_at"}
@@ -220,7 +220,7 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content menu bg-base-300 rounded-box z-1 mt-1 w-24 p-2">
+    <ul class="dropdown-content menu bg-base-300 rounded-box z-1 mt-2 w-24 p-2">
       <li>
         <button
           class={clsx(order === "oldest" && "bg-primary text-primary-content")}
@@ -252,7 +252,7 @@
 
   <div class="dropdown dropdown-end select-none">
     <button
-      class="btn btn-primary"
+      class="btn btn-primary btn-soft"
       disabled={form.processing || tags.total <= 1}
     >
       {perPage}
@@ -260,7 +260,7 @@
     </button>
 
     <ul
-      class="dropdown-content menu bg-base-300 rounded-box z-1 mt-1 w-42 space-y-1 p-2"
+      class="dropdown-content menu bg-base-300 rounded-box z-1 mt-2 w-42 space-y-1 p-2"
     >
       {#each filters.allowedLimits as limit (limit)}
         <li>

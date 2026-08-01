@@ -58,13 +58,13 @@
       </div>
 
       <div class="dropdown dropdown-end select-none">
-        <button class="btn btn-primary">
+        <button class="btn btn-primary btn-soft">
           {getThemeLabel($i18n.t(`translate.${$theme}`))}
           <ChevronDown class="inline aspect-square h-4 w-4" />
         </button>
 
         <ul
-          class="dropdown-content menu bg-base-300 rounded-box w-40 space-y-1 p-2"
+          class="dropdown-content menu bg-base-200 rounded-box mt-2 w-40 space-y-1 p-2"
         >
           {#each themes as t (t.key)}
             <li>
@@ -73,8 +73,10 @@
                   setTheme(t.key);
                   e.currentTarget.blur();
                 }}
-                class:btn-disabled={$theme === t.key}
-                disabled={form.processing}
+                class={$theme === t.key
+                  ? "bg-primary text-primary-content"
+                  : ""}
+                disabled={form.processing || $theme === t.key}
                 type="button"
               >
                 {$i18n.t(`translate.${t.label}`)}
@@ -102,19 +104,21 @@
       </div>
 
       <div class="dropdown dropdown-end">
-        <button class="btn btn-primary">
+        <button class="btn btn-primary btn-soft">
           {supportedLocales.find((l) => l.code === currentLocale)?.name}
           <ChevronDown class="inline aspect-square h-4 w-4" />
         </button>
 
         <ul
-          class="dropdown-content menu bg-base-300 rounded-box w-40 space-y-1 p-2"
+          class="dropdown-content menu bg-base-200 rounded-box mt-2 w-40 space-y-1 p-2"
         >
           {#each supportedLocales as locale (locale.code)}
             <li>
               <button
                 disabled={currentLocale === locale.code || form.processing}
-                class:btn-disabled={currentLocale === locale.code}
+                class={currentLocale === locale.code
+                  ? "bg-primary text-primary-content"
+                  : ""}
                 onclick={(e) => {
                   changeLocale(locale.code);
                   e.currentTarget.blur();

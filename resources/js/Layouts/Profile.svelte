@@ -282,11 +282,11 @@
 
       <div class="-mt-4 flex justify-end">
         <div class="dropdown dropdown-end select-none">
-          <button type="button" class="btn btn-square btn-primary">
+          <button type="button" class="btn btn-square btn-primary btn-soft">
             <EllipsisVertical class="inline aspect-square h-4 w-4" />
           </button>
           <ul
-            class="dropdown-content menu bg-base-100 rounded-box z-1 mt-1 w-42 space-y-1 p-2"
+            class="dropdown-content menu bg-base-200 rounded-box z-1 mt-2 w-42 space-y-1 p-2"
           >
             {#if isUserEdit.value}
               <li>

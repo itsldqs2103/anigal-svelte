@@ -11,6 +11,16 @@ use Inertia\Inertia;
 
 class MainController extends Controller
 {
+    public function landing()
+    {
+        $supportedLocales = config('i18nlocale.supportedLocales');
+        sort($supportedLocales);
+
+        return Inertia::render('Landing', [
+            'supportedLocales' => $supportedLocales,
+        ]);
+    }
+
     public function index()
     {
         $randomTags = Tag::inRandomOrder()->limit(5)->get();
