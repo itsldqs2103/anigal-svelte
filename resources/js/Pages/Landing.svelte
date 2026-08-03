@@ -176,14 +176,14 @@
 </script>
 
 <svelte:head>
-  <title>{$i18n.t("translate.home")} - {$title}</title>
+  <title>{$title}</title>
 </svelte:head>
 
 <section
   class="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center"
 >
   <div class="mx-auto max-w-3xl text-center">
-    <h1 class="text-5xl leading-tight font-black md:text-6xl">
+    <h1 class="text-4xl leading-tight font-black">
       {$i18n.t("translate.discoverimagesby")}
       <span class="text-primary">{$i18n.t("translate.tags")}</span>
     </h1>
@@ -203,7 +203,7 @@
             order: "latest",
           },
         })}
-        class="btn btn-primary btn-lg"
+        class="btn btn-primary btn-md"
       >
         <Image class="inline aspect-square h-5 w-5" />
         {$i18n.t("translate.browse") +
@@ -220,7 +220,7 @@
             starts_with: null,
           },
         })}
-        class="btn btn-primary btn-lg"
+        class="btn btn-primary btn-md"
       >
         <Tags class="inline aspect-square h-5 w-5" />
         {$i18n.t("translate.browse") +
