@@ -2,13 +2,17 @@
   import { Link, page, router, useForm } from "@inertiajs/svelte";
   import { ChevronDown, Image, Search, Tags } from "@lucide/svelte";
   import { onMount } from "svelte";
+  import Toastify from "toastify-js";
 
+  import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
   import { initializeTheme } from "@/js/lib/theme";
   import { title } from "@/js/lib/title";
   import { index as imageIndex } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
   import { locale as postLocale } from "@/js/wayfinder/actions/App/Http/Controllers/MainController";
   import { index as tagIndex } from "@/js/wayfinder/actions/App/Http/Controllers/TagController";
+
+  let { totalTags, totalImages, supportedLocales } = $props();
 
   const currentLocale = $derived(page.props.currentLocale);
 
@@ -123,15 +127,51 @@
   router.on("start", () => toggleUI(true));
   router.on("finish", () => toggleUI(false));
 
-  let { supportedLocales } = $props();
-
   const form = useForm(() => ({
     locale: currentLocale,
   }));
 
-  function changeLocale(locale) {
-    form.locale = locale;
-    form.post(postLocale());
+  async function changeLocale(locale) {
+    await api.post(postLocale().url, {
+      locale,
+    });
+
+    location.reload();
+  }
+
+  router.on("flash", (event) => {
+    const toast = event.detail.flash.toast;
+
+    if (!toast) return;
+
+    if (toast.success) {
+      Toastify({
+        text: toast.success,
+        className: "rounded-base toastify-success",
+        gravity: "bottom",
+        position: "center",
+        duration: 5000,
+        oldestFirst: false,
+      }).showToast();
+    }
+
+    if (toast.error) {
+      Toastify({
+        text: toast.error,
+        className: "rounded-base toastify-error",
+        gravity: "bottom",
+        position: "center",
+        duration: 5000,
+        oldestFirst: false,
+      }).showToast();
+    }
+  });
+
+  function formatCount(count) {
+    if (count < 100) return count.toString();
+
+    const rounded = Math.floor(count / 100) * 100;
+    return `${rounded}+`;
   }
 </script>
 
@@ -143,32 +183,49 @@
   class="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center"
 >
   <div class="mx-auto max-w-3xl text-center">
-    <div class="badge badge-primary badge-outline mb-6">
-      Free Image Tag Database
-    </div>
-
     <h1 class="text-5xl leading-tight font-black md:text-6xl">
-      Discover Images by
-      <span class="text-primary">Tags</span>
+      {$i18n.t("translate.discoverimagesby")}
+      <span class="text-primary">{$i18n.t("translate.tags")}</span>
     </h1>
 
     <p
       class="text-base-content/70 mx-auto mt-6 max-w-2xl text-lg leading-relaxed"
     >
-      Explore a growing collection of tagged images. Search by keywords,
-      discover related content, and find exactly what you're looking for in
-      seconds.
+      {$i18n.t("translate.landingdesc")}
     </p>
 
     <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-      <Link href={imageIndex()} class="btn btn-primary btn-lg">
+      <Link
+        href={imageIndex({
+          query: {
+            per_page: 30,
+            sort_by: "created_at",
+            order: "latest",
+          },
+        })}
+        class="btn btn-primary btn-lg"
+      >
         <Image class="inline aspect-square h-5 w-5" />
-        Browse Images
+        {$i18n.t("translate.browse") +
+          " " +
+          $i18n.t("translate.images").toLowerCase()}
       </Link>
 
-      <Link href={tagIndex()} class="btn btn-primary btn-lg">
+      <Link
+        href={tagIndex({
+          query: {
+            sort_by: "tag_name",
+            order: "oldest",
+            per_page: 30,
+            starts_with: null,
+          },
+        })}
+        class="btn btn-primary btn-lg"
+      >
         <Tags class="inline aspect-square h-5 w-5" />
-        Browse Tags
+        {$i18n.t("translate.browse") +
+          " " +
+          $i18n.t("translate.tags").toLowerCase()}
       </Link>
     </div>
   </div>
@@ -177,9 +234,9 @@
     <div class="card bg-base-200 border-base-300 border">
       <div class="card-body items-center text-center">
         <Image class="text-primary inline aspect-square h-10 w-10" />
-        <h2 class="card-title">Image Collection</h2>
+        <h2 class="card-title">{$i18n.t("translate.imagecollection")}</h2>
         <p class="text-base-content/70">
-          Browse a curated library of images from various categories.
+          {$i18n.t("translate.imagecollectiondesc")}
         </p>
       </div>
     </div>
@@ -187,9 +244,9 @@
     <div class="card bg-base-200 border-base-300 border">
       <div class="card-body items-center text-center">
         <Tags class="text-primary inline aspect-square h-10 w-10" />
-        <h2 class="card-title">Organized Tags</h2>
+        <h2 class="card-title">{$i18n.t("translate.organizedtags")}</h2>
         <p class="text-base-content/70">
-          Every image is categorized with descriptive tags for fast searching.
+          {$i18n.t("translate.organizedtagsdesc")}
         </p>
       </div>
     </div>
@@ -197,9 +254,9 @@
     <div class="card bg-base-200 border-base-300 border">
       <div class="card-body items-center text-center">
         <Search class="text-primary inline aspect-square h-10 w-10" />
-        <h2 class="card-title">Fast Discovery</h2>
+        <h2 class="card-title">{$i18n.t("translate.fastdiscovery")}</h2>
         <p class="text-base-content/70">
-          Quickly discover similar images and related tags with powerful search.
+          {$i18n.t("translate.fastdiscoverydesc")}
         </p>
       </div>
     </div>
@@ -207,21 +264,21 @@
 
   <div class="stats stats-vertical md:stats-horizontal mt-20 w-full shadow">
     <div class="stat">
-      <div class="stat-title">Images</div>
-      <div class="stat-value text-primary">10K+</div>
-      <div class="stat-desc">Growing collection</div>
+      <div class="stat-title">{$i18n.t("translate.images")}</div>
+      <div class="stat-value text-primary">{formatCount(totalImages)}</div>
+      <div class="stat-desc">{$i18n.t("translate.growingcollection")}</div>
     </div>
 
     <div class="stat">
-      <div class="stat-title">Tags</div>
-      <div class="stat-value text-primary">2K+</div>
-      <div class="stat-desc">Well organized</div>
+      <div class="stat-title">{$i18n.t("translate.tags")}</div>
+      <div class="stat-value text-primary">{formatCount(totalTags)}</div>
+      <div class="stat-desc">{$i18n.t("translate.wellorganized")}</div>
     </div>
 
     <div class="stat">
-      <div class="stat-title">Search</div>
-      <div class="stat-value text-primary">Fast</div>
-      <div class="stat-desc">Find images instantly</div>
+      <div class="stat-title">{$i18n.t("translate.search")}</div>
+      <div class="stat-value text-primary">{$i18n.t("translate.fast")}</div>
+      <div class="stat-desc">{$i18n.t("translate.findimagesinstantly")}</div>
     </div>
   </div>
 

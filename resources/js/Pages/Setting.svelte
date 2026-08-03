@@ -2,6 +2,7 @@
   import { Link, page, useForm } from "@inertiajs/svelte";
   import { ChevronDown, House } from "@lucide/svelte";
 
+  import { api } from "@/js/lib/axios";
   import i18n from "@/js/lib/i18n";
   import { getThemeLabel, setTheme, theme, themes } from "@/js/lib/theme";
   import { title } from "@/js/lib/title";
@@ -18,9 +19,12 @@
     locale: currentLocale,
   }));
 
-  function changeLocale(locale) {
-    form.locale = locale;
-    form.post(postLocale());
+  async function changeLocale(locale) {
+    await api.post(postLocale().url, {
+      locale,
+    });
+
+    location.reload();
   }
 </script>
 

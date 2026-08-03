@@ -15,9 +15,13 @@ class MainController extends Controller
     {
         $supportedLocales = config('i18nlocale.supportedLocales');
         sort($supportedLocales);
+        $totalTags = Tag::count();
+        $totalImages = Image::count();
 
         return Inertia::render('Landing', [
             'supportedLocales' => $supportedLocales,
+            'totalTags' => $totalTags,
+            'totalImages' => $totalImages
         ]);
     }
 
@@ -88,7 +92,7 @@ class MainController extends Controller
             ],
         ]);
 
-        return to_route('setting')->withCookie($cookie);
+        return response()->noContent()->cookie($cookie);
     }
 
     public function getLocaleFile(string $locale)
