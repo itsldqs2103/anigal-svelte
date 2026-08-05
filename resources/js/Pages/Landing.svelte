@@ -180,21 +180,23 @@
 </svelte:head>
 
 <section
-  class="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center"
+  class="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-4 py-10 sm:px-6 lg:px-8"
 >
-  <div class="mx-auto max-w-3xl text-center">
-    <h1 class="text-4xl leading-tight font-black">
+  <div class="mx-auto w-full max-w-3xl text-center">
+    <h1 class="text-3xl leading-tight font-black sm:text-4xl md:text-5xl">
       {$i18n.t("translate.discoverimagesby")}
       <span class="text-primary">{$i18n.t("translate.tags")}</span>
     </h1>
 
     <p
-      class="text-base-content/70 mx-auto mt-6 max-w-2xl text-lg leading-relaxed"
+      class="text-base-content/70 mx-auto mt-5 max-w-2xl text-base leading-relaxed sm:text-lg"
     >
       {$i18n.t("translate.landingdesc")}
     </p>
 
-    <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+    <div
+      class="mt-8 flex w-full flex-col gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:justify-center"
+    >
       <Link
         href={imageIndex({
           query: {
@@ -203,7 +205,7 @@
             order: "latest",
           },
         })}
-        class="btn btn-primary btn-md"
+        class="btn btn-primary btn-md w-full sm:w-auto"
       >
         <Image class="inline aspect-square h-5 w-5" />
         {$i18n.t("translate.browse") +
@@ -220,7 +222,7 @@
             starts_with: null,
           },
         })}
-        class="btn btn-primary btn-md"
+        class="btn btn-primary btn-md w-full sm:w-auto"
       >
         <Tags class="inline aspect-square h-5 w-5" />
         {$i18n.t("translate.browse") +
@@ -230,8 +232,8 @@
     </div>
   </div>
 
-  <div class="mt-20 grid gap-6 md:grid-cols-3">
-    <div class="card bg-base-200 border-base-300 border">
+  <div class="mt-14 grid w-full gap-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">
+    <div class="card bg-base-200 border-base-300 h-full border">
       <div class="card-body items-center text-center">
         <Image class="text-primary inline aspect-square h-10 w-10" />
         <h2 class="card-title">{$i18n.t("translate.imagecollection")}</h2>
@@ -241,7 +243,7 @@
       </div>
     </div>
 
-    <div class="card bg-base-200 border-base-300 border">
+    <div class="card bg-base-200 border-base-300 h-full border">
       <div class="card-body items-center text-center">
         <Tags class="text-primary inline aspect-square h-10 w-10" />
         <h2 class="card-title">{$i18n.t("translate.organizedtags")}</h2>
@@ -251,7 +253,7 @@
       </div>
     </div>
 
-    <div class="card bg-base-200 border-base-300 border">
+    <div class="card bg-base-200 border-base-300 h-full border">
       <div class="card-body items-center text-center">
         <Search class="text-primary inline aspect-square h-10 w-10" />
         <h2 class="card-title">{$i18n.t("translate.fastdiscovery")}</h2>
@@ -262,7 +264,9 @@
     </div>
   </div>
 
-  <div class="stats stats-vertical md:stats-horizontal mt-20 w-full shadow">
+  <div
+    class="stats stats-vertical md:stats-horizontal mt-14 w-full overflow-hidden shadow lg:mt-20"
+  >
     <div class="stat">
       <div class="stat-title">{$i18n.t("translate.images")}</div>
       <div class="stat-value text-primary">{formatCount(totalImages)}</div>
@@ -282,9 +286,9 @@
     </div>
   </div>
 
-  <div class="mt-10">
+  <div class="mt-8 flex w-full justify-center">
     <div class="dropdown dropdown-end">
-      <button class="btn btn-primary btn-soft">
+      <button class="btn btn-primary btn-soft w-full sm:w-auto">
         {supportedLocales.find((l) => l.code === currentLocale)?.name}
         <ChevronDown class="inline aspect-square h-4 w-4" />
       </button>
