@@ -19,7 +19,10 @@
 
   import infinityFreeLogoUrl from "@/images/infinityfree-logo.svg";
   import i18n from "@/js/lib/i18n";
-  import { sidebarState, toggleSidebar } from "@/js/lib/sidebar.svelte";
+  import {
+    collapseSidebar,
+    sidebarCollapseState,
+  } from "@/js/lib/sidebar.svelte";
   import { initializeTheme } from "@/js/lib/theme";
   import { tooltip } from "@/js/lib/tooltip";
   import { index as imageIndex } from "@/js/wayfinder/actions/App/Http/Controllers/ImageController";
@@ -37,6 +40,32 @@
   } from "@/js/wayfinder/actions/App/Http/Controllers/UserController";
 
   let { children } = $props();
+
+  onMount(() => {
+    const drawer = document.getElementById("my-drawer");
+
+    if (!(drawer instanceof HTMLInputElement)) return;
+
+    const mdMedia = window.matchMedia("(max-width: 1024px)");
+
+    const handleDrawerChange = () => {
+      if (drawer.checked && mdMedia.matches && sidebarCollapseState.collapsed) {
+        sidebarCollapseState.collapsed = false;
+      }
+    };
+
+    const handleResize = () => {
+      drawer.checked = false;
+    };
+
+    drawer.addEventListener("change", handleDrawerChange);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      drawer.removeEventListener("change", handleDrawerChange);
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 
   onMount(() => {
     initializeTheme();
@@ -343,6 +372,22 @@
       localStorage.setItem("isUserEdit", "false");
     }
   });
+
+  onMount(() => {
+    const drawer = document.getElementById("my-drawer");
+
+    if (!(drawer instanceof HTMLInputElement)) return;
+
+    const handleResize = () => {
+      drawer.checked = false;
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 </script>
 
 <div class="drawer lg:drawer-open">
@@ -527,16 +572,16 @@
     <aside
       class={clsx(
         "menu bg-base-300 text-base-content flex min-h-full flex-col overflow-x-hidden transition-[width,padding]",
-        sidebarState.collapsed ? "w-12 items-center px-0" : "w-56 px-4",
+        sidebarCollapseState.collapsed ? "w-12 items-center px-0" : "w-56 px-4",
       )}
     >
       <div
         class={clsx(
           "mb-4 flex w-full items-center",
-          sidebarState.collapsed ? "justify-center" : "justify-between",
+          sidebarCollapseState.collapsed ? "justify-center" : "justify-between",
         )}
       >
-        {#if !sidebarState.collapsed}
+        {#if !sidebarCollapseState.collapsed}
           <Link
             href={index()}
             class="text-2xl font-bold uppercase transition-opacity hover:opacity-70"
@@ -545,13 +590,23 @@
           </Link>
         {/if}
 
-        <button class="btn btn-square btn-neutral" onclick={toggleSidebar}>
-          {#if !sidebarState.collapsed}
-            <X class="inline aspect-square h-5 w-5" />
+        <button
+          class="btn btn-square btn-neutral hidden lg:inline-flex"
+          onclick={collapseSidebar}
+        >
+          {#if !sidebarCollapseState.collapsed}
+            <X class="h-5 w-5" />
           {:else}
-            <Menu class="inline aspect-square h-5 w-5" />
+            <Menu class="h-5 w-5" />
           {/if}
         </button>
+
+        <label
+          for="my-drawer"
+          class="btn btn-square btn-ghost inline-flex lg:hidden"
+        >
+          <X class="h-5 w-5" />
+        </label>
       </div>
 
       <ul class="space-y-2">
@@ -561,13 +616,13 @@
               href={item.path.url}
               use:inertia
               use:tooltip={{
-                text: sidebarState.collapsed ? item.name : "",
-                root: sidebarState.collapsed ? document.body : "",
-                placement: sidebarState.collapsed ? "right" : "",
+                text: sidebarCollapseState.collapsed ? item.name : "",
+                root: sidebarCollapseState.collapsed ? document.body : "",
+                placement: sidebarCollapseState.collapsed ? "right" : "",
               }}
               class={clsx(
                 "btn w-full",
-                sidebarState.collapsed
+                sidebarCollapseState.collapsed
                   ? "btn-square justify-center px-0"
                   : "justify-start gap-2",
                 page.component.startsWith(item.component)
@@ -577,7 +632,7 @@
             >
               <item.icon size={20} />
 
-              {#if !sidebarState.collapsed}
+              {#if !sidebarCollapseState.collapsed}
                 <span>{item.name}</span>
               {/if}
             </a>
@@ -592,13 +647,13 @@
               href={item.path.url}
               use:inertia
               use:tooltip={{
-                text: sidebarState.collapsed ? item.name : "",
-                root: sidebarState.collapsed ? document.body : "",
-                placement: sidebarState.collapsed ? "right" : "",
+                text: sidebarCollapseState.collapsed ? item.name : "",
+                root: sidebarCollapseState.collapsed ? document.body : "",
+                placement: sidebarCollapseState.collapsed ? "right" : "",
               }}
               class={clsx(
                 "btn w-full",
-                sidebarState.collapsed
+                sidebarCollapseState.collapsed
                   ? "btn-square justify-center px-0"
                   : "justify-start gap-2",
                 page.component.startsWith(item.component)
@@ -608,7 +663,7 @@
             >
               <item.icon size={20} />
 
-              {#if !sidebarState.collapsed}
+              {#if !sidebarCollapseState.collapsed}
                 <span>{item.name}</span>
               {/if}
             </a>

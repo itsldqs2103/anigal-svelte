@@ -1,9 +1,12 @@
-export const sidebarState = $state({
+export const sidebarCollapseState = $state({
   collapsed: localStorage.getItem("sidebarCollapsed") === "true",
 });
 
-export function toggleSidebar() {
-  sidebarState.collapsed = !sidebarState.collapsed;
+export function collapseSidebar() {
+  sidebarCollapseState.collapsed = !sidebarCollapseState.collapsed;
 
-  localStorage.setItem("sidebarCollapsed", String(sidebarState.collapsed));
+  localStorage.setItem(
+    "sidebarCollapsed",
+    String(sidebarCollapseState.collapsed),
+  );
 }

@@ -5,7 +5,7 @@
 
   import i18n from "@/js/lib/i18n";
   import { isUserEdit } from "@/js/lib/isEdit.svelte";
-  import { sidebarState } from "@/js/lib/sidebar.svelte";
+  import { sidebarCollapseState } from "@/js/lib/sidebar.svelte";
   import { tooltip } from "@/js/lib/tooltip";
 
   let { children } = $props();
@@ -73,7 +73,7 @@
   <div
     class={clsx(
       "bg-base-300 fixed top-0 left-0 z-50 flex w-full items-center justify-between gap-4 p-4 ",
-      !sidebarState.collapsed
+      !sidebarCollapseState.collapsed
         ? "lg:left-56 lg:w-[calc(100%-14rem)]"
         : "lg:left-12 lg:w-[calc(100%-3rem)]",
       "transition-[opacity,translate]",

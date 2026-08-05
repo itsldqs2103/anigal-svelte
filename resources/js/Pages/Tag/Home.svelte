@@ -220,7 +220,9 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content menu bg-base-300 rounded-box z-1 mt-2 w-24 p-2">
+    <ul
+      class="dropdown-content menu bg-base-300 rounded-box z-1 mt-2 w-24 space-y-1 p-2"
+    >
       <li>
         <button
           class={clsx(order === "oldest" && "bg-primary text-primary-content")}

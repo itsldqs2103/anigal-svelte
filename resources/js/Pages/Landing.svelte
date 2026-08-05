@@ -287,20 +287,22 @@
   </div>
 
   <div class="mt-8 flex w-full justify-center">
-    <div class="dropdown dropdown-end">
+    <div class="dropdown dropdown-start">
       <button class="btn btn-primary btn-soft w-full sm:w-auto">
         {supportedLocales.find((l) => l.code === currentLocale)?.name}
         <ChevronDown class="inline aspect-square h-4 w-4" />
       </button>
 
       <ul
-        class="dropdown-content menu bg-base-300 rounded-box mt-2 w-40 space-y-1 p-2"
+        class="dropdown-content menu bg-base-200 rounded-box mt-2 w-40 space-y-1 p-2"
       >
         {#each supportedLocales as locale (locale.code)}
           <li>
             <button
               disabled={currentLocale === locale.code || form.processing}
-              class:btn-disabled={currentLocale === locale.code}
+              class={currentLocale === locale.code
+                ? "bg-primary text-primary-content"
+                : ""}
               onclick={(e) => {
                 changeLocale(locale.code);
                 e.currentTarget.blur();

@@ -61,7 +61,7 @@
         </p>
       </div>
 
-      <div class="dropdown dropdown-end select-none">
+      <div class="dropdown dropdown-end">
         <button class="btn btn-primary btn-soft">
           {getThemeLabel($i18n.t(`translate.${$theme}`))}
           <ChevronDown class="inline aspect-square h-4 w-4" />

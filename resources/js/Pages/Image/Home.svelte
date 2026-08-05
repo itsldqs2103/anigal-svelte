@@ -238,7 +238,9 @@
       <ChevronDown class="inline aspect-square h-4 w-4" />
     </button>
 
-    <ul class="dropdown-content menu bg-base-200 rounded-box z-1 mt-2 w-32 p-2">
+    <ul
+      class="dropdown-content menu bg-base-200 rounded-box z-1 mt-2 w-32 space-y-1 p-2"
+    >
       <li>
         <button
           class={clsx(order === "latest" && "bg-primary text-primary-content")}

@@ -31,6 +31,7 @@
 
 <body>
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        <div id="nprogress-container"></div>
         <x-inertia::app />
     @endif
 </body>
