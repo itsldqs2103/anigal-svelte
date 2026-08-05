@@ -84,7 +84,7 @@ class UserController extends Controller
                     ->whereHas('likes', function ($query) use ($user) {
                         $query->where('user_id', $user->user_id);
                     })
-                    ->paginate(15)
+                    ->paginate(30)
             );
 
             return Inertia::render('User/Liked', [
@@ -102,7 +102,7 @@ class UserController extends Controller
                     'likes as liked' => fn ($query) => $query->where('user_id', $id),
                 ])
                 ->where('user_id', $user->user_id)
-                ->paginate(15)
+                ->paginate(30)
         );
 
         return Inertia::render('User/Uploaded', [
