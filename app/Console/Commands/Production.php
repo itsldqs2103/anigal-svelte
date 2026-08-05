@@ -8,9 +8,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Process;
 
-#[Signature('lang:sort')]
-#[Description('Sort translation files alphabetically')]
-class SortTranslations extends Command
+#[Signature('production|prod')]
+#[Description('Sort translation files alphabetically and format all PHP files')]
+class Production extends Command
 {
     public function handle(): int
     {
@@ -48,27 +48,29 @@ class SortTranslations extends Command
             $this->info("Sorted: {$path}");
         }
 
-        $this->formatTranslations();
+        $this->formatPhpFiles();
 
         return self::SUCCESS;
     }
 
-    protected function formatTranslations(): void
+    protected function formatPhpFiles(): void
     {
         $process = new Process([
             base_path('vendor/bin/pint'),
-            'lang',
+            base_path(),
         ]);
 
+        $process->setWorkingDirectory(base_path());
+        $process->setTimeout(null);
         $process->run();
 
         if ($process->isSuccessful()) {
-            $this->info('Translation files formatted.');
+            $this->info('All PHP files formatted.');
 
             return;
         }
 
-        $this->error('Failed to format translation files.');
+        $this->error('Failed to format PHP files.');
         $this->line($process->getErrorOutput());
     }
 }

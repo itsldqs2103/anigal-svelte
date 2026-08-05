@@ -50,7 +50,7 @@ class ImageController extends Controller
         ])
             ->withCount('likes')
             ->withExists([
-                'likes as liked' => fn($query) => $query->where('user_id', $userId),
+                'likes as liked' => fn ($query) => $query->where('user_id', $userId),
             ])
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
@@ -93,15 +93,15 @@ class ImageController extends Controller
         $tag = Tag::where('tag_slug_name', $tagSlug)->firstOrFail();
 
         $images = Image::with([
-            'tags' => fn($query) => $query->orderBy('tag_name'),
+            'tags' => fn ($query) => $query->orderBy('tag_name'),
         ])
             ->withCount('likes')
             ->when(
                 $userId,
-                fn($query) => $query->withExists([
-                    'likes as liked' => fn($query) => $query->where('user_id', $userId),
+                fn ($query) => $query->withExists([
+                    'likes as liked' => fn ($query) => $query->where('user_id', $userId),
                 ]),
-                fn($query) => $query->select('*')->selectRaw('false as liked')
+                fn ($query) => $query->select('*')->selectRaw('false as liked')
             )
             ->whereHas('tags', function ($query) use ($tag) {
                 $query->where('tags.tag_id', $tag->tag_id);

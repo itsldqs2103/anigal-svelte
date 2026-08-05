@@ -21,7 +21,7 @@ class MainController extends Controller
         return Inertia::render('Landing', [
             'supportedLocales' => $supportedLocales,
             'totalTags' => $totalTags,
-            'totalImages' => $totalImages
+            'totalImages' => $totalImages,
         ]);
     }
 
@@ -42,7 +42,7 @@ class MainController extends Controller
             'randomTags' => $randomTags,
             'latestTags' => $latestTags,
             'randomImages' => $randomImages,
-            'latestImages' => $latestImages
+            'latestImages' => $latestImages,
         ]);
     }
 
@@ -55,7 +55,7 @@ class MainController extends Controller
         return Inertia::render('Stats', [
             'totalTags' => $totalTags,
             'totalImages' => $totalImages,
-            'totalImagesFilesize' => $totalImagesFilesize
+            'totalImagesFilesize' => $totalImagesFilesize,
         ]);
     }
 
@@ -107,7 +107,7 @@ class MainController extends Controller
 
         return response()->json(
             collect(File::files(base_path("lang/$locale")))
-                ->mapWithKeys(fn($file) => [
+                ->mapWithKeys(fn ($file) => [
                     pathinfo($file, PATHINFO_FILENAME) => require $file,
                 ])
         );
